@@ -1,789 +1,517 @@
 <!DOCTYPE html>
-<!-- saved from url=(0131)file:///C:/Users/User/Downloads/%EC%8A%A4%EB%A7%88%ED%8A%B8%ED%8C%9C_%EA%B8%89%EC%97%AC%EA%B4%80%EB%A6%AC_%EC%B5%9C%EC%A2%85_6.html -->
+<!-- saved from url=(0112)file:///C:/Users/User/Downloads/%EC%8A%A4%EB%A7%88%ED%8A%B8%ED%8C%9C_%EA%B7%BC%EB%AC%B4%EA%B4%80%EB%A6%AC_4.html -->
 <html lang="ko"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>스마트팜 급여 관리</title>
-<script src="./index_files/supabase-js@2"></script>
-<script src="./index_files/xlsx.full.min.js.다운로드"></script>
+<title>스마트팜 근무 관리</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:14px;color:#1a1a1a;background:#f5f5f0}
-.header{background:#1a3a2a;padding:1rem 1.5rem;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:100}
-.header-icon{width:36px;height:36px;background:#2d6a4a;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px}
-.header-title{color:#fff;font-size:16px;font-weight:600}
-.header-sub{color:#7ab89a;font-size:12px;margin-top:1px}
-.header-save{margin-left:auto;font-size:11px;color:#7ab89a;opacity:0;transition:opacity .5s}
-.header-save.show{opacity:1}
-.container{max-width:900px;margin:0 auto;padding:1rem}
-.tabs{display:flex;background:#fff;border-radius:12px;padding:6px;margin-bottom:1rem;gap:4px;box-shadow:0 1px 3px rgba(0,0,0,.08)}
-.tb{flex:1;font-size:13px;padding:8px 6px;border:none;border-radius:8px;background:none;color:#666;cursor:pointer;font-weight:500;text-align:center}
-.tb.on{background:#1a3a2a;color:#fff}
-.card{background:#fff;border-radius:12px;padding:1.25rem;margin-bottom:1rem;box-shadow:0 1px 3px rgba(0,0,0,.08)}
-.card-green{border-left:3px solid #2d6a4a}
-.card-blue{border-left:3px solid #185fa5}
-.card-amber{border-left:3px solid #ba7517}
-.card-purple{border-left:3px solid #534ab7}
-.card-red{border-left:3px solid #a32d2d}
-.card-teal{border-left:3px solid #0f6e56}
-.sec{font-size:11px;font-weight:600;letter-spacing:.06em;color:#666;margin-bottom:12px;display:flex;align-items:center;gap:6px;text-transform:uppercase}
-.dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
-.dg{background:#2d6a4a}.db{background:#185fa5}.da{background:#ba7517}.dp{background:#534ab7}.dr{background:#a32d2d}.dt{background:#0f6e56}
-.row{display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap}
-.lbl{font-size:12px;color:#666;white-space:nowrap}
-input[type=date],input[type=time],input[type=text],input[type=month],select,textarea{font-size:13px;padding:7px 11px;border:1px solid #e0e0e0;border-radius:8px;background:#fff;color:#1a1a1a;outline:none}
-input:focus,select:focus,textarea:focus{border-color:#2d6a4a}
-input[type=time]{width:130px}
-input[type=date]{width:148px}
-input[type=month]{width:135px}
-input[type=text]{width:130px}
-select{min-width:110px}
-textarea{width:100%;resize:vertical;min-height:70px;font-family:inherit}
-.money-wrap{position:relative;display:inline-flex;align-items:center}
-.money-wrap input{padding-right:26px;text-align:right;width:140px}
-.money-wrap .wu{position:absolute;right:9px;font-size:12px;color:#999;pointer-events:none}
-button{font-size:13px;padding:7px 15px;border:1px solid #e0e0e0;border-radius:8px;background:#fff;color:#1a1a1a;cursor:pointer;font-weight:500}
-button:hover{background:#f5f5f0}
-.btn-p{background:#1a3a2a;color:#fff;border-color:#1a3a2a}
-.btn-p:hover{background:#2d6a4a;border-color:#2d6a4a}
-.btn-sm{font-size:12px;padding:4px 10px}
-.btn-del{color:#a32d2d;border-color:#e0e0e0}
-.btn-del:hover{border-color:#e24b4a}
-.pill{font-size:12px;padding:5px 14px;border-radius:20px;border:1px solid #e0e0e0;cursor:pointer;color:#666;background:#fff}
-.pill.on{background:#1a3a2a;color:#fff;border-color:#1a3a2a}
-.preview{background:#eaf3de;border-radius:10px;padding:12px 16px;display:flex;align-items:baseline;gap:10px;margin:12px 0}
-.break-grid{display:grid;grid-template-columns:auto 90px auto;gap:6px 8px;align-items:center;margin-bottom:12px}
-.break-grid input{text-align:right}
-.muted{font-size:12px;color:#888}
-.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:1rem}
-.stat{border-radius:10px;padding:12px 14px}
-.sg{background:#eaf3de}.sb{background:#e6f1fb}.sa{background:#faeeda}
-.stat-lbl{font-size:11px;margin-bottom:4px}
-.sg .stat-lbl{color:#3b6d11}.sb .stat-lbl{color:#0c447c}.sa .stat-lbl{color:#633806}
-.stat-val{font-size:17px;font-weight:600}
-.sg .stat-val{color:#1a3a2a}.sb .stat-val{color:#042c53}.sa .stat-val{color:#412402}
-table{width:100%;border-collapse:collapse;font-size:13px}
-th{font-size:11px;font-weight:600;color:#888;text-align:left;padding:8px 10px;border-bottom:1px solid #f0f0f0;background:#fafafa}
-td{padding:8px 10px;border-bottom:1px solid #f5f5f0}
-tr:last-child td{border-bottom:none}
-tr.sum-r td{font-weight:600;background:#eaf3de;color:#1a3a2a}
-tr.ded-r td{color:#a32d2d}
-tr.net-r td{font-weight:600;background:#1a3a2a;color:#fff}
-tr:hover td{background:#fafafa}
-tr.sum-r:hover td{background:#eaf3de}
-tr.net-r:hover td{background:#1a3a2a}
-.cal-nav{display:flex;align-items:center;gap:8px;margin-bottom:12px}
-.cal-nav span{font-size:14px;font-weight:600;flex:1;text-align:center}
-.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px}
-.cal-head{font-size:11px;font-weight:600;text-align:center;padding:5px 0;color:#888}
-.cal-head.sun{color:#a32d2d}.cal-head.sat{color:#185fa5}
-.cal-day{border-radius:8px;padding:6px 4px;min-height:68px;background:#f5f5f0;cursor:pointer;border:1px solid transparent}
-.cal-day:hover{border-color:#2d6a4a}
-.cal-day.other-month{opacity:.3}
-.cal-day.today{border-color:#2d6a4a;background:#eaf3de}
-.cal-day.has-record{background:#d4edda}
-.cal-day.has-note{background:#faeeda}
-.cal-day.has-record.has-note{background:#d4edda;border:1px solid #ba7517}
-.cal-dn{font-size:11px;font-weight:600;text-align:right;padding:2px 4px}
-.cal-dn.sun{color:#a32d2d}.cal-dn.sat{color:#185fa5}
-.cal-pay{font-size:10px;color:#1a3a2a;font-weight:600;padding:0 4px;line-height:1.5}
-.cal-note-icon{font-size:10px;color:#854f0b;padding:0 4px}
-.cal-legend{display:flex;gap:12px;margin-bottom:8px;flex-wrap:wrap}
-.legend-item{display:flex;align-items:center;gap:5px;font-size:11px;color:#888}
-.legend-box{width:12px;height:12px;border-radius:3px}
-.year-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:1rem}
-.mini-cal{border:1px solid #f0f0f0;border-radius:8px;padding:8px;background:#fff}
-.mini-title{font-size:11px;font-weight:600;text-align:center;margin-bottom:6px;color:#1a3a2a}
-.mini-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:1px}
-.mini-cell{font-size:9px;text-align:center;padding:2px 1px;border-radius:2px;color:#888}
-.mini-cell.has-r{background:#2d6a4a;color:#fff}
-.mini-cell.has-n{background:#ba7517;color:#fff}
-.mini-cell.empty{opacity:0}
-.wage-item{display:flex;align-items:center;gap:8px;margin-bottom:8px;padding:8px 10px;background:#f5f5f0;border-radius:8px}
-.deduct-item{display:grid;grid-template-columns:1fr 130px auto;gap:8px;align-items:center;margin-bottom:8px;padding:8px 10px;background:#f5f5f0;border-radius:8px}
-.acct-item{display:grid;grid-template-columns:80px 1fr auto;gap:8px;align-items:center;margin-bottom:8px;padding:8px 10px;background:#f5f5f0;border-radius:8px}
-.overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;z-index:200}
-.modal{background:#fff;border-radius:16px;padding:1.5rem;width:380px;max-width:95vw}
-.modal h3{font-size:15px;font-weight:600;margin-bottom:1rem}
-.modal-btns{display:flex;gap:8px;justify-content:flex-end;margin-top:1rem}
-.loading{text-align:center;padding:60px;color:#888;font-size:14px}
-.toast{position:fixed;bottom:20px;right:20px;background:#1a3a2a;color:#fff;padding:10px 18px;border-radius:10px;font-size:13px;z-index:300;opacity:0;transition:opacity .3s;pointer-events:none}
-.toast.show{opacity:1}
-.acct-card{padding:10px 12px;border-radius:8px;border:1px solid #e0e0e0;cursor:pointer;min-width:160px;background:#fff}
-.acct-card.selected{border:2px solid #0f6e56;background:#e1f5ee}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans KR',sans-serif;background:#f5f5f3;color:#1a1a1a;font-size:14px}
+.app{max-width:980px;margin:0 auto;padding:1.5rem}
+.header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:1px solid #e0dfd8}
+.header h1{font-size:20px;font-weight:600}
+.sync-status{font-size:12px;padding:4px 10px;border-radius:6px;font-weight:500}
+.sync-ok{background:#e8f8f0;color:#1B7A4A}
+.sync-ing{background:#fff8e8;color:#8a5a00}
+.sync-err{background:#fff0f0;color:#c0392b}
+.btn{background:#fff;border:1px solid #d0cfc8;border-radius:8px;padding:7px 16px;font-size:13px;cursor:pointer;color:#1a1a1a;transition:background 0.15s;font-family:inherit}
+.btn:hover{background:#f0efe8}
+.btn-primary{background:#e8f4ff;border-color:#b8d8f8;color:#1565c0}
+.btn-primary:hover{background:#d8ecff}
+.btn-danger{background:#fff;border-color:#f5c0c0;color:#c0392b}
+.btn-danger:hover{background:#fff5f5}
+.btn-sm{padding:4px 10px;font-size:12px}
+.emp-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:1.5rem}
+.emp-tab{background:#fff;border:1px solid #e0dfd8;border-radius:8px;padding:7px 16px;font-size:13px;cursor:pointer;color:#888;transition:all 0.15s;display:flex;align-items:center;gap:7px}
+.emp-tab.active{background:#f0efe8;border-color:#a0a098;color:#1a1a1a;font-weight:600}
+.emp-tab .dot{width:8px;height:8px;border-radius:50%;background:#ccc;flex-shrink:0}
+.emp-tab.active .dot{background:#1D9E75}
+.emp-tab.exp .dot{background:#E24B4A}
+.emp-tab.soon .dot{background:#EF9F27}
+.section-tabs{display:flex;gap:0;margin-bottom:1.5rem;border:1px solid #e0dfd8;border-radius:8px;overflow:hidden;width:fit-content;background:#fff}
+.section-tab{background:transparent;border:none;padding:8px 22px;font-size:13px;cursor:pointer;color:#888;transition:all 0.15s;border-right:1px solid #e0dfd8;font-family:inherit}
+.section-tab:last-child{border-right:none}
+.section-tab.active{background:#f0efe8;color:#1a1a1a;font-weight:600}
+.card{background:#fff;border:1px solid #e0dfd8;border-radius:12px;padding:1.4rem;margin-bottom:1rem;box-shadow:0 1px 3px rgba(0,0,0,0.04)}
+.card-title{font-size:14px;font-weight:600;color:#1a1a1a;margin-bottom:1rem}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:10px}
+.form-row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:10px}
+.form-group{display:flex;flex-direction:column;gap:5px}
+.form-group label{font-size:12px;color:#666;font-weight:500}
+.form-group input,.form-group select,.form-group textarea{padding:8px 11px;border:1px solid #e0dfd8;border-radius:8px;font-size:13px;color:#1a1a1a;background:#fff;outline:none;transition:border 0.15s;font-family:inherit}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:#888}
+.form-group textarea{resize:vertical;min-height:76px}
+.divider{height:1px;background:#f0efe8;margin:1rem 0}
+.hint{font-size:12px;color:#999;margin-bottom:10px}
+.contract-type-btns{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.contract-type-btn{background:#fff;border:1px solid #e0dfd8;border-radius:8px;padding:7px 18px;font-size:13px;cursor:pointer;color:#888;transition:all 0.15s;font-family:inherit}
+.contract-type-btn:hover{border-color:#aaa;background:#f8f8f6}
+.contract-type-btn.active{background:#e8f4ff;border-color:#b8d8f8;color:#1565c0;font-weight:600}
+.contract-history-row{display:flex;align-items:center;gap:10px;margin-bottom:6px;padding:9px 12px;background:#f8f8f6;border-radius:8px;font-size:13px;flex-wrap:wrap}
+.contract-type-badge{padding:3px 10px;border-radius:6px;font-size:11px;font-weight:600}
+.badge-4y{background:#e8f4ff;color:#1565c0}
+.badge-1y{background:#e8f8f0;color:#1B7A4A}
+.badge-custom{background:#f0efe8;color:#666;border:1px solid #e0dfd8}
+.contract-dates{flex:1;color:#1a1a1a}
+.dday-badge{display:inline-flex;align-items:center;gap:6px;padding:5px 14px;border-radius:8px;font-size:13px;font-weight:600}
+.dday-badge.ok{background:#e8f8f0;color:#1B7A4A}
+.dday-badge.warn{background:#fff8e8;color:#8a5a00}
+.dday-badge.danger{background:#fff0f0;color:#c0392b}
+.dday-badge.expired{background:#fff0f0;color:#c0392b}
+.contract-box{background:#f8f8f6;border-radius:8px;padding:12px 16px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:10px}
+.contract-meta{font-size:12px;color:#888}
+.wage-row{display:flex;align-items:center;gap:10px;margin-bottom:6px;padding:9px 12px;background:#f8f8f6;border-radius:8px;font-size:13px}
+.month-badge{background:#e8f4ff;color:#1565c0;padding:3px 9px;border-radius:6px;font-size:12px;min-width:66px;text-align:center;font-weight:600}
+.wage-val{font-weight:600;flex:1}
+.deduct-row{display:flex;align-items:center;gap:8px;margin-bottom:6px;padding:9px 12px;background:#f8f8f6;border-radius:8px;font-size:13px}
+.deduct-name{flex:1;font-weight:600}
+.deduct-amt{min-width:90px;text-align:right;color:#c0392b;font-weight:600}
+.deduct-repeat{font-size:11px;padding:2px 8px;border-radius:6px;background:#fff8e8;color:#8a5a00;font-weight:600}
+.deduct-once{font-size:11px;padding:2px 8px;border-radius:6px;background:#f0efe8;color:#888;border:1px solid #e0dfd8}
+.add-row{display:flex;gap:8px;align-items:flex-end;flex-wrap:wrap;margin-bottom:12px}
+.add-row .form-group{flex:1;min-width:100px}
+.summary-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:1.2rem}
+.metric{background:#f8f8f6;border-radius:8px;padding:13px}
+.metric-label{font-size:12px;color:#888;margin-bottom:5px;font-weight:500}
+.metric-val{font-size:20px;font-weight:700;color:#1a1a1a}
+.metric-sub{font-size:11px;color:#aaa;margin-top:2px}
+.day-row{display:grid;grid-template-columns:95px 95px 95px 68px 68px 68px 72px 90px;gap:6px;align-items:center;padding:8px 0;border-bottom:1px solid #f0efe8;font-size:12px}
+.day-row.header{font-size:11px;color:#aaa;font-weight:600;padding:5px 0}
+.worked-badge{display:inline-block;background:#e8f8f0;color:#1B7A4A;padding:2px 8px;border-radius:6px;font-size:11px;font-weight:600}
+.rest-badge{display:inline-block;background:#f0efe8;color:#aaa;padding:2px 8px;border-radius:6px;font-size:11px;border:1px solid #e0dfd8}
+.day-sun{color:#c0392b;font-weight:600}
+.day-sat{color:#1565c0;font-weight:600}
+.tag-today{background:#fff8e8;color:#8a5a00;padding:1px 6px;border-radius:5px;font-size:10px;margin-left:3px;font-weight:600}
+.week-nav{display:flex;align-items:center;gap:10px;margin-bottom:1rem;font-size:14px}
+.week-nav button{background:#fff;border:1px solid #e0dfd8;border-radius:8px;padding:5px 14px;cursor:pointer;color:#1a1a1a;font-family:inherit;font-size:13px}
+.week-nav button:hover{background:#f0efe8}
+.month-header-row{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin-bottom:3px;font-size:11px;color:#aaa;text-align:center;font-weight:600}
+.month-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin-bottom:1rem}
+.month-cell{aspect-ratio:1;display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:8px;font-size:11px;cursor:pointer;border:1px solid transparent;transition:all 0.15s;padding:2px}
+.month-cell:hover{border-color:#ccc;background:#f0efe8}
+.month-cell.has-work{background:#e8f8f0}
+.month-cell.today{border-color:#EF9F27;font-weight:700}
+.month-cell.other-month{opacity:0.3}
+.month-cell .hours{font-size:9px;color:#1B7A4A;font-weight:600}
+.year-months{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.year-month-card{background:#f8f8f6;border-radius:8px;padding:12px;cursor:pointer;transition:all 0.15s;border:1px solid transparent}
+.year-month-card:hover{border-color:#ccc;background:#f0efe8}
+.year-month-card .month-name{font-size:14px;font-weight:700;margin-bottom:4px}
+.year-month-card .month-stat{font-size:11px;color:#888;margin-bottom:3px}
+.year-month-card .month-pay{font-size:13px;font-weight:700;color:#1B7A4A}
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,0.4);display:flex;align-items:center;justify-content:center;z-index:100}
+.modal{background:#fff;border:1px solid #e0dfd8;border-radius:14px;padding:1.8rem;width:520px;max-width:95vw;max-height:90vh;overflow-y:auto;box-shadow:0 8px 32px rgba(0,0,0,0.12)}
+.modal h2{font-size:17px;font-weight:700;margin-bottom:1.3rem}
+.modal-footer{display:flex;justify-content:flex-end;gap:8px;margin-top:1.3rem}
+.hidden{display:none}
+.no-emp{text-align:center;padding:4rem;color:#aaa;font-size:14px}
+.save-status{font-size:12px;color:#1B7A4A;font-weight:600}
+/* 콤마 입력 필드 */
+input.money-input{text-align:right;letter-spacing:0.5px}
 </style>
 </head>
 <body>
-
-<div class="header">
-  <div class="header-icon">🌱</div>
-  <div>
-    <div class="header-title">스마트팜 급여 관리</div>
-    <div class="header-sub">오이 재배 농장 · 인건비 계산기</div>
-  </div>
-  <span class="header-save" id="save-ind">저장됨 ✓</span>
-</div>
-
-<div class="container">
-  <div class="tabs">
-    <button class="tb" onclick="switchMain(&#39;input&#39;)">근무 입력</button>
-    <button class="tb on" onclick="switchMain(&#39;settings&#39;)">설정</button>
-    <button class="tb" onclick="switchMain(&#39;weekly&#39;)">주별</button>
-    <button class="tb" onclick="switchMain(&#39;monthly&#39;)">월별</button>
-    <button class="tb" onclick="switchMain(&#39;yearly&#39;)">연간</button>
-  </div>
-
-  <!-- 근무 입력 -->
-  <div id="pane-input" style="display: none;">
-    <div class="card card-green"><div class="sec"><span class="dot dg"></span> 직원 선택</div><div style="display:flex;gap:6px;flex-wrap:wrap" id="emp-pills-input"></div></div>
-    <div class="card card-blue">
-      <div class="sec"><span class="dot db"></span> 하루 근무 입력</div>
-      <div class="row"><span class="lbl">날짜</span><input type="date" id="d-date" onchange="onDateChange()"><span id="d-wage-info" style="font-size:11px;color:#2d6a4a"></span></div>
-      <div class="row"><span class="lbl">출근</span><input type="time" id="d-in" value="07:30" oninput="calcPreview()"><span class="muted">—</span><input type="time" id="d-out" value="17:30" oninput="calcPreview()"><span class="lbl">퇴근</span></div>
-      <div style="margin-bottom:6px"><span class="lbl">쉬는 시간</span></div>
-      <div class="break-grid">
-        <span class="muted">오전</span><input type="text" id="b-am" value="15" style="width:80px" oninput="onBI(this)" onblur="onBB(this)"><span class="muted">분</span>
-        <span class="muted">점심</span><input type="text" id="b-lunch" value="60" style="width:80px" oninput="onBI(this)" onblur="onBB(this)"><span class="muted">분</span>
-        <span class="muted">오후</span><input type="text" id="b-pm" value="15" style="width:80px" oninput="onBI(this)" onblur="onBB(this)"><span class="muted">분</span>
-      </div>
-      <div class="preview"><span style="font-size:12px;color:#3b6d11">오늘 일급</span><span style="font-size:22px;font-weight:700;color:#1a3a2a" id="prev-pay">—</span><span style="font-size:12px;color:#639922" id="prev-h"></span></div>
-      <button class="btn-p" onclick="saveRecord()">기록 저장</button>
+<div class="app">
+  <div class="header">
+    <h1>🌱 스마트팜 근무 관리</h1>
+    <div style="display:flex;align-items:center;gap:10px">
+      <span id="sync-status" class="sync-status sync-ok">● 동기화됨</span>
+      <button class="btn btn-primary" onclick="openAddEmp()">+ 직원 추가</button>
     </div>
-    <div class="card card-red">
-      <div class="sec"><span class="dot dr"></span> 특이사항 메모</div>
-      <div class="row"><span class="lbl">날짜</span><input type="date" id="note-date" value="2026-04-07"></div>
-      <textarea id="note-text" placeholder="예: 개인 사정으로 결근, 농장 휴무, 병원 방문..."></textarea>
-      <div style="margin-top:8px"><button class="btn-p btn-sm" onclick="saveNote()">메모 저장</button></div>
-    </div></div>
+  </div>
+  <div id="emp-tabs" class="emp-tabs"><button class="emp-tab active "><span class="dot"></span>소킹</button></div>
+  <div id="no-emp" class="no-emp hidden">
+    <p style="margin-bottom:8px;font-size:16px">등록된 직원이 없습니다.</p>
+    <p style="font-size:13px">직원 추가 버튼을 눌러 시작하세요.</p>
+  </div>
+  <div id="main-content" class="">
+    <div class="section-tabs">
+      <button class="section-tab active" onclick="switchTab(&#39;daily&#39;)">일별 입력</button>
+      <button class="section-tab" onclick="switchTab(&#39;weekly&#39;)">주간</button>
+      <button class="section-tab" onclick="switchTab(&#39;monthly&#39;)">월간</button>
+      <button class="section-tab" onclick="switchTab(&#39;yearly&#39;)">연간</button>
+      <button class="section-tab" onclick="switchTab(&#39;profile&#39;)">프로필/시급</button>
+    </div>
 
-  <!-- 설정 -->
-  <div id="pane-settings" style="">
-    <div class="card card-green">
-      <div class="sec"><span class="dot dg"></span> 직원 관리</div>
-      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px" id="emp-pills-settings"></div>
-      <div class="row">
-        <input type="text" id="new-name" placeholder="새 직원명" style="width:110px">
-        <button class="btn-p btn-sm" onclick="addEmp()">+ 추가</button>
+    <!-- 일별 -->
+    <div id="tab-daily">
+      <div class="card">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem">
+          <div class="card-title" style="margin-bottom:0">근무 입력</div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>날짜</label><input type="date" id="input-date" onchange="onDateChange()"></div>
+          <div class="form-group"><label>출근 시각</label><input type="time" id="input-start" value="08:00" onchange="updateDailySummary()"></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>퇴근 시각</label><input type="time" id="input-end" value="18:00" onchange="updateDailySummary()"></div>
+          <div class="form-group"><label>점심 휴게 (분)</label><input type="number" id="input-lunch" value="60" min="0" onchange="updateDailySummary()"></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>오전 휴게 (분)</label><input type="number" id="input-morning" value="10" min="0" onchange="updateDailySummary()"></div>
+          <div class="form-group"><label>오후 휴게 (분)</label><input type="number" id="input-afternoon" value="10" min="0" onchange="updateDailySummary()"></div>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <button class="btn btn-primary" onclick="saveRecord()">저장</button>
+          <button class="btn btn-danger" onclick="deleteRecord()">삭제</button>
+          <span id="save-status" class="save-status"></span>
+        </div>
       </div>
-      <div id="emp-edit" style="display:none;margin-top:10px;padding-top:10px;border-top:1px solid #f0f0f0">
-        <div class="row">
-          <span class="lbl">이름</span>
-          <input type="text" id="edit-name" style="width:110px">
-          <button class="btn-p btn-sm" onclick="updateEmp()">저장</button>
-          <button class="btn-sm btn-del" onclick="delEmp()">직원 삭제</button>
+      <div class="card">
+        <div class="card-title">오늘 근무 요약</div>
+        <div class="summary-grid">
+          <div class="metric"><div class="metric-label">총 시간</div><div class="metric-val" id="sum-total">10.0</div><div class="metric-sub">시간</div></div>
+          <div class="metric"><div class="metric-label">실 근무</div><div class="metric-val" id="sum-work">8.7</div><div class="metric-sub">시간</div></div>
+          <div class="metric"><div class="metric-label">총 휴게</div><div class="metric-val" id="sum-rest">80</div><div class="metric-sub">분</div></div>
+          <div class="metric"><div class="metric-label">일급 (예상)</div><div class="metric-val" id="sum-pay">89,440</div><div class="metric-sub">원</div></div>
         </div>
       </div>
     </div>
-    <div class="card card-teal">
-      <div class="sec"><span class="dot dt"></span> 계좌번호 관리</div>
-      <div class="row"><span class="lbl">직원</span><select id="acct-emp" onchange="renderAcctList()"></select></div>
-      <div id="acct-list" style="margin-bottom:10px"></div>
-      <div style="border-top:1px solid #f0f0f0;padding-top:10px">
-        <div class="row">
-          <input type="text" id="acct-bank" placeholder="은행명" style="width:85px">
-          <input type="text" id="acct-num" placeholder="계좌번호" style="width:155px">
-          <input type="text" id="acct-holder" placeholder="예금주" style="width:75px">
-          <button class="btn-sm btn-p" onclick="addAcct()">+ 추가</button>
+
+    <!-- 주간 -->
+    <div id="tab-weekly" class="hidden">
+      <div class="card">
+        <div class="week-nav">
+          <button onclick="changeWeek(-1)">◀</button>
+          <span id="week-label" style="font-weight:600"></span>
+          <button onclick="changeWeek(1)">▶</button>
+          <button class="btn btn-sm" style="margin-left:8px" onclick="goThisWeek()">이번 주</button>
         </div>
-      </div>
-    </div>
-    <div class="card card-purple">
-      <div class="sec"><span class="dot dp"></span> 시급 이력</div>
-      <div class="row"><span class="lbl">직원</span><select id="wage-emp" onchange="renderWageList()"></select></div>
-      <div id="wage-list" style="margin-bottom:10px"></div>
-      <div style="border-top:1px solid #f0f0f0;padding-top:10px">
-        <div class="row">
-          <span class="lbl">적용월</span>
-          <input type="month" id="new-wage-month">
-          <div class="money-wrap"><input type="text" id="new-wage-val" placeholder="시급" oninput="mi(this)" onblur="mb(this)"><span class="wu">원</span></div>
-          <button class="btn-sm btn-p" onclick="addWage()">+ 추가</button>
+        <div class="summary-grid">
+          <div class="metric"><div class="metric-label">주간 근무일</div><div class="metric-val" id="w-days">-</div><div class="metric-sub">일</div></div>
+          <div class="metric"><div class="metric-label">주간 실 근무</div><div class="metric-val" id="w-hours">-</div><div class="metric-sub">시간</div></div>
+          <div class="metric"><div class="metric-label">주간 총 휴게</div><div class="metric-val" id="w-rest">-</div><div class="metric-sub">분</div></div>
+          <div class="metric"><div class="metric-label">주간 급여</div><div class="metric-val" id="w-pay">-</div><div class="metric-sub">원</div></div>
         </div>
-        <div class="muted">해당 월부터 새 시급이 적용됩니다</div>
+        <div class="day-row header"><div>날짜</div><div>출근</div><div>퇴근</div><div>오전휴게</div><div>점심</div><div>오후휴게</div><div>실근무</div><div>일급</div></div>
+        <div id="weekly-rows"></div>
       </div>
     </div>
-    <div class="card card-amber">
-      <div class="sec"><span class="dot da"></span> 월별 공제 항목</div>
-      <div class="row">
-        <span class="lbl">직원</span><select id="ded-emp" onchange="renderDedList()"></select>
-        <span class="lbl" style="margin-left:8px">연월</span><input type="month" id="ded-month" onchange="renderDedList()">
-      </div>
-      <div id="ded-list"></div>
-      <div class="row" style="margin-top:6px">
-        <input type="text" id="ded-name" placeholder="항목명 (예: 기숙사비)" style="width:150px">
-        <div class="money-wrap"><input type="text" id="ded-amt" placeholder="금액" oninput="mi(this)" onblur="mb(this)"><span class="wu">원</span></div>
-        <button class="btn-sm" onclick="addDed()">+ 추가</button>
-      </div>
-      <div id="ded-total" class="muted" style="margin-top:4px"></div>
-    </div>
-  </div>
 
-  <!-- 주별 -->
-  <div id="pane-weekly" style="display:none">
-    <div class="row" style="margin-bottom:8px"><span class="muted">직원</span><select id="w-emp" onchange="renderWeeklyCal()"><option value="all">전체</option></select></div>
-    <div class="cal-legend">
-      <div class="legend-item"><div class="legend-box" style="background:#d4edda"></div>출근 기록</div>
-      <div class="legend-item"><div class="legend-box" style="background:#faeeda"></div>메모</div>
-    </div>
-    <div class="card">
-      <div class="cal-nav"><button onclick="moveW(-1)">◀</button><span id="wcal-label"></span><button onclick="moveW(1)">▶</button></div>
-      <div class="cal-grid" id="wcal-grid"></div>
-    </div>
-    <div class="card">
-      <div class="stat-grid" id="w-stats"></div>
-      <table><thead><tr><th>날짜</th><th>요일</th><th>실근무</th><th>시급</th><th>일급</th></tr></thead><tbody id="w-tbody"></tbody></table>
-    </div>
-    <div style="display:flex;justify-content:flex-end;margin-top:8px"><button class="btn-sm" onclick="exportWeekly()">엑셀 다운로드</button></div>
-  </div>
-
-  <!-- 월별 -->
-  <div id="pane-monthly" style="display:none">
-    <div class="row" style="margin-bottom:8px"><span class="muted">직원</span><select id="m-emp" onchange="renderMonthlyCal()"><option value="all">전체</option></select></div>
-    <div class="cal-legend">
-      <div class="legend-item"><div class="legend-box" style="background:#d4edda"></div>출근 기록</div>
-      <div class="legend-item"><div class="legend-box" style="background:#faeeda"></div>메모</div>
-    </div>
-    <div class="card">
-      <div class="cal-nav"><button onclick="moveM(-1)">◀</button><span id="mcal-label"></span><button onclick="moveM(1)">▶</button></div>
-      <div class="cal-grid" id="mcal-heads"></div>
-      <div class="cal-grid" id="mcal-grid" style="margin-top:3px"></div>
-    </div>
-    <div class="card">
-      <div class="stat-grid" id="m-stats"></div>
-      <div id="m-acct-section" style="display:none;margin-bottom:12px;padding:12px;background:#f5f5f0;border-radius:10px">
-        <div style="font-size:12px;font-weight:600;color:#666;margin-bottom:8px">이달 입금 계좌 선택</div>
-        <div id="m-acct-select" style="display:flex;flex-wrap:wrap;gap:8px"></div>
+    <!-- 월간 -->
+    <div id="tab-monthly" class="hidden">
+      <div class="card">
+        <div class="week-nav">
+          <button onclick="changeMonth(-1)">◀</button>
+          <span id="month-label" style="font-weight:600"></span>
+          <button onclick="changeMonth(1)">▶</button>
+          <button class="btn btn-sm" style="margin-left:8px" onclick="goThisMonth()">이번 달</button>
+        </div>
+        <div class="summary-grid">
+          <div class="metric"><div class="metric-label">월 근무일</div><div class="metric-val" id="m-days">-</div><div class="metric-sub">일</div></div>
+          <div class="metric"><div class="metric-label">월 실 근무</div><div class="metric-val" id="m-hours">-</div><div class="metric-sub">시간</div></div>
+          <div class="metric"><div class="metric-label">월 총 휴게</div><div class="metric-val" id="m-rest">-</div><div class="metric-sub">분</div></div>
+          <div class="metric"><div class="metric-label">월 급여</div><div class="metric-val" id="m-pay">-</div><div class="metric-sub">원</div></div>
+        </div>
+        <div id="monthly-deduct-summary" style="margin-bottom:10px"></div>
+        <div class="month-header-row"><div>일</div><div>월</div><div>화</div><div>수</div><div>목</div><div>금</div><div>토</div></div>
+        <div class="month-grid" id="monthly-grid"></div>
       </div>
-      <table><thead><tr><th>날짜</th><th>요일</th><th>실근무</th><th>시급</th><th>일급</th><th>메모</th></tr></thead><tbody id="m-tbody"></tbody></table>
     </div>
-    <div style="display:flex;justify-content:flex-end;margin-top:8px"><button class="btn-sm" onclick="exportMonthly()">엑셀 다운로드</button></div>
-  </div>
 
-  <!-- 연간 -->
-  <div id="pane-yearly" style="display:none">
-    <div class="row" style="margin-bottom:8px;flex-wrap:wrap;gap:8px">
-      <span class="muted">직원</span><select id="y-emp" onchange="renderYearly()"><option value="all">전체</option></select>
-      <button onclick="moveY(-1)" style="padding:4px 10px;font-size:12px">◀</button>
-      <span id="y-label" style="font-size:14px;font-weight:600;min-width:60px;text-align:center"></span>
-      <button onclick="moveY(1)" style="padding:4px 10px;font-size:12px">▶</button>
+    <!-- 연간 -->
+    <div id="tab-yearly" class="hidden">
+      <div class="card">
+        <div class="week-nav">
+          <button onclick="changeYear(-1)">◀</button>
+          <span id="year-label" style="font-weight:600"></span>
+          <button onclick="changeYear(1)">▶</button>
+          <button class="btn btn-sm" style="margin-left:8px" onclick="goThisYear()">올해</button>
+        </div>
+        <div class="summary-grid">
+          <div class="metric"><div class="metric-label">연간 근무일</div><div class="metric-val" id="y-days">-</div><div class="metric-sub">일</div></div>
+          <div class="metric"><div class="metric-label">연간 실 근무</div><div class="metric-val" id="y-hours">-</div><div class="metric-sub">시간</div></div>
+          <div class="metric"><div class="metric-label">연간 총 휴게</div><div class="metric-val" id="y-rest">-</div><div class="metric-sub">시간</div></div>
+          <div class="metric"><div class="metric-label">연간 총 급여</div><div class="metric-val" id="y-pay">-</div><div class="metric-sub">원</div></div>
+        </div>
+        <div class="year-months" id="year-grid"></div>
+      </div>
     </div>
-    <div class="stat-grid" id="y-stats"></div>
-    <div class="year-grid" id="y-mini-cals"></div>
-    <div class="card" style="padding:0;overflow:hidden">
-      <table><thead><tr><th>월</th><th>근무일</th><th>근무시간</th><th>급여</th><th>공제</th><th>실수령</th><th>입금계좌</th></tr></thead><tbody id="y-tbody"></tbody></table>
+
+    <!-- 프로필 -->
+    <div id="tab-profile" class="hidden">
+      <div class="card">
+        <div class="card-title">계약 기간 관리</div>
+        <div class="hint">계약 유형을 선택하면 시작일 기준 종료일이 자동 계산됩니다. 종료일은 직접 수정도 가능합니다.</div>
+        <div style="margin-bottom:10px">
+          <div style="font-size:12px;color:#666;font-weight:500;margin-bottom:7px">계약 유형</div>
+          <div class="contract-type-btns">
+            <button class="contract-type-btn" id="ctype-1y" onclick="selectContractType(&#39;1y&#39;)">1년 계약</button>
+            <button class="contract-type-btn" id="ctype-4y" onclick="selectContractType(&#39;4y&#39;)">4년 계약 (E-9)</button>
+            <button class="contract-type-btn" id="ctype-custom" onclick="selectContractType(&#39;custom&#39;)">직접 입력</button>
+          </div>
+        </div>
+        <div class="form-row" style="margin-bottom:10px">
+          <div class="form-group"><label>계약 시작일</label><input type="date" id="prof-contract-start" oninput="onContractStartChange()"></div>
+          <div class="form-group"><label>계약 종료일 <span style="font-size:11px;color:#aaa">(수동 수정 가능)</span></label><input type="date" id="prof-contract-end"></div>
+        </div>
+        <div id="dday-display" style="margin-bottom:12px"></div>
+        <button class="btn btn-primary btn-sm" onclick="saveContractPeriod()">계약 저장</button>
+        <div class="divider"></div>
+        <div style="font-size:13px;font-weight:600;margin-bottom:8px">계약 이력</div>
+        <div id="contract-history-list"></div>
+      </div>
+      <div class="card">
+        <div class="card-title">기본 정보</div>
+        <div class="form-row3">
+          <div class="form-group"><label>이름</label><input type="text" id="prof-name" placeholder="홍길동"></div>
+          <div class="form-group"><label>연락처</label><input type="text" id="prof-phone" placeholder="010-0000-0000"></div>
+          <div class="form-group"><label>입사일</label><input type="date" id="prof-hire"></div>
+        </div>
+        <div class="form-row3">
+          <div class="form-group"><label>국적</label>
+            <select id="prof-nationality">
+              <option value="">선택</option>
+              <option value="한국">🇰🇷 한국</option><option value="베트남">🇻🇳 베트남</option>
+              <option value="캄보디아">🇰🇭 캄보디아</option><option value="태국">🇹🇭 태국</option>
+              <option value="미얀마">🇲🇲 미얀마</option><option value="필리핀">🇵🇭 필리핀</option>
+              <option value="인도네시아">🇮🇩 인도네시아</option><option value="스리랑카">🇱🇰 스리랑카</option>
+              <option value="네팔">🇳🇵 네팔</option><option value="우즈베키스탄">🇺🇿 우즈베키스탄</option>
+              <option value="카자흐스탄">🇰🇿 카자흐스탄</option><option value="키르기스스탄">🇰🇬 키르기스스탄</option>
+              <option value="중국">🇨🇳 중국</option><option value="기타">기타</option>
+            </select>
+          </div>
+          <div class="form-group"><label>생년월일</label><input type="date" id="prof-birth"></div>
+          <div class="form-group" style="justify-content:flex-end"><button class="btn btn-primary" style="margin-top:22px" onclick="saveProfile()">정보 저장</button></div>
+        </div>
+        <div class="form-group" style="margin-top:6px"><label>메모</label><textarea id="prof-memo" placeholder="직원에 대한 추가 메모를 입력하세요..."></textarea></div>
+        <div style="margin-top:10px"><button class="btn btn-primary" onclick="saveProfile()">정보 저장</button></div>
+      </div>
+      <div class="card">
+        <div class="card-title">시급 이력</div>
+        <div class="add-row">
+          <div class="form-group"><label>적용 연월</label><input type="month" id="wage-month"></div>
+          <div class="form-group"><label>시급 (원)</label>
+            <input type="text" id="wage-amount" placeholder="10,030" class="money-input" oninput="moneyInput(this)" onblur="moneyBlur(this)">
+          </div>
+          <button class="btn btn-primary" style="margin-bottom:1px" onclick="addWage()">추가</button>
+        </div>
+        <div id="wage-history-list"></div>
+      </div>
+      <div class="card">
+        <div class="card-title">공제 항목 관리</div>
+        <div class="hint">적용 월을 비워두면 매월 반복 공제됩니다.</div>
+        <div class="add-row">
+          <div class="form-group"><label>항목명</label><input type="text" id="deduct-name" placeholder="숙소비"></div>
+          <div class="form-group"><label>금액 (원)</label>
+            <input type="text" id="deduct-amount" placeholder="200,000" class="money-input" oninput="moneyInput(this)" onblur="moneyBlur(this)">
+          </div>
+          <div class="form-group"><label>적용 월 (비우면 매월)</label><input type="month" id="deduct-month"></div>
+          <button class="btn btn-primary" style="margin-bottom:1px" onclick="addDeduct()">추가</button>
+        </div>
+        <div id="deduct-list"></div>
+      </div>
+      <div class="card"><button class="btn btn-danger" onclick="confirmDeleteEmp()">이 직원 삭제</button></div>
     </div>
-    <div style="display:flex;justify-content:flex-end;margin-top:8px"><button class="btn-sm" onclick="exportYearly()">엑셀 다운로드</button></div>
   </div>
 </div>
 
-<!-- 날짜 모달 -->
-<div id="day-modal" style="display:none">
-  <div class="overlay" onclick="if(event.target===this)this.parentElement.style.display=&#39;none&#39;">
-    <div class="modal">
-      <h3 id="modal-title"></h3>
-      <div id="modal-body"></div>
-      <div class="modal-btns"><button onclick="document.getElementById(&#39;day-modal&#39;).style.display=&#39;none&#39;">닫기</button></div>
+<!-- 직원 추가 모달 -->
+<div id="modal-add-emp" class="modal-bg hidden">
+  <div class="modal">
+    <h2>직원 추가</h2>
+    <div class="form-row">
+      <div class="form-group"><label>이름</label><input type="text" id="new-name" placeholder="홍길동"></div>
+      <div class="form-group"><label>연락처</label><input type="text" id="new-phone" placeholder="010-0000-0000"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>입사일</label><input type="date" id="new-hire"></div>
+      <div class="form-group"><label>국적</label>
+        <select id="new-nationality">
+          <option value="">선택</option>
+          <option value="한국">🇰🇷 한국</option><option value="베트남">🇻🇳 베트남</option>
+          <option value="캄보디아">🇰🇭 캄보디아</option><option value="태국">🇹🇭 태국</option>
+          <option value="미얀마">🇲🇲 미얀마</option><option value="필리핀">🇵🇭 필리핀</option>
+          <option value="인도네시아">🇮🇩 인도네시아</option><option value="스리랑카">🇱🇰 스리랑카</option>
+          <option value="네팔">🇳🇵 네팔</option><option value="우즈베키스탄">🇺🇿 우즈베키스탄</option>
+          <option value="카자흐스탄">🇰🇿 카자흐스탄</option><option value="키르기스스탄">🇰🇬 키르기스스탄</option>
+          <option value="중국">🇨🇳 중국</option><option value="기타">기타</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>생년월일</label><input type="date" id="new-birth"></div>
+      <div class="form-group"><label>초기 시급 (원)</label>
+        <input type="text" id="new-wage" placeholder="10,030" class="money-input" oninput="moneyInput(this)" onblur="moneyBlur(this)">
+      </div>
+    </div>
+    <div style="margin-bottom:10px">
+      <div style="font-size:12px;color:#666;font-weight:500;margin-bottom:7px">계약 유형</div>
+      <div class="contract-type-btns">
+        <button class="contract-type-btn" id="new-ctype-1y" onclick="selectNewContractType(&#39;1y&#39;)">1년 계약</button>
+        <button class="contract-type-btn" id="new-ctype-4y" onclick="selectNewContractType(&#39;4y&#39;)">4년 계약 (E-9)</button>
+        <button class="contract-type-btn" id="new-ctype-custom" onclick="selectNewContractType(&#39;custom&#39;)">직접 입력</button>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>계약 시작일</label><input type="date" id="new-contract-start" oninput="onNewContractStartChange()"></div>
+      <div class="form-group"><label>계약 종료일</label><input type="date" id="new-contract-end"></div>
+    </div>
+    <div class="form-group" style="margin-bottom:10px"><label>메모</label><textarea id="new-memo" placeholder="추가 메모..."></textarea></div>
+    <div class="modal-footer">
+      <button class="btn" onclick="closeModal()">취소</button>
+      <button class="btn btn-primary" onclick="addEmployee()">추가</button>
     </div>
   </div>
 </div>
-
-<div class="toast" id="toast"></div>
 
 <script>
-const SUPA_URL='https://javrckzmkycfffegdllr.supabase.co';
-const SUPA_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImphdnJja3pta3ljZmxmZWdkbGxyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU0MzAxNDYsImV4cCI6MjA5MTAwNjE0Nn0.5dMC5Hm81HlYwZr1hC4tHNjuy9KESWOdzO7FRhfZTQw';
-const supa=supabase.createClient(SUPA_URL,SUPA_KEY);
+// ===================== Supabase 설정 =====================
+const SUPABASE_URL = 'https://ljirwirzbgqmfxwmeiad.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxqaXJ3aXJ6YmdxbWZ4d21laWFkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU2NDk2OTQsImV4cCI6MjA5MTIyNTY5NH0.07hlyBkL4Y2smVJL7e4rDu4aBdAQ75c-vvARU-XR0Tk';
+const HEADERS = {'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY};
 
-const DOW=['일','월','화','수','목','금','토'];
-let emps=[],records=[],notes={},deductions={},monthAccounts={};
-let wOff=0,mOff=0,yOff=0,currentEmpId=null;
+function setSyncStatus(s){
+  const el=document.getElementById('sync-status');
+  if(s==='ok'){el.className='sync-status sync-ok';el.textContent='● 동기화됨';}
+  else if(s==='ing'){el.className='sync-status sync-ing';el.textContent='● 동기화 중...';}
+  else{el.className='sync-status sync-err';el.textContent='● 동기화 실패';}
+}
 
-function todayStr(){return new Date().toISOString().slice(0,10);}
-function thisMonth(){const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;}
-function toMonth(ds){return ds.slice(0,7);}
-function timeToMin(t){const[h,m]=t.split(':').map(Number);return h*60+m;}
-function fmtMin(m){const h=Math.floor(m/60),mm=m%60;return mm?`${h}h ${mm}m`:`${h}h`;}
-function won(n){return Math.round(n).toLocaleString('ko-KR')+'원';}
-function getEmp(id){return emps.find(e=>e.id===id);}
-function getBreak(id){return parseInt(document.getElementById(id).value)||0;}
-function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
-function showSaved(){const s=document.getElementById('save-ind');s.classList.add('show');setTimeout(()=>s.classList.remove('show'),2000);}
-function rawNum(el){return parseInt((el.value||'').replace(/[^0-9]/g,''))||0;}
-function mi(el){const raw=el.value.replace(/[^0-9]/g,'');const pos=el.selectionStart,old=el.value;const fmt=raw?parseInt(raw).toLocaleString('ko-KR'):'';el.value=fmt;try{el.setSelectionRange(pos+(fmt.length-old.length),pos+(fmt.length-old.length));}catch(e){}calcPreview();}
-function mb(el){const r=el.value.replace(/[^0-9]/g,'');el.value=r?parseInt(r).toLocaleString('ko-KR'):'';}
-function onBI(el){el.value=el.value.replace(/[^0-9]/g,'');calcPreview();}
-function onBB(el){if(!el.value)el.value='0';}
-
-// ── 데이터 로드
-async function loadAll(){
-  document.getElementById('pane-input').innerHTML='<div class="loading">데이터 불러오는 중...</div>';
+async function syncToCloud(){
+  setSyncStatus('ing');
   try{
-    const[empR,wageR,acctR,recR,noteR,dedR,maR]=await Promise.all([
-      supa.from('employees').select('*').order('id'),
-      supa.from('wage_history').select('*').order('from_month'),
-      supa.from('accounts').select('*').order('id'),
-      supa.from('work_records').select('*').order('date'),
-      supa.from('notes').select('*'),
-      supa.from('deductions').select('*'),
-      supa.from('month_accounts').select('*'),
-    ]);
-    emps=(empR.data||[]).map(e=>({...e,wages:(wageR.data||[]).filter(w=>w.emp_id===e.id),accounts:(acctR.data||[]).filter(a=>a.emp_id===e.id)}));
-    records=recR.data||[];
-    notes={};(noteR.data||[]).forEach(n=>notes[n.date]={id:n.id,content:n.content});
-    deductions={};(dedR.data||[]).forEach(d=>{const k=`${d.emp_id}__${d.month}`;if(!deductions[k])deductions[k]=[];deductions[k].push(d);});
-    monthAccounts={};(maR.data||[]).forEach(ma=>monthAccounts[`${ma.emp_id}__${ma.month}`]=ma);
-    if(emps.length>0)currentEmpId=emps[0].id;
-    restoreInputPane();syncSelects();renderAllPills();onDateChange();
-  }catch(err){
-    console.error(err);
-    document.getElementById('pane-input').innerHTML='<div class="loading" style="color:#a32d2d">연결 오류. 잠시 후 새로고침 해주세요.</div>';
-  }
+    const body=JSON.stringify({employees:state.employees,records:state.records,updated_at:new Date().toISOString()});
+    const r=await fetch(SUPABASE_URL+'/rest/v1/farm_data?id=eq.main',{method:'PATCH',headers:HEADERS,body});
+    if(r.ok){setSyncStatus('ok');}else{setSyncStatus('err');console.error('sync err',await r.text());}
+  }catch(e){setSyncStatus('err');console.error(e);}
 }
 
-function restoreInputPane(){
-  document.getElementById('pane-input').innerHTML=`
-    <div class="card card-green"><div class="sec"><span class="dot dg"></span> 직원 선택</div><div style="display:flex;gap:6px;flex-wrap:wrap" id="emp-pills-input"></div></div>
-    <div class="card card-blue">
-      <div class="sec"><span class="dot db"></span> 하루 근무 입력</div>
-      <div class="row"><span class="lbl">날짜</span><input type="date" id="d-date" onchange="onDateChange()"><span id="d-wage-info" style="font-size:11px;color:#2d6a4a"></span></div>
-      <div class="row"><span class="lbl">출근</span><input type="time" id="d-in" value="07:30" oninput="calcPreview()"><span class="muted">—</span><input type="time" id="d-out" value="17:30" oninput="calcPreview()"><span class="lbl">퇴근</span></div>
-      <div style="margin-bottom:6px"><span class="lbl">쉬는 시간</span></div>
-      <div class="break-grid">
-        <span class="muted">오전</span><input type="text" id="b-am" value="15" style="width:80px" oninput="onBI(this)" onblur="onBB(this)"><span class="muted">분</span>
-        <span class="muted">점심</span><input type="text" id="b-lunch" value="60" style="width:80px" oninput="onBI(this)" onblur="onBB(this)"><span class="muted">분</span>
-        <span class="muted">오후</span><input type="text" id="b-pm" value="15" style="width:80px" oninput="onBI(this)" onblur="onBB(this)"><span class="muted">분</span>
-      </div>
-      <div class="preview"><span style="font-size:12px;color:#3b6d11">오늘 일급</span><span style="font-size:22px;font-weight:700;color:#1a3a2a" id="prev-pay">—</span><span style="font-size:12px;color:#639922" id="prev-h"></span></div>
-      <button class="btn-p" onclick="saveRecord()">기록 저장</button>
-    </div>
-    <div class="card card-red">
-      <div class="sec"><span class="dot dr"></span> 특이사항 메모</div>
-      <div class="row"><span class="lbl">날짜</span><input type="date" id="note-date" value="${todayStr()}"></div>
-      <textarea id="note-text" placeholder="예: 개인 사정으로 결근, 농장 휴무, 병원 방문..."></textarea>
-      <div style="margin-top:8px"><button class="btn-p btn-sm" onclick="saveNote()">메모 저장</button></div>
-    </div>`;
-  document.getElementById('d-date').value=todayStr();
+async function loadFromCloud(){
+  setSyncStatus('ing');
+  try{
+    const r=await fetch(SUPABASE_URL+'/rest/v1/farm_data?id=eq.main&select=employees,records',{headers:HEADERS});
+    if(r.ok){
+      const data=await r.json();
+      if(data&&data[0]){
+        state.employees=data[0].employees||[];
+        state.records=data[0].records||{};
+        localStorage.setItem('sf_emp3',JSON.stringify(state.employees));
+        localStorage.setItem('sf_rec3',JSON.stringify(state.records));
+      }
+      setSyncStatus('ok');
+    }else{setSyncStatus('err');}
+  }catch(e){setSyncStatus('err');console.error(e);}
 }
 
-// ── 직원
-function renderAllPills(){
-  ['emp-pills-input','emp-pills-settings'].forEach((cid,si)=>{
-    const c=document.getElementById(cid);if(!c)return;
-    c.innerHTML=emps.map(e=>`<span class="pill${currentEmpId===e.id?' on':''}" onclick="${si===0?'selInputEmp':'selSettingsEmp'}(${e.id})">${e.name}</span>`).join('');
-  });
+// ===================== 콤마 포맷 =====================
+function moneyInput(el){
+  let v=el.value.replace(/[^0-9]/g,'');
+  if(v===''){el.value='';return;}
+  el.value=Number(v).toLocaleString('ko-KR');
+  el.dataset.raw=v;
 }
-function selInputEmp(id){currentEmpId=id;renderAllPills();onDateChange();}
-function selSettingsEmp(id){
-  currentEmpId=id;renderAllPills();
-  const e=getEmp(id);
-  document.getElementById('edit-name').value=e.name;
-  document.getElementById('emp-edit').style.display='';
-  document.getElementById('wage-emp').value=id;
-  document.getElementById('acct-emp').value=id;
-  renderWageList();renderAcctList();
+function moneyBlur(el){
+  let v=el.value.replace(/[^0-9]/g,'');
+  if(v===''){el.dataset.raw='';return;}
+  el.value=Number(v).toLocaleString('ko-KR');
+  el.dataset.raw=v;
 }
-async function addEmp(){
-  const name=document.getElementById('new-name').value.trim();
-  if(!name){alert('직원명을 입력해주세요');return;}
-  const{data,error}=await supa.from('employees').insert({name}).select().single();
-  if(error){alert('저장 실패: '+error.message);return;}
-  const newEmp={...data,wages:[],accounts:[]};
-  emps.push(newEmp);
-  document.getElementById('new-name').value='';
-  currentEmpId=data.id;syncSelects();renderAllPills();selSettingsEmp(data.id);showToast('직원 추가됨');showSaved();
+function getMoneyVal(el){
+  return parseInt((el.dataset.raw||el.value.replace(/[^0-9]/g,''))||'0')||0;
 }
-async function updateEmp(){
-  const e=getEmp(currentEmpId);if(!e)return;
-  const name=document.getElementById('edit-name').value.trim();if(!name)return;
-  await supa.from('employees').update({name}).eq('id',currentEmpId);
-  e.name=name;syncSelects();renderAllPills();showToast('저장됨');showSaved();
-}
-async function delEmp(){
-  if(emps.length<=1){alert('최소 1명은 필요합니다');return;}
-  if(!confirm(`${getEmp(currentEmpId).name}을 삭제할까요?`))return;
-  await supa.from('employees').delete().eq('id',currentEmpId);
-  emps=emps.filter(e=>e.id!==currentEmpId);records=records.filter(r=>r.emp_id!==currentEmpId);
-  currentEmpId=emps[0].id;document.getElementById('emp-edit').style.display='none';
-  syncSelects();renderAllPills();refreshAll();showToast('직원 삭제됨');
+function setMoneyVal(el,num){
+  if(!num||num===0){el.value='';el.dataset.raw='';}
+  else{el.value=Number(num).toLocaleString('ko-KR');el.dataset.raw=String(num);}
 }
 
-// ── 계좌
-function renderAcctList(){
-  const empId=parseInt(document.getElementById('acct-emp').value)||currentEmpId;
-  const e=getEmp(empId);if(!e)return;
-  document.getElementById('acct-list').innerHTML=(e.accounts||[]).length
-    ?(e.accounts||[]).map(a=>`<div class="acct-item"><span style="font-size:12px;font-weight:600;color:#0f6e56">${a.bank}</span><span style="font-size:12px">${a.num} <span class="muted">${a.holder||''}</span></span><button class="btn-sm btn-del" onclick="delAcct(${a.id})">삭제</button></div>`).join('')
-    :`<div class="muted" style="padding:6px 0">등록된 계좌가 없습니다.</div>`;
-}
-async function addAcct(){
-  const empId=parseInt(document.getElementById('acct-emp').value)||currentEmpId;
-  const bank=document.getElementById('acct-bank').value.trim();
-  const num=document.getElementById('acct-num').value.trim();
-  const holder=document.getElementById('acct-holder').value.trim();
-  if(!bank||!num){alert('은행명과 계좌번호를 입력해주세요');return;}
-  const{data,error}=await supa.from('accounts').insert({emp_id:empId,bank,num,holder}).select().single();
-  if(error){alert('저장 실패');return;}
-  const e=getEmp(empId);if(e){if(!e.accounts)e.accounts=[];e.accounts.push(data);}
-  document.getElementById('acct-bank').value='';document.getElementById('acct-num').value='';document.getElementById('acct-holder').value='';
-  renderAcctList();showToast('계좌 추가됨');showSaved();
-}
-async function delAcct(id){
-  await supa.from('accounts').delete().eq('id',id);
-  emps.forEach(e=>{if(e.accounts)e.accounts=e.accounts.filter(a=>a.id!==id);});
-  renderAcctList();showToast('계좌 삭제됨');
-}
+// ===================== 상태 & 유틸 =====================
+let state={
+  employees:JSON.parse(localStorage.getItem('sf_emp3')||'[]'),
+  records:JSON.parse(localStorage.getItem('sf_rec3')||'{}'),
+  currentEmp:null,weekOffset:0,currentMonth:null,currentYear:null,
+  currentTab:'daily',selectedContractType:null,newSelectedContractType:null
+};
+const today=new Date();const todayStr=toDateStr(today);
+function toDateStr(d){return d.toISOString().split('T')[0];}
+function pad(n){return String(n).padStart(2,'0');}
+function fmt(n){return Number(n).toLocaleString('ko-KR');}
+function saveLocal(){localStorage.setItem('sf_emp3',JSON.stringify(state.employees));localStorage.setItem('sf_rec3',JSON.stringify(state.records));}
+async function save(){saveLocal();await syncToCloud();}
+function getEmp(){return state.employees.find(e=>e.id===state.currentEmp);}
+function getRec(empId,ds){return(state.records[empId]||{})[ds]||null;}
+function setRec(empId,ds,rec){if(!state.records[empId])state.records[empId]={};state.records[empId][ds]=rec;}
+function delRec(empId,ds){if(state.records[empId])delete state.records[empId][ds];}
 
-// ── 시급
-function renderWageList(){
-  const empId=parseInt(document.getElementById('wage-emp').value)||currentEmpId;
-  const e=getEmp(empId);if(!e)return;
-  const sorted=[...(e.wages||[])].sort((a,b)=>b.from_month.localeCompare(a.from_month));
-  document.getElementById('wage-list').innerHTML=sorted.length
-    ?sorted.map((w,i)=>`<div class="wage-item"><span style="font-size:12px;color:#888;min-width:70px">${w.from_month}</span><span style="font-size:13px;font-weight:600;flex:1">${w.rate.toLocaleString('ko-KR')}원</span>${i===0?'<span style="font-size:11px;background:#eaf3de;color:#3b6d11;padding:2px 8px;border-radius:10px">현재</span>':''}<button class="btn-sm btn-del" onclick="delWage(${w.id})">삭제</button></div>`).join('')
-    :`<div class="muted" style="padding:8px 0">등록된 시급이 없습니다. 아래에서 추가해주세요.</div>`;
-}
-async function addWage(){
-  const empId=parseInt(document.getElementById('wage-emp').value)||currentEmpId;
-  const from_month=document.getElementById('new-wage-month').value;
-  const rate=rawNum(document.getElementById('new-wage-val'));
-  if(!from_month||!rate){alert('적용월과 시급을 입력해주세요');return;}
-  const e=getEmp(empId);
-  const existing=(e.wages||[]).find(w=>w.from_month===from_month);
-  if(existing){await supa.from('wage_history').update({rate}).eq('id',existing.id);existing.rate=rate;}
-  else{const{data}=await supa.from('wage_history').insert({emp_id:empId,from_month,rate}).select().single();if(data&&e){if(!e.wages)e.wages=[];e.wages.push(data);}}
-  document.getElementById('new-wage-val').value='';
-  renderWageList();showToast('시급 저장됨');showSaved();
-}
-async function delWage(id){
-  await supa.from('wage_history').delete().eq('id',id);
-  emps.forEach(e=>{if(e.wages)e.wages=e.wages.filter(w=>w.id!==id);});
-  renderWageList();showToast('시급 삭제됨');
-}
+// ===================== 계약 =====================
+function calcEndDate(s,t){if(!s)return'';const d=new Date(s+'T00:00:00');if(t==='1y'){d.setFullYear(d.getFullYear()+1);d.setDate(d.getDate()-1);}else if(t==='4y'){d.setFullYear(d.getFullYear()+4);d.setDate(d.getDate()-1);}else return'';return toDateStr(d);}
+function selectContractType(t){state.selectedContractType=t;['1y','4y','custom'].forEach(x=>document.getElementById('ctype-'+x).classList.toggle('active',x===t));onContractStartChange();}
+function onContractStartChange(){const s=document.getElementById('prof-contract-start').value;if(state.selectedContractType&&state.selectedContractType!=='custom'&&s){const e=calcEndDate(s,state.selectedContractType);if(e)document.getElementById('prof-contract-end').value=e;}updateDdayDisplay();}
+function updateDdayDisplay(){const e=document.getElementById('prof-contract-end').value;const s=document.getElementById('prof-contract-start').value;if(!e){document.getElementById('dday-display').innerHTML='';return;}renderDdayHtml('dday-display',calcDdayFromStr(e),s,e);}
+function selectNewContractType(t){state.newSelectedContractType=t;['1y','4y','custom'].forEach(x=>document.getElementById('new-ctype-'+x).classList.toggle('active',x===t));onNewContractStartChange();}
+function onNewContractStartChange(){const s=document.getElementById('new-contract-start').value;if(state.newSelectedContractType&&state.newSelectedContractType!=='custom'&&s){const e=calcEndDate(s,state.newSelectedContractType);if(e)document.getElementById('new-contract-end').value=e;}}
+function calcDdayFromStr(e){if(!e)return null;return Math.round((new Date(e+'T00:00:00')-new Date(todayStr+'T00:00:00'))/(864e5));}
+function renderDdayHtml(id,dday,s,e){const div=document.getElementById(id);if(dday===null){div.innerHTML='';return;}let c='ok',t='';if(dday<0){c='expired';t=`계약 만료 (${Math.abs(dday)}일 경과)`;}else if(dday===0){c='danger';t='오늘 계약 종료';}else if(dday<=14){c='danger';t=`D-${dday} (만료 임박!)`;}else if(dday<=30){c='warn';t=`D-${dday} (한 달 이내 만료)`;}else{c='ok';t=`D-${dday} (계약 유효)`;}div.innerHTML=`<div class="contract-box"><span class="dday-badge ${c}">${t}</span><span class="contract-meta">${s||'?'} ~ ${e||'?'}</span></div>`;}
+function calcDday(emp){return emp&&emp.contractEnd?calcDdayFromStr(emp.contractEnd):null;}
+async function saveContractPeriod(){const emp=getEmp();if(!emp)return;const s=document.getElementById('prof-contract-start').value;const e=document.getElementById('prof-contract-end').value;if(!s||!e){alert('시작일과 종료일을 모두 입력하세요');return;}const t=state.selectedContractType||'custom';if(!emp.contracts)emp.contracts=[];const x=emp.contracts.find(c=>c.start===s);if(x){if(!confirm('같은 시작일의 계약이 있습니다. 덮어쓸까요?'))return;Object.assign(x,{start:s,end:e,type:t});}else emp.contracts.push({start:s,end:e,type:t});emp.contracts.sort((a,b)=>b.start.localeCompare(a.start));emp.contractStart=emp.contracts[0].start;emp.contractEnd=emp.contracts[0].end;await save();renderProfile();renderApp();alert('계약이 저장되었습니다.');}
+async function deleteContract(i){const emp=getEmp();if(!emp||!emp.contracts)return;if(!confirm('이 계약 이력을 삭제할까요?'))return;emp.contracts.splice(i,1);emp.contracts.sort((a,b)=>b.start.localeCompare(a.start));emp.contractStart=emp.contracts[0]?emp.contracts[0].start:'';emp.contractEnd=emp.contracts[0]?emp.contracts[0].end:'';await save();renderProfile();renderApp();}
 
-// ── 공제
-function getDedList(empId,month){return deductions[`${empId}__${month}`]||[];}
-function renderDedList(){
-  const empId=parseInt(document.getElementById('ded-emp').value);
-  const month=document.getElementById('ded-month').value;
-  const list=getDedList(empId,month);
-  document.getElementById('ded-list').innerHTML=list.length
-    ?list.map(d=>`<div class="deduct-item"><span>${d.name}</span><span style="text-align:right;font-weight:600">${d.amount.toLocaleString('ko-KR')}원</span><button class="btn-sm btn-del" onclick="delDed(${d.id})">삭제</button></div>`).join('')
-    :`<div class="muted" style="padding:6px 0">이 달 공제 항목 없음</div>`;
-  const total=list.reduce((s,d)=>s+d.amount,0);
-  document.getElementById('ded-total').textContent=list.length?`공제 합계: ${total.toLocaleString('ko-KR')}원`:'';
-}
-async function addDed(){
-  const empId=parseInt(document.getElementById('ded-emp').value);
-  const month=document.getElementById('ded-month').value;
-  const name=document.getElementById('ded-name').value.trim();
-  const amount=rawNum(document.getElementById('ded-amt'));
-  if(!name||!amount){alert('항목명과 금액을 입력해주세요');return;}
-  const{data}=await supa.from('deductions').insert({emp_id:empId,month,name,amount}).select().single();
-  if(data){const k=`${empId}__${month}`;if(!deductions[k])deductions[k]=[];deductions[k].push(data);}
-  document.getElementById('ded-name').value='';document.getElementById('ded-amt').value='';
-  renderDedList();refreshAll();showToast('공제 추가됨');showSaved();
-}
-async function delDed(id){
-  await supa.from('deductions').delete().eq('id',id);
-  Object.keys(deductions).forEach(k=>{deductions[k]=deductions[k].filter(d=>d.id!==id);});
-  renderDedList();refreshAll();showToast('공제 삭제됨');
-}
-function getMonthDed(empIds,ms){let t=0;empIds.forEach(id=>(deductions[`${id}__${ms}`]||[]).forEach(d=>t+=d.amount));return t;}
+// ===================== 급여 계산 =====================
+function getWage(emp,ds){if(!emp||!emp.wages||!emp.wages.length)return 0;const ym=ds.substring(0,7);const sorted=[...emp.wages].sort((a,b)=>b.month.localeCompare(a.month));for(const w of sorted){if(w.month<=ym)return w.amount;}return sorted[sorted.length-1].amount;}
+function getDeductForMonth(emp,ym){if(!emp||!emp.deductions)return[];return emp.deductions.filter(d=>!d.month||d.month===ym);}
+function getDeductTotal(emp,ym){return getDeductForMonth(emp,ym).reduce((s,d)=>s+(parseInt(d.amount)||0),0);}
+function calcWork(rec){if(!rec||!rec.start||!rec.end)return{totalMin:0,restMin:0,workMin:0};const[sh,sm]=rec.start.split(':').map(Number);const[eh,em]=rec.end.split(':').map(Number);const totalMin=(eh*60+em)-(sh*60+sm);const restMin=(parseInt(rec.lunch)||0)+(parseInt(rec.morning)||0)+(parseInt(rec.afternoon)||0);return{totalMin,restMin,workMin:Math.max(0,totalMin-restMin)};}
+function calcPay(emp,ds,workMin){return Math.round((workMin/60)*getWage(emp,ds));}
 
-// ── 시급 조회
-function getWageAt(empId,ms){
-  const e=getEmp(empId);if(!e||!e.wages||!e.wages.length)return 0;
-  const sorted=[...e.wages].sort((a,b)=>a.from_month.localeCompare(b.from_month));
-  let rate=0;for(const w of sorted){if(w.from_month<=ms)rate=w.rate;else break;}
-  return rate;
+// ===================== 렌더링 =====================
+function renderApp(){
+  const tabs=document.getElementById('emp-tabs');const noEmp=document.getElementById('no-emp');const main=document.getElementById('main-content');tabs.innerHTML='';
+  if(!state.employees.length){noEmp.classList.remove('hidden');main.classList.add('hidden');return;}
+  noEmp.classList.add('hidden');main.classList.remove('hidden');
+  if(!state.currentEmp||!state.employees.find(e=>e.id===state.currentEmp))state.currentEmp=state.employees[0].id;
+  state.employees.forEach(emp=>{
+    const dday=calcDday(emp);let dc='';
+    if(dday!==null){if(dday<0)dc='exp';else if(dday<=30)dc='soon';}
+    const btn=document.createElement('button');btn.className='emp-tab'+(emp.id===state.currentEmp?' active':'')+' '+dc;
+    let dt='';if(dday!==null){if(dday<0)dt=` <span style="font-size:10px;color:#c0392b">만료</span>`;else if(dday<=30)dt=` <span style="font-size:10px;color:#8a5a00">D-${dday}</span>`;}
+    btn.innerHTML=`<span class="dot"></span>${emp.name||'(이름없음)'}${dt}`;btn.onclick=()=>{state.currentEmp=emp.id;renderApp();};tabs.appendChild(btn);
+  });renderCurrentTab();
 }
+function switchTab(t){state.currentTab=t;document.querySelectorAll('.section-tab').forEach((el,i)=>el.classList.toggle('active',['daily','weekly','monthly','yearly','profile'][i]===t));['daily','weekly','monthly','yearly','profile'].forEach(id=>document.getElementById('tab-'+id).classList.toggle('hidden',id!==t));renderCurrentTab();}
+function renderCurrentTab(){if(state.currentTab==='daily')renderDaily();else if(state.currentTab==='weekly')renderWeekly();else if(state.currentTab==='monthly')renderMonthly();else if(state.currentTab==='yearly')renderYearly();else if(state.currentTab==='profile')renderProfile();}
 
-// ── 근무 입력
-function onDateChange(){
-  const date=document.getElementById('d-date')?.value;if(!date||!currentEmpId)return;
-  const rate=getWageAt(currentEmpId,toMonth(date));
-  const el=document.getElementById('d-wage-info');
-  if(el)el.textContent=rate?`적용 시급: ${rate.toLocaleString('ko-KR')}원`:'⚠ 시급 미설정';
-  calcPreview();
-}
-function calcPreview(){
-  if(!currentEmpId)return;
-  const date=document.getElementById('d-date')?.value;
-  const ms=date?toMonth(date):thisMonth();
-  const rate=getWageAt(currentEmpId,ms);
-  const inT=document.getElementById('d-in')?.value;
-  const outT=document.getElementById('d-out')?.value;
-  const am=getBreak('b-am'),lunch=getBreak('b-lunch'),pm=getBreak('b-pm');
-  const pp=document.getElementById('prev-pay'),ph=document.getElementById('prev-h');if(!pp)return;
-  if(!rate){pp.textContent='설정에서 시급을 먼저 입력하세요';pp.style.fontSize='13px';if(ph)ph.textContent='';return;}
-  if(!inT||!outT){pp.textContent='—';pp.style.fontSize='22px';if(ph)ph.textContent='';return;}
-  const mins=Math.max(0,timeToMin(outT)-timeToMin(inT)-am-lunch-pm);
-  pp.style.fontSize='22px';pp.textContent=won(rate*mins/60);
-  if(ph)ph.textContent=`실근무 ${fmtMin(mins)}`;
-}
-async function saveRecord(){
-  if(!currentEmpId){alert('직원을 선택해주세요');return;}
-  const e=getEmp(currentEmpId);
-  const date=document.getElementById('d-date').value;
-  const time_in=document.getElementById('d-in').value;
-  const time_out=document.getElementById('d-out').value;
-  const break_am=getBreak('b-am'),break_lunch=getBreak('b-lunch'),break_pm=getBreak('b-pm');
-  if(!date||!time_in||!time_out){alert('날짜와 출퇴근 시간을 입력해주세요');return;}
-  const ms=toMonth(date);const wage=getWageAt(currentEmpId,ms);
-  if(!wage){alert('설정 탭에서 시급을 먼저 입력해주세요');return;}
-  const mins=Math.max(0,timeToMin(time_out)-timeToMin(time_in)-break_am-break_lunch-break_pm);
-  const pay=Math.round(wage*mins/60);
-  const payload={emp_id:currentEmpId,date,time_in,time_out,break_am,break_lunch,break_pm,mins,pay,wage};
-  const{data,error}=await supa.from('work_records').upsert(payload,{onConflict:'emp_id,date'}).select().single();
-  if(error){alert('저장 실패: '+error.message);return;}
-  const idx=records.findIndex(r=>r.emp_id===currentEmpId&&r.date===date);
-  if(idx>=0)records[idx]=data;else records.push(data);
-  records.sort((a,b)=>a.date.localeCompare(b.date));
-  refreshAll();showToast(`저장됨 · 일급: ${won(pay)}`);showSaved();
-}
-async function saveNote(){
-  const date=document.getElementById('note-date').value;
-  const content=document.getElementById('note-text').value.trim();
-  if(!date){alert('날짜를 선택해주세요');return;}
-  if(content){
-    const existing=notes[date];
-    if(existing){await supa.from('notes').update({content}).eq('id',existing.id);notes[date].content=content;}
-    else{const{data}=await supa.from('notes').insert({date,content}).select().single();if(data)notes[date]={id:data.id,content};}
-  }else{
-    if(notes[date]){await supa.from('notes').delete().eq('id',notes[date].id);delete notes[date];}
-  }
-  document.getElementById('note-text').value='';
-  refreshAll();showToast(content?'메모 저장됨':'메모 삭제됨');showSaved();
-}
+function renderDaily(){const inp=document.getElementById('input-date');if(!inp.value)inp.value=todayStr;onDateChange();}
+function onDateChange(){const ds=document.getElementById('input-date').value;if(!ds)return;const rec=getRec(state.currentEmp,ds);document.getElementById('input-start').value=rec?rec.start:'08:00';document.getElementById('input-end').value=rec?rec.end:'18:00';document.getElementById('input-lunch').value=rec!=null?rec.lunch:60;document.getElementById('input-morning').value=rec!=null?rec.morning:10;document.getElementById('input-afternoon').value=rec!=null?rec.afternoon:10;updateDailySummary();}
+function updateDailySummary(){const ds=document.getElementById('input-date').value;const s=document.getElementById('input-start').value;const e=document.getElementById('input-end').value;if(!s||!e)return;const l=parseInt(document.getElementById('input-lunch').value)||0;const m=parseInt(document.getElementById('input-morning').value)||0;const a=parseInt(document.getElementById('input-afternoon').value)||0;const[sh,sm]=s.split(':').map(Number);const[eh,em]=e.split(':').map(Number);const totalMin=(eh*60+em)-(sh*60+sm);const restMin=l+m+a;const workMin=Math.max(0,totalMin-restMin);const emp=getEmp();const pay=emp?calcPay(emp,ds,workMin):0;document.getElementById('sum-total').textContent=(totalMin/60).toFixed(1);document.getElementById('sum-work').textContent=(workMin/60).toFixed(1);document.getElementById('sum-rest').textContent=restMin;document.getElementById('sum-pay').textContent=fmt(pay);}
+async function saveRecord(){const ds=document.getElementById('input-date').value;if(!ds){alert('날짜를 선택하세요');return;}setRec(state.currentEmp,ds,{start:document.getElementById('input-start').value,end:document.getElementById('input-end').value,lunch:parseInt(document.getElementById('input-lunch').value)||0,morning:parseInt(document.getElementById('input-morning').value)||0,afternoon:parseInt(document.getElementById('input-afternoon').value)||0});await save();const st=document.getElementById('save-status');st.textContent='저장되었습니다';setTimeout(()=>st.textContent='',2000);updateDailySummary();}
+async function deleteRecord(){const ds=document.getElementById('input-date').value;if(!ds)return;if(confirm(ds+' 기록을 삭제할까요?')){delRec(state.currentEmp,ds);await save();document.getElementById('save-status').textContent='삭제됨';setTimeout(()=>document.getElementById('save-status').textContent='',2000);updateDailySummary();}}
 
-// ── select 동기화
-function syncSelects(){
-  const opts=emps.map(e=>`<option value="${e.id}">${e.name}</option>`).join('');
-  const all=`<option value="all">전체</option>`+opts;
-  ['wage-emp','ded-emp','acct-emp'].forEach(id=>{const el=document.getElementById(id);if(el)el.innerHTML=opts;});
-  ['w-emp','m-emp','y-emp'].forEach(id=>{const el=document.getElementById(id);if(el)el.innerHTML=all;});
-  document.getElementById('ded-month').value=thisMonth();
-  document.getElementById('new-wage-month').value=thisMonth();
-}
+function getWeekDates(o){const d=new Date(today);d.setDate(d.getDate()-d.getDay()+o*7);return Array.from({length:7},(_,i)=>{const dd=new Date(d);dd.setDate(d.getDate()+i);return toDateStr(dd);});}
+function renderWeekly(){const dates=getWeekDates(state.weekOffset);document.getElementById('week-label').textContent=dates[0]+' ~ '+dates[6];const emp=getEmp();let tD=0,tW=0,tR=0,tP=0;const rows=document.getElementById('weekly-rows');rows.innerHTML='';const dn=['일','월','화','수','목','금','토'];dates.forEach(ds=>{const rec=getRec(state.currentEmp,ds);const{workMin,restMin}=calcWork(rec);const pay=rec?calcPay(emp,ds,workMin):0;if(rec){tD++;tW+=workMin;tR+=restMin;tP+=pay;}const dow=new Date(ds+'T00:00:00').getDay();const row=document.createElement('div');row.className='day-row';row.innerHTML=`<div class="${dow===0?'day-sun':dow===6?'day-sat':''}">${ds.slice(5)}(${dn[dow]})${ds===todayStr?'<span class="tag-today">오늘</span>':''}</div><div>${rec?rec.start:'-'}</div><div>${rec?rec.end:'-'}</div><div>${rec?rec.morning+'분':'-'}</div><div>${rec?rec.lunch+'분':'-'}</div><div>${rec?rec.afternoon+'분':'-'}</div><div>${rec?'<span class="worked-badge">'+(workMin/60).toFixed(1)+'h</span>':'<span class="rest-badge">-</span>'}</div><div style="font-weight:${rec?700:400}">${rec?fmt(pay)+'원':'-'}</div>`;rows.appendChild(row);});document.getElementById('w-days').textContent=tD;document.getElementById('w-hours').textContent=(tW/60).toFixed(1);document.getElementById('w-rest').textContent=tR;document.getElementById('w-pay').textContent=fmt(tP);}
+function changeWeek(d){state.weekOffset+=d;renderWeekly();}function goThisWeek(){state.weekOffset=0;renderWeekly();}
 
-// ── 달력
-function getWeekStart(off){const t=new Date();const dow=t.getDay();const mon=new Date(t);mon.setDate(t.getDate()-(dow===0?6:dow-1)+off*7);return mon;}
-function renderWeeklyCal(){
-  const mon=getWeekStart(wOff);const sun=new Date(mon);sun.setDate(mon.getDate()+6);
-  document.getElementById('wcal-label').textContent=`${mon.getFullYear()}년 ${mon.getMonth()+1}월 ${mon.getDate()}일 — ${sun.getMonth()+1}월 ${sun.getDate()}일`;
-  const filter=document.getElementById('w-emp').value;
-  const empIds=filter==='all'?emps.map(e=>e.id):[parseInt(filter)];
-  const grid=document.getElementById('wcal-grid');
-  grid.innerHTML=DOW.map((d,i)=>`<div class="cal-head${i===0?' sun':i===6?' sat':''}">${d}</div>`).join('');
-  let tM=0,tP=0,tD=0;const rows=[];
-  for(let i=0;i<7;i++){
-    const d=new Date(mon);d.setDate(mon.getDate()+(i===0?6:i-1));
-    const key=d.toISOString().slice(0,10);const dow=d.getDay();
-    const recs=records.filter(r=>r.date===key&&empIds.includes(r.emp_id));
-    const note=notes[key];const hasR=recs.length>0,hasN=!!note;
-    const pay=recs.reduce((s,r)=>s+r.pay,0),mins=recs.reduce((s,r)=>s+r.mins,0);
-    if(hasR){tM+=mins;tP+=pay;tD++;}
-    grid.innerHTML+=`<div class="cal-day${hasR?' has-record':''}${hasN?' has-note':''}${key===todayStr()?' today':''}" onclick="showDayModal('${key}')">
-      <div class="cal-dn${dow===0?' sun':dow===6?' sat':''}">${d.getDate()}</div>
-      ${hasR?`<div class="cal-pay">${won(pay)}<br>${fmtMin(mins)}</div>`:''}
-      ${hasN?`<div class="cal-note-icon">📝</div>`:''}
-    </div>`;
-    if(hasR)recs.forEach(r=>rows.push(`<tr><td>${key.slice(5)}</td><td>${DOW[dow]}</td><td>${fmtMin(r.mins)}</td><td>${r.wage.toLocaleString('ko-KR')}원</td><td style="font-weight:600;color:#1a3a2a">${won(r.pay)}</td></tr>`));
-    if(hasN&&!hasR)rows.push(`<tr><td>${key.slice(5)}</td><td>${DOW[dow]}</td><td colspan="3" style="color:#854f0b">${note.content}</td></tr>`);
-  }
-  if(tD>0)rows.push(`<tr class="sum-r"><td colspan="2">합계 (${tD}일)</td><td>${fmtMin(tM)}</td><td></td><td>${won(tP)}</td></tr>`);
-  document.getElementById('w-tbody').innerHTML=rows.length?rows.join(''):`<tr><td colspan="5" style="text-align:center;color:#888;padding:16px">이 주 기록 없음</td></tr>`;
-  document.getElementById('w-stats').innerHTML=`<div class="stat sg"><div class="stat-lbl">근무일</div><div class="stat-val">${tD}일</div></div><div class="stat sb"><div class="stat-lbl">근무시간</div><div class="stat-val">${fmtMin(tM)}</div></div><div class="stat sa"><div class="stat-lbl">급여 합계</div><div class="stat-val">${won(tP)}</div></div>`;
-}
-function moveW(d){wOff+=d;renderWeeklyCal();}
+function renderMonthly(){if(!state.currentMonth)state.currentMonth={y:today.getFullYear(),m:today.getMonth()};const{y,m}=state.currentMonth;const ym=y+'-'+pad(m+1);document.getElementById('month-label').textContent=y+'년 '+(m+1)+'월';const emp=getEmp();const allRecs=state.records[state.currentEmp]||{};const dim=new Date(y,m+1,0).getDate();let tD=0,tW=0,tR=0,tP=0;for(let d=1;d<=dim;d++){const ds=y+'-'+pad(m+1)+'-'+pad(d);const rec=allRecs[ds];if(rec){const{workMin,restMin}=calcWork(rec);tD++;tW+=workMin;tR+=restMin;tP+=calcPay(emp,ds,workMin);}}document.getElementById('m-days').textContent=tD;document.getElementById('m-hours').textContent=(tW/60).toFixed(1);document.getElementById('m-rest').textContent=tR;document.getElementById('m-pay').textContent=fmt(tP);const deducts=getDeductForMonth(emp,ym);const deductTotal=getDeductTotal(emp,ym);const dsel=document.getElementById('monthly-deduct-summary');if(deducts.length){dsel.innerHTML=`<div style="background:#f8f8f6;border-radius:8px;padding:10px 14px;font-size:13px"><span style="font-weight:600">공제:</span>${deducts.map(d=>`<span style="color:#c0392b;margin-left:8px">${d.name} -${fmt(d.amount)}원${!d.month?'<span style="font-size:10px;margin-left:2px;opacity:0.7">(매월)</span>':''}</span>`).join('')} <span style="margin-left:10px;font-weight:600;color:#c0392b">합계 -${fmt(deductTotal)}원</span> <span style="margin-left:8px;color:#1B7A4A;font-weight:600">실수령 ${fmt(Math.max(0,tP-deductTotal))}원</span></div>`;}else dsel.innerHTML='';const fd=new Date(y,m,1).getDay();const grid=document.getElementById('monthly-grid');grid.innerHTML='';for(let i=0;i<fd;i++){const c=document.createElement('div');c.className='month-cell other-month';grid.appendChild(c);}for(let d=1;d<=dim;d++){const dds=y+'-'+pad(m+1)+'-'+pad(d);const rec=allRecs[dds];const{workMin}=calcWork(rec);const c=document.createElement('div');c.className='month-cell'+(rec?' has-work':'')+(dds===todayStr?' today':'');c.innerHTML=`<span>${d}</span>${rec?'<span class="hours">'+(workMin/60).toFixed(1)+'h</span>':''}`;c.onclick=()=>{switchTab('daily');document.getElementById('input-date').value=dds;onDateChange();};grid.appendChild(c);}}
+function changeMonth(d){if(!state.currentMonth)state.currentMonth={y:today.getFullYear(),m:today.getMonth()};state.currentMonth.m+=d;if(state.currentMonth.m<0){state.currentMonth.m=11;state.currentMonth.y--;}if(state.currentMonth.m>11){state.currentMonth.m=0;state.currentMonth.y++;}renderMonthly();}
+function goThisMonth(){state.currentMonth={y:today.getFullYear(),m:today.getMonth()};renderMonthly();}
 
-function getMonthBase(off){const d=new Date();d.setDate(1);d.setMonth(d.getMonth()+off);return d;}
-function renderMonthlyCal(){
-  const base=getMonthBase(mOff);const y=base.getFullYear(),m=base.getMonth();
-  document.getElementById('mcal-label').textContent=`${y}년 ${m+1}월`;
-  const filter=document.getElementById('m-emp').value;
-  const empIds=filter==='all'?emps.map(e=>e.id):[parseInt(filter)];
-  const ms=`${y}-${String(m+1).padStart(2,'0')}`;
-  document.getElementById('mcal-heads').innerHTML=DOW.map((d,i)=>`<div class="cal-head${i===0?' sun':i===6?' sat':''}">${d}</div>`).join('');
-  const grid=document.getElementById('mcal-grid');grid.innerHTML='';
-  const firstDow=new Date(y,m,1).getDay(),lastDay=new Date(y,m+1,0).getDate(),prevLast=new Date(y,m,0).getDate();
-  for(let i=firstDow-1;i>=0;i--)grid.innerHTML+=`<div class="cal-day other-month"><div class="cal-dn">${prevLast-i}</div></div>`;
-  let tM=0,tP=0,tD=0;const rows=[];
-  for(let day=1;day<=lastDay;day++){
-    const key=`${y}-${String(m+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
-    const dow=new Date(y,m,day).getDay();
-    const recs=records.filter(r=>r.date===key&&empIds.includes(r.emp_id));
-    const note=notes[key];const hasR=recs.length>0,hasN=!!note;
-    const pay=recs.reduce((s,r)=>s+r.pay,0),mins=recs.reduce((s,r)=>s+r.mins,0);
-    if(hasR){tM+=mins;tP+=pay;tD++;}
-    grid.innerHTML+=`<div class="cal-day${hasR?' has-record':''}${hasN?' has-note':''}${key===todayStr()?' today':''}" onclick="showDayModal('${key}')">
-      <div class="cal-dn${dow===0?' sun':dow===6?' sat':''}">${day}</div>
-      ${hasR?`<div class="cal-pay">${won(pay)}</div>`:''}
-      ${hasN?`<div class="cal-note-icon">📝</div>`:''}
-    </div>`;
-    if(hasR)recs.forEach(r=>rows.push(`<tr><td>${key.slice(5)}</td><td>${DOW[dow]}</td><td>${fmtMin(r.mins)}</td><td>${r.wage.toLocaleString('ko-KR')}원</td><td style="font-weight:600;color:#1a3a2a">${won(r.pay)}</td><td style="color:#854f0b;font-size:12px">${note?note.content:''}</td></tr>`));
-    if(hasN&&!hasR)rows.push(`<tr><td>${key.slice(5)}</td><td>${DOW[dow]}</td><td colspan="4" style="color:#854f0b">${note.content}</td></tr>`);
-  }
-  const ded=getMonthDed(empIds,ms);
-  if(tD>0){
-    rows.push(`<tr class="sum-r"><td colspan="2">합계 (${tD}일)</td><td>${fmtMin(tM)}</td><td></td><td>${won(tP)}</td><td></td></tr>`);
-    if(ded>0){rows.push(`<tr class="ded-r"><td colspan="4">공제 합계</td><td>-${won(ded)}</td><td></td></tr>`);rows.push(`<tr class="net-r"><td colspan="4">실수령액</td><td>${won(Math.max(0,tP-ded))}</td><td></td></tr>`);}
-  }
-  document.getElementById('m-tbody').innerHTML=rows.length?rows.join(''):`<tr><td colspan="6" style="text-align:center;color:#888;padding:16px">이 달 기록 없음</td></tr>`;
-  document.getElementById('m-stats').innerHTML=`<div class="stat sg"><div class="stat-lbl">근무일</div><div class="stat-val">${tD}일</div></div><div class="stat sb"><div class="stat-lbl">급여 합계</div><div class="stat-val">${won(tP)}</div></div><div class="stat sa"><div class="stat-lbl">실수령액</div><div class="stat-val">${won(Math.max(0,tP-ded))}</div></div>`;
-  if(filter!=='all'){renderMonthAcctSelect(parseInt(filter),ms);}
-  else{document.getElementById('m-acct-section').style.display='none';}
-}
-function moveM(d){mOff+=d;renderMonthlyCal();}
+function renderYearly(){if(!state.currentYear)state.currentYear=today.getFullYear();document.getElementById('year-label').textContent=state.currentYear+'년';const emp=getEmp();const allRecs=state.records[state.currentEmp]||{};let yD=0,yW=0,yR=0,yP=0;const grid=document.getElementById('year-grid');grid.innerHTML='';const mn=['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'];for(let mo=0;mo<12;mo++){const dim=new Date(state.currentYear,mo+1,0).getDate();const ym=state.currentYear+'-'+pad(mo+1);let mD=0,mW=0,mR=0,mP=0;for(let d=1;d<=dim;d++){const ds=state.currentYear+'-'+pad(mo+1)+'-'+pad(d);const rec=allRecs[ds];if(rec){const{workMin,restMin}=calcWork(rec);mD++;mW+=workMin;mR+=restMin;mP+=calcPay(emp,ds,workMin);}}const dt=getDeductTotal(emp,ym);yD+=mD;yW+=mW;yR+=mR;yP+=mP;const card=document.createElement('div');card.className='year-month-card';card.innerHTML=`<div class="month-name">${mn[mo]}</div><div class="month-stat">${mD}일 · ${(mW/60).toFixed(1)}h · 휴게${mR}분</div><div class="month-pay">${mD?fmt(mP)+'원':'-'}${dt?`<span style="color:#c0392b;font-size:11px;margin-left:4px">-${fmt(dt)}</span>`:''}</div>`;card.onclick=()=>{state.currentMonth={y:state.currentYear,m:mo};switchTab('monthly');};grid.appendChild(card);}document.getElementById('y-days').textContent=yD;document.getElementById('y-hours').textContent=(yW/60).toFixed(1);document.getElementById('y-rest').textContent=(yR/60).toFixed(1);document.getElementById('y-pay').textContent=fmt(yP);}
+function changeYear(d){state.currentYear+=d;renderYearly();}function goThisYear(){state.currentYear=today.getFullYear();renderYearly();}
 
-function renderMonthAcctSelect(empId,ms){
-  const e=getEmp(empId);
-  const sec=document.getElementById('m-acct-section'),sel=document.getElementById('m-acct-select');
-  if(!e||!e.accounts||!e.accounts.length){sec.style.display='none';return;}
-  sec.style.display='';
-  const selected=monthAccounts[`${empId}__${ms}`]?.account_id;
-  sel.innerHTML=e.accounts.map(a=>`<div class="acct-card${selected===a.id?' selected':''}" onclick="selectMonthAcct(${empId},'${ms}',${a.id})">
-    <div style="font-size:12px;font-weight:600;color:#0f6e56">${a.bank}</div>
-    <div style="font-size:12px;margin-top:2px">${a.num}</div>
-    <div style="font-size:11px;color:#888">${a.holder||''}</div>
-    ${selected===a.id?'<div style="font-size:10px;color:#0f6e56;margin-top:4px">✓ 선택됨</div>':''}
-  </div>`).join('');
-}
-async function selectMonthAcct(empId,ms,acctId){
-  const key=`${empId}__${ms}`;
-  if(monthAccounts[key]){await supa.from('month_accounts').update({account_id:acctId}).eq('id',monthAccounts[key].id);monthAccounts[key].account_id=acctId;}
-  else{const{data}=await supa.from('month_accounts').insert({emp_id:empId,month:ms,account_id:acctId}).select().single();if(data)monthAccounts[key]=data;}
-  renderMonthAcctSelect(empId,ms);showSaved();
-}
-function getMonthAcctLabel(empId,ms){
-  const e=getEmp(empId);if(!e||!e.accounts)return '—';
-  const ma=monthAccounts[`${empId}__${ms}`];if(!ma)return '미선택';
-  const a=e.accounts.find(ac=>ac.id===ma.account_id);
-  return a?`${a.bank} ${a.num}`:'—';
-}
+function renderProfile(){const emp=getEmp();if(!emp)return;document.getElementById('prof-name').value=emp.name||'';document.getElementById('prof-phone').value=emp.phone||'';document.getElementById('prof-hire').value=emp.hire||'';document.getElementById('prof-nationality').value=emp.nationality||'';document.getElementById('prof-birth').value=emp.birth||'';document.getElementById('prof-memo').value=emp.memo||'';document.getElementById('prof-contract-start').value=emp.contractStart||'';document.getElementById('prof-contract-end').value=emp.contractEnd||'';renderDdayHtml('dday-display',calcDday(emp),emp.contractStart,emp.contractEnd);['1y','4y','custom'].forEach(t=>document.getElementById('ctype-'+t).classList.remove('active'));state.selectedContractType=null;renderContractHistory(emp);renderWages(emp);renderDeductions(emp);}
 
-function renderYearly(){
-  const year=new Date().getFullYear()+yOff;
-  document.getElementById('y-label').textContent=`${year}년`;
-  const filter=document.getElementById('y-emp').value;
-  const empIds=filter==='all'?emps.map(e=>e.id):[parseInt(filter)];
-  const recs=records.filter(r=>r.date.startsWith(String(year))&&empIds.includes(r.emp_id));
-  let yrD=0,yrM=0,yrP=0,yrDd=0;const rows=[],miniCals=[];
-  for(let mo=1;mo<=12;mo++){
-    const ms=`${year}-${String(mo).padStart(2,'0')}`;
-    const mRecs=recs.filter(r=>r.date.startsWith(ms));
-    const mDed=getMonthDed(empIds,ms);
-    const mD=mRecs.length,mM=mRecs.reduce((s,r)=>s+r.mins,0),mP=mRecs.reduce((s,r)=>s+r.pay,0);
-    yrD+=mD;yrM+=mM;yrP+=mP;yrDd+=mDed;const net=Math.max(0,mP-mDed);
-    const acctLabel=filter!=='all'?getMonthAcctLabel(parseInt(filter),ms):'—';
-    rows.push(`<tr style="opacity:${mD>0||mDed>0?1:.4}">
-      <td>${mo}월</td><td>${mD>0?mD+'일':'—'}</td><td>${mM>0?fmtMin(mM):'—'}</td>
-      <td style="color:${mP>0?'#1a3a2a':'#999'};font-weight:${mP>0?600:400}">${mP>0?won(mP):'—'}</td>
-      <td style="color:${mDed>0?'#a32d2d':'#999'}">${mDed>0?'-'+won(mDed):'—'}</td>
-      <td style="font-weight:${net>0?600:400}">${mP>0?won(net):'—'}</td>
-      <td style="font-size:11px;color:#0f6e56">${acctLabel}</td>
-    </tr>`);
-    const lastDay=new Date(year,mo,0).getDate(),firstDow=new Date(year,mo-1,1).getDay();
-    let cells='';for(let fd=0;fd<firstDow;fd++)cells+=`<div class="mini-cell empty">·</div>`;
-    for(let day=1;day<=lastDay;day++){const k=`${ms}-${String(day).padStart(2,'0')}`;const hasR=records.some(r=>r.date===k&&empIds.includes(r.emp_id));const hasN=!!notes[k];cells+=`<div class="mini-cell${hasR?' has-r':hasN?' has-n':''}">${day}</div>`;}
-    miniCals.push(`<div class="mini-cal"><div class="mini-title">${mo}월</div><div class="mini-grid">${cells}</div></div>`);
-  }
-  rows.push(`<tr class="sum-r"><td>연간 합계</td><td>${yrD}일</td><td>${fmtMin(yrM)}</td><td>${won(yrP)}</td><td style="color:#a32d2d">${yrDd>0?'-'+won(yrDd):'—'}</td><td>${won(Math.max(0,yrP-yrDd))}</td><td></td></tr>`);
-  document.getElementById('y-tbody').innerHTML=rows.join('');
-  document.getElementById('y-mini-cals').innerHTML=miniCals.join('');
-  document.getElementById('y-stats').innerHTML=`<div class="stat sg"><div class="stat-lbl">연간 근무일</div><div class="stat-val">${yrD}일</div></div><div class="stat sb"><div class="stat-lbl">연간 급여</div><div class="stat-val">${won(yrP)}</div></div><div class="stat sa"><div class="stat-lbl">연간 실수령</div><div class="stat-val">${won(Math.max(0,yrP-yrDd))}</div></div>`;
-}
-function moveY(d){yOff+=d;renderYearly();}
+function renderContractHistory(emp){const list=document.getElementById('contract-history-list');list.innerHTML='';const contracts=emp.contracts||[];if(!contracts.length){list.innerHTML='<div style="font-size:13px;color:#aaa;padding:6px 0">계약 이력이 없습니다.</div>';return;}const sorted=[...contracts].sort((a,b)=>b.start.localeCompare(a.start));sorted.forEach((c,i)=>{const dday=calcDdayFromStr(c.end);let dt='',ds='';if(dday!==null){if(dday<0){dt=`만료(${Math.abs(dday)}일 경과)`;ds='color:#c0392b';}else if(dday<=30){dt=`D-${dday}`;ds='color:#8a5a00;font-weight:700';}else{dt=`D-${dday}`;ds='color:#1B7A4A';}}const tl={'1y':'1년','4y':'4년(E-9)','custom':'직접입력'}[c.type]||'-';const bc={'1y':'badge-1y','4y':'badge-4y','custom':'badge-custom'}[c.type]||'badge-custom';const row=document.createElement('div');row.className='contract-history-row';row.innerHTML=`<span class="contract-type-badge ${bc}">${tl}</span><span class="contract-dates">${c.start} ~ ${c.end}</span><span style="${ds}">${dt}</span><button class="btn btn-sm btn-danger" onclick="deleteContract(${i})">삭제</button>`;list.appendChild(row);});}
 
-function showDayModal(dateStr){
-  const dow=DOW[new Date(dateStr).getDay()];
-  document.getElementById('modal-title').textContent=`${dateStr} (${dow})`;
-  const recs=records.filter(r=>r.date===dateStr);const note=notes[dateStr];
-  let html='';
-  if(recs.length)html+=recs.map(r=>`<div style="margin-bottom:10px;padding:10px;background:#eaf3de;border-radius:8px">
-    <div style="font-weight:600;color:#1a3a2a">${getEmp(r.emp_id)?.name||''}</div>
-    <div class="muted" style="margin-top:4px">${r.time_in} — ${r.time_out} · 실근무 ${fmtMin(r.mins)}</div>
-    <div style="font-size:13px;color:#888;margin-top:2px">시급 ${r.wage.toLocaleString('ko-KR')}원</div>
-    <div style="font-size:15px;font-weight:700;color:#1a3a2a;margin-top:4px">${won(r.pay)}</div>
-    <button class="btn-sm btn-del" style="margin-top:6px" onclick="delRecord(${r.emp_id},'${dateStr}')">기록 삭제</button>
-  </div>`).join('');
-  if(note)html+=`<div style="padding:10px;background:#faeeda;border-radius:8px;margin-top:8px">
-    <div style="font-size:11px;color:#854f0b;margin-bottom:4px">메모</div>
-    <div style="font-size:13px">${note.content}</div>
-    <button class="btn-sm btn-del" style="margin-top:6px" onclick="delNoteByDate('${dateStr}')">메모 삭제</button>
-  </div>`;
-  if(!html)html=`<div class="muted" style="text-align:center;padding:20px">기록 없음</div>`;
-  document.getElementById('modal-body').innerHTML=html;
-  document.getElementById('day-modal').style.display='';
-}
-async function delRecord(empId,date){
-  const r=records.find(r=>r.emp_id===empId&&r.date===date);if(!r)return;
-  await supa.from('work_records').delete().eq('id',r.id);
-  records=records.filter(x=>!(x.emp_id===empId&&x.date===date));
-  document.getElementById('day-modal').style.display='none';
-  refreshAll();showToast('기록 삭제됨');
-}
-async function delNoteByDate(date){
-  if(!notes[date])return;
-  await supa.from('notes').delete().eq('id',notes[date].id);
-  delete notes[date];
-  document.getElementById('day-modal').style.display='none';
-  refreshAll();showToast('메모 삭제됨');
-}
+async function saveProfile(){const emp=getEmp();if(!emp)return;emp.name=document.getElementById('prof-name').value.trim()||emp.name;emp.phone=document.getElementById('prof-phone').value.trim();emp.hire=document.getElementById('prof-hire').value;emp.nationality=document.getElementById('prof-nationality').value;emp.birth=document.getElementById('prof-birth').value;emp.memo=document.getElementById('prof-memo').value;await save();renderApp();alert('저장되었습니다.');}
 
-function switchMain(name){
-  ['input','settings','weekly','monthly','yearly'].forEach((t,i)=>{
-    document.getElementById('pane-'+t).style.display=t===name?'':'none';
-    document.querySelectorAll('.tb')[i].classList.toggle('on',t===name);
-  });
-  if(name==='weekly')renderWeeklyCal();
-  if(name==='monthly')renderMonthlyCal();
-  if(name==='yearly')renderYearly();
-}
-function refreshAll(){
-  const idx=[...document.querySelectorAll('.tb')].findIndex(t=>t.classList.contains('on'));
-  const names=['input','settings','weekly','monthly','yearly'];
-  const name=names[idx];
-  if(name==='weekly')renderWeeklyCal();
-  if(name==='monthly')renderMonthlyCal();
-  if(name==='yearly')renderYearly();
-}
+function renderWages(emp){const list=document.getElementById('wage-history-list');list.innerHTML='';const wages=[...(emp.wages||[])].sort((a,b)=>b.month.localeCompare(a.month));if(!wages.length){list.innerHTML='<div style="font-size:13px;color:#aaa;padding:6px 0">시급 이력이 없습니다.</div>';return;}wages.forEach((w,i)=>{const row=document.createElement('div');row.className='wage-row';row.innerHTML=`<span class="month-badge">${w.month}</span><span class="wage-val">${fmt(w.amount)}원/시</span><span style="color:#aaa;font-size:12px">${i===0?'현재 적용':''}</span><button class="btn btn-sm" onclick="removeWage('${w.month}')">삭제</button>`;list.appendChild(row);});}
+async function addWage(){const month=document.getElementById('wage-month').value;const amount=getMoneyVal(document.getElementById('wage-amount'));if(!month||!amount||amount<=0){alert('연월과 시급을 올바르게 입력하세요');return;}const emp=getEmp();if(!emp.wages)emp.wages=[];const idx=emp.wages.findIndex(w=>w.month===month);if(idx>=0)emp.wages[idx].amount=amount;else emp.wages.push({month,amount});await save();renderWages(emp);document.getElementById('wage-month').value='';setMoneyVal(document.getElementById('wage-amount'),0);}
+async function removeWage(month){const emp=getEmp();emp.wages=(emp.wages||[]).filter(w=>w.month!==month);await save();renderWages(emp);}
 
-function dl(rows,name){const ws=XLSX.utils.aoa_to_sheet(rows);const wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,ws,'데이터');XLSX.writeFile(wb,`스마트팜_${name}.xlsx`);}
-function exportWeekly(){
-  const mon=getWeekStart(wOff);const filter=document.getElementById('w-emp').value;
-  const empIds=filter==='all'?emps.map(e=>e.id):[parseInt(filter)];
-  const rows=[['날짜','요일','직원','실근무(분)','시급(원)','일급(원)']];
-  for(let i=0;i<7;i++){const d=new Date(mon);d.setDate(mon.getDate()+(i===0?6:i-1));const key=d.toISOString().slice(0,10);records.filter(r=>r.date===key&&empIds.includes(r.emp_id)).forEach(r=>rows.push([key,DOW[d.getDay()],getEmp(r.emp_id)?.name||'',r.mins,r.wage,r.pay]));}
-  dl(rows,`주별_${mon.getMonth()+1}월${mon.getDate()}일`);
-}
-function exportMonthly(){
-  const base=getMonthBase(mOff);const y=base.getFullYear(),m=base.getMonth();
-  const ms=`${y}-${String(m+1).padStart(2,'0')}`;
-  const filter=document.getElementById('m-emp').value;
-  const empIds=filter==='all'?emps.map(e=>e.id):[parseInt(filter)];
-  const recs=records.filter(r=>r.date.startsWith(ms)&&empIds.includes(r.emp_id));
-  const rows=[['날짜','요일','직원','실근무(분)','시급(원)','일급(원)','메모']];
-  recs.forEach(r=>rows.push([r.date,DOW[new Date(r.date).getDay()],getEmp(r.emp_id)?.name||'',r.mins,r.wage,r.pay,notes[r.date]?.content||'']));
-  const tP=recs.reduce((s,r)=>s+r.pay,0);const ded=getMonthDed(empIds,ms);
-  rows.push(['급여합계','','','','',tP,'']);
-  if(ded>0){rows.push(['공제합계','','','','',ded,'']);rows.push(['실수령액','','','','',Math.max(0,tP-ded),'']);}
-  dl(rows,`월별_${y}년${m+1}월`);
-}
-function exportYearly(){
-  const year=new Date().getFullYear()+yOff;const filter=document.getElementById('y-emp').value;
-  const empIds=filter==='all'?emps.map(e=>e.id):[parseInt(filter)];
-  const rows=[['월','근무일','실근무(분)','급여(원)','공제(원)','실수령(원)','입금계좌']];
-  let yrD=0,yrM=0,yrP=0,yrDd=0;
-  for(let mo=1;mo<=12;mo++){const ms=`${year}-${String(mo).padStart(2,'0')}`;const mRecs=records.filter(r=>r.date.startsWith(ms)&&empIds.includes(r.emp_id));const mDed=getMonthDed(empIds,ms);const mD=mRecs.length,mM=mRecs.reduce((s,r)=>s+r.mins,0),mP=mRecs.reduce((s,r)=>s+r.pay,0);yrD+=mD;yrM+=mM;yrP+=mP;yrDd+=mDed;const acct=filter!=='all'?getMonthAcctLabel(parseInt(filter),ms):'';rows.push([`${mo}월`,mD,mM,mP,mDed,Math.max(0,mP-mDed),acct]);}
-  rows.push(['연간합계',yrD,yrM,yrP,yrDd,Math.max(0,yrP-yrDd),'']);
-  dl(rows,`연간_${year}년`);
-}
+function renderDeductions(emp){const list=document.getElementById('deduct-list');list.innerHTML='';const deducts=emp.deductions||[];if(!deducts.length){list.innerHTML='<div style="font-size:13px;color:#aaa;padding:6px 0">등록된 공제 항목이 없습니다.</div>';return;}const sorted=[...deducts].sort((a,b)=>{if(!a.month&&b.month)return -1;if(a.month&&!b.month)return 1;return(a.month||'').localeCompare(b.month||'');});sorted.forEach((d,i)=>{const row=document.createElement('div');row.className='deduct-row';row.innerHTML=`<span class="deduct-name">${d.name}</span><span class="deduct-amt">-${fmt(d.amount)}원</span>${!d.month?'<span class="deduct-repeat">매월 반복</span>':`<span class="deduct-once">${d.month}</span>`}<button class="btn btn-sm btn-danger" onclick="removeDeduct(${i})">삭제</button>`;list.appendChild(row);});}
+async function addDeduct(){const name=document.getElementById('deduct-name').value.trim();const amount=getMoneyVal(document.getElementById('deduct-amount'));const month=document.getElementById('deduct-month').value;if(!name||!amount||amount<=0){alert('항목명과 금액을 입력하세요');return;}const emp=getEmp();if(!emp.deductions)emp.deductions=[];emp.deductions.push({name,amount,month:month||null});await save();renderDeductions(emp);document.getElementById('deduct-name').value='';setMoneyVal(document.getElementById('deduct-amount'),0);document.getElementById('deduct-month').value='';}
+async function removeDeduct(i){const emp=getEmp();const sorted=[...emp.deductions].sort((a,b)=>{if(!a.month&&b.month)return -1;if(a.month&&!b.month)return 1;return(a.month||'').localeCompare(b.month||'');});const target=sorted[i];emp.deductions=emp.deductions.filter(d=>d!==target);await save();renderDeductions(emp);}
 
+function openAddEmp(){document.getElementById('new-hire').value=todayStr;document.getElementById('new-contract-start').value=todayStr;selectNewContractType('1y');document.getElementById('modal-add-emp').classList.remove('hidden');}
+function closeModal(){document.getElementById('modal-add-emp').classList.add('hidden');}
+async function addEmployee(){const name=document.getElementById('new-name').value.trim();if(!name){alert('이름을 입력하세요');return;}const wage=getMoneyVal(document.getElementById('new-wage'));const ym=todayStr.substring(0,7);const cs=document.getElementById('new-contract-start').value;const ce=document.getElementById('new-contract-end').value;const ct=state.newSelectedContractType||'custom';const emp={id:'emp_'+Date.now(),name,phone:document.getElementById('new-phone').value.trim(),hire:document.getElementById('new-hire').value,nationality:document.getElementById('new-nationality').value,birth:document.getElementById('new-birth').value,contractStart:cs,contractEnd:ce,contracts:cs&&ce?[{start:cs,end:ce,type:ct}]:[],memo:document.getElementById('new-memo').value,wages:wage>0?[{month:ym,amount:wage}]:[],deductions:[]};state.employees.push(emp);state.currentEmp=emp.id;await save();closeModal();['new-name','new-phone','new-birth','new-contract-start','new-contract-end','new-memo'].forEach(id=>document.getElementById(id).value='');setMoneyVal(document.getElementById('new-wage'),0);document.getElementById('new-nationality').value='';document.getElementById('new-hire').value='';state.newSelectedContractType=null;['1y','4y','custom'].forEach(t=>document.getElementById('new-ctype-'+t).classList.remove('active'));renderApp();}
+async function confirmDeleteEmp(){const emp=getEmp();if(!emp)return;if(confirm(emp.name+' 직원을 삭제할까요? 모든 근무 기록도 함께 삭제됩니다.')){state.employees=state.employees.filter(e=>e.id!==state.currentEmp);delete state.records[state.currentEmp];state.currentEmp=state.employees.length?state.employees[0].id:null;await save();renderApp();}}
 
-// 시작
-loadAll();
+// ===================== 초기화 =====================
+(async()=>{
+  await loadFromCloud();
+  renderApp();
+})();
 </script>
-
 
 
 </body></html>
