@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0112)file:///C:/Users/User/Downloads/%EC%8A%A4%EB%A7%88%ED%8A%B8%ED%8C%9C_%ED%8C%90%EB%A7%A4%EA%B4%80%EB%A6%AC_7.html -->
+<!-- saved from url=(0112)file:///C:/Users/User/Downloads/%EC%8A%A4%EB%A7%88%ED%8A%B8%ED%8C%9C_%ED%8C%90%EB%A7%A4%EA%B4%80%EB%A6%AC_9.html -->
 <html lang="ko"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -131,7 +131,7 @@ input.money{text-align:right}
     </div>
   </div>
 
-  <div id="farm-tabs" class="farm-tabs"><button class="farm-tab active">신흥농장</button></div>
+  <div id="farm-tabs" class="farm-tabs"><button class="farm-tab active">도하오이 (신흥온실)</button><button class="farm-tab">도하오이 (창평온실)</button></div>
   <div id="no-farm" class="no-farm hidden">
     <p style="margin-bottom:8px;font-size:16px">등록된 농장이 없습니다.</p>
     <p style="font-size:13px">농장 추가 버튼을 눌러 시작하세요.</p>
@@ -151,18 +151,14 @@ input.money{text-align:right}
     <div id="tab-daily">
       <div class="card">
         <div class="card-title">출하 기록 입력</div>
-        <div class="form-row3">
+        <div class="form-row">
           <div class="form-group">
             <label>출하일</label>
             <input type="date" id="inp-ship-date">
           </div>
           <div class="form-group">
-            <label>경매일</label>
-            <input type="date" id="inp-auction-date">
-          </div>
-          <div class="form-group">
             <label>출하처</label>
-            <select id="inp-market">
+            <select id="inp-market" onchange="onMarketChange()">
               <option value="서울가락시장">서울가락시장</option>
               <option value="대전공판장">대전공판장</option>
               <option value="광주공판장">광주공판장</option>
@@ -172,9 +168,15 @@ input.money{text-align:right}
             </select>
           </div>
         </div>
-        <div id="other-market-wrap" class="form-group hidden" style="margin-bottom:10px">
-          <label>기타 공판장명</label>
-          <input type="text" id="inp-market-other" placeholder="공판장명 입력">
+        <!-- 서울가락시장 서브 선택 -->
+        <div id="sub-market-wrap" class="form-row" style="margin-bottom:10px">
+          <div class="form-group">
+            <label>청과 선택</label>
+            <select id="inp-sub-market">
+              <option value="한국청과">한국청과</option>
+              <option value="동화청과">동화청과</option>
+            </select>
+          </div>
         </div>
 
         <!-- 공판장 입력 -->
@@ -211,14 +213,18 @@ input.money{text-align:right}
               </tr>
             </tbody>
           </table>
-          <div class="form-row">
+          <div class="form-row3">
             <div class="form-group">
               <label>통장 입금액 (원)</label>
               <input type="text" id="inp-deposit" class="money" placeholder="0" oninput="moneyInput(this)" onblur="moneyBlur(this)" onchange="calcSummary()">
             </div>
             <div class="form-group">
-              <label>수수료+운송비 (낙찰총액 - 입금액, 자동계산)</label>
+              <label>수수료 (낙찰총액 - 입금액, 자동계산)</label>
               <input type="text" id="inp-fee-calc" class="money" readonly="" style="background:#fff5f5;color:#c0392b;font-weight:600">
+            </div>
+            <div class="form-group">
+              <label>수수료율 (자동계산)</label>
+              <input type="text" id="inp-fee-rate-display" readonly="" style="background:#f4faf4;color:#2d5a2d;font-weight:600">
             </div>
           </div>
         </div>
@@ -249,7 +255,7 @@ input.money{text-align:right}
       <!-- 최근 출하 기록 -->
       <div class="card">
         <div class="card-title">최근 출하 기록</div>
-        <div id="recent-records"><div style="color:#aaa;font-size:13px;padding:8px 0">출하 기록이 없습니다.</div></div>
+        <div id="recent-records"></div>
       </div>
     </div>
 
@@ -578,16 +584,17 @@ function getMoney(el){return parseInt((el.dataset&&el.dataset.raw)||el.value.rep
 function setMoney(el,n){if(!n||n===0){el.value='';el.dataset.raw='';}else{el.value=Number(n).toLocaleString('ko-KR');el.dataset.raw=String(n);}}
 
 // 출하처 변경
-document.getElementById('inp-market').addEventListener('change',function(){
-  const v=this.value;
-  const isLocal=v==='익산로컬푸드';
+function onMarketChange(){
+  const v=document.getElementById('inp-market').value;
+  const isGarak=v==='서울가락시장';
   const isOther=v==='기타';
-  document.getElementById('localfood-wrap').classList.toggle('hidden',!isLocal);
-  document.getElementById('market-wrap').classList.toggle('hidden',isLocal);
+  document.getElementById('sub-market-wrap').classList.toggle('hidden',!isGarak);
   document.getElementById('other-market-wrap').classList.toggle('hidden',!isOther);
-});
+  calcSummary();
+}
+document.getElementById('inp-market').addEventListener('change',onMarketChange);
 
-// 수수료 자동 계산 (낙찰총액 - 입금액)
+// 수수료 자동 계산 (낙찰총액 - 입금액 = 수수료, 수수료율 자동계산)
 function calcSummary(){
   const grades=['특','2특','상','보통'];
   let totalQty=0,totalPrice=0;
@@ -597,8 +604,10 @@ function calcSummary(){
   });
   const deposit=getMoney(document.getElementById('inp-deposit'));
   const fee=totalPrice>0&&deposit>0?totalPrice-deposit:0;
+  const feeRate=totalPrice>0&&fee>0?(fee/totalPrice*100).toFixed(1):0;
   const net=deposit;
   document.getElementById('inp-fee-calc').value=fee>0?Number(fee).toLocaleString('ko-KR'):'0';
+  document.getElementById('inp-fee-rate-display').value=feeRate>0?feeRate+'%':'';
   document.getElementById('ds-qty').textContent=totalQty?fmtN(totalQty):'-';
   document.getElementById('ds-total').textContent=totalPrice?fmtN(totalPrice):'-';
   document.getElementById('ds-deposit').textContent=deposit?fmtN(deposit):'-';
@@ -609,25 +618,22 @@ function calcSummary(){
 // ===================== 저장/삭제 =====================
 async function saveRecord(){
   const shipDate=document.getElementById('inp-ship-date').value;
-  const auctionDate=document.getElementById('inp-auction-date').value;
   const market=document.getElementById('inp-market').value;
+  const isGarak=market==='서울가락시장';
+  const subMarket=isGarak?document.getElementById('inp-sub-market').value:'';
   const marketName=market==='기타'?document.getElementById('inp-market-other').value||'기타':market;
+  const displayName=isGarak?`${marketName} (${subMarket})`:marketName;
   if(!shipDate){alert('출하일을 입력하세요');return;}
-  const isLocal=market==='익산로컬푸드';
-  let rec={id:'r_'+Date.now(),shipDate,auctionDate,market:marketName,isLocal,memo:document.getElementById('inp-memo').value};
-  if(isLocal){
-    rec.localAmount=getMoney(document.getElementById('inp-local-amount'));
-    rec.net=rec.localAmount;
-  }else{
-    const grades=['특','2특','상','보통'];
-    rec.grades={};
-    grades.forEach(g=>{rec.grades[g]={qty:getMoney(document.getElementById('qty-'+g)),price:getMoney(document.getElementById('price-'+g))};});
-    rec.totalQty=grades.reduce((s,g)=>s+rec.grades[g].qty,0);
-    rec.totalPrice=grades.reduce((s,g)=>s+rec.grades[g].price,0);
-    rec.deposit=getMoney(document.getElementById('inp-deposit'));
-    rec.fee=rec.totalPrice>0&&rec.deposit>0?rec.totalPrice-rec.deposit:0;
-    rec.net=rec.deposit;
-  }
+  let rec={id:'r_'+Date.now(),shipDate,market:displayName,subMarket,memo:document.getElementById('inp-memo').value};
+  const grades=['특','2특','상','보통'];
+  rec.grades={};
+  grades.forEach(g=>{rec.grades[g]={qty:getMoney(document.getElementById('qty-'+g)),price:getMoney(document.getElementById('price-'+g))};});
+  rec.totalQty=grades.reduce((s,g)=>s+rec.grades[g].qty,0);
+  rec.totalPrice=grades.reduce((s,g)=>s+rec.grades[g].price,0);
+  rec.deposit=getMoney(document.getElementById('inp-deposit'));
+  rec.fee=rec.totalPrice>0&&rec.deposit>0?rec.totalPrice-rec.deposit:0;
+  rec.feeRate=rec.totalPrice>0&&rec.fee>0?parseFloat((rec.fee/rec.totalPrice*100).toFixed(1)):0;
+  rec.net=rec.deposit;
   if(!state.records[state.currentFarm])state.records[state.currentFarm]=[];
   state.records[state.currentFarm].unshift(rec);
   await save();
@@ -691,10 +697,8 @@ function renderCurrentTab(){
 }
 
 function renderDaily(){
-  const farm=getFarm();
   if(!document.getElementById('inp-ship-date').value)document.getElementById('inp-ship-date').value=todayStr;
-  if(!document.getElementById('inp-auction-date').value)document.getElementById('inp-auction-date').value=todayStr;
-
+  onMarketChange();
   renderRecentRecords();
 }
 
@@ -706,21 +710,21 @@ function renderRecentRecords(){
 }
 
 function renderRecordHtml(r){
-  const isLocal=r.isLocal;
   const grades=['특','2특','상','보통'];
   let gradeHtml='';
-  if(!isLocal&&r.grades){
+  if(r.grades){
     gradeHtml=grades.filter(g=>r.grades[g]&&r.grades[g].qty>0).map(g=>`<span class="record-grade-item"><span class="grade-badge badge-${g}">${g}</span> ${fmtN(r.grades[g].qty)}개 / ${fmtN(r.grades[g].price)}원</span>`).join('');
   }
   return `<div class="record-row">
     <div class="record-row-header">
-      <span class="market-badge ${isLocal?'local':''}">${r.market}</span>
-      <span class="date-info">출하: ${r.shipDate}${r.auctionDate&&r.auctionDate!==r.shipDate?' / 경매: '+r.auctionDate:''}</span>
+      <span class="market-badge">${r.market}</span>
+      <span class="date-info">출하: ${r.shipDate}</span>
+      ${r.feeRate?`<span style="background:#fff8e8;color:#8a5a00;padding:2px 8px;border-radius:5px;font-size:11px;font-weight:600">수수료율 ${r.feeRate}%</span>`:''}
       <button class="btn btn-sm btn-danger" style="margin-left:auto" onclick="deleteRecordById('${r.id}')">삭제</button>
     </div>
-    ${isLocal?`<div style="font-size:13px">직접 입금액: <strong>${fmtN(r.localAmount)}원</strong></div>`:`<div class="record-grades">${gradeHtml||'<span style="color:#aaa">수량 없음</span>'}</div>`}
+    <div class="record-grades">${gradeHtml||'<span style="color:#aaa">수량 없음</span>'}</div>
     <div class="record-totals">
-      ${!isLocal?`총수량 <span>${fmtN(r.totalQty)}개</span> 낙찰총액 <span>${fmtN(r.totalPrice)}원</span> 입금액 <span>${fmtN(r.deposit)}원</span> 수수료+운송비 <span style="color:#c0392b">-${fmtN(r.fee)}원</span>`:''}
+      총수량 <span>${fmtN(r.totalQty)}개</span> 낙찰총액 <span>${fmtN(r.totalPrice)}원</span> 입금액 <span>${fmtN(r.deposit)}원</span> 수수료 <span style="color:#c0392b">-${fmtN(r.fee)}원</span>
       실수익(입금액) <span style="color:#2d5a2d">${fmtN(r.net)}원</span>
       ${r.memo?`<span style="color:#8aaa8a">${r.memo}</span>`:''}
     </div>
