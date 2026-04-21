@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0113)file:///C:/Users/User/Downloads/%EC%8A%A4%EB%A7%88%ED%8A%B8%ED%8C%9C_%ED%8C%90%EB%A7%A4%EA%B4%80%EB%A6%AC_12.html -->
+<!-- saved from url=(0111)file:///C:/Users/User/Downloads/%EC%8A%A4%EB%A7%88%ED%8A%B8%ED%8C%9C_%ED%8C%90%EB%A7%A4_%EA%B4%80%EB%A6%AC.html -->
 <html lang="ko"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -126,7 +126,7 @@ input.money{text-align:right}
   <div class="header">
     <h1>🥒 스마트팜 판매 관리</h1>
     <div class="header-right">
-      <span id="sync-status" class="sync-status sync-ok">● 동기화됨</span>
+      <span id="sync-status" class="sync-status sync-ok" title="마지막 저장 성공: 오후 9:57:34">● 동기화됨</span>
       <button class="btn btn-primary" onclick="openAddFarm()">+ 농장 추가</button>
     </div>
   </div>
@@ -516,53 +516,101 @@ input.money{text-align:right}
 // ===================== Supabase 설정 =====================
 const SUPABASE_URL='https://ljirwirzbgqmfxwmeiad.supabase.co';
 const SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxqaXJ3aXJ6YmdxbWZ4d21laWFkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU2NDk2OTQsImV4cCI6MjA5MTIyNTY5NH0.07hlyBkL4Y2smVJL7e4rDu4aBdAQ75c-vvARU-XR0Tk';
+// POST + Prefer:resolution=merge-duplicates 헤더로 Upsert 구현
+// (PATCH는 행이 없으면 조용히 실패하므로 데이터가 저장되지 않음 → 리셋의 원인)
 const SB_HEADERS={'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY};
+const SB_UPSERT_HEADERS={
+  'Content-Type':'application/json',
+  'apikey':SUPABASE_KEY,
+  'Authorization':'Bearer '+SUPABASE_KEY,
+  'Prefer':'resolution=merge-duplicates,return=representation'
+};
 
-function setSyncStatus(s){
+function setSyncStatus(s,msg){
   const el=document.getElementById('sync-status');
   if(!el)return;
-  if(s==='ok'){el.className='sync-status sync-ok';el.textContent='● 동기화됨';}
-  else if(s==='ing'){el.className='sync-status sync-ing';el.textContent='● 동기화 중...';}
-  else{el.className='sync-status sync-err';el.textContent='● 동기화 실패';}
+  if(s==='ok'){el.className='sync-status sync-ok';el.textContent='● 동기화됨';el.title='마지막 저장 성공: '+new Date().toLocaleTimeString('ko-KR');}
+  else if(s==='ing'){el.className='sync-status sync-ing';el.textContent='● 동기화 중...';el.title='';}
+  else{el.className='sync-status sync-err';el.textContent='● 동기화 실패';el.title=msg||'';}
 }
 
+// 저장 중복 호출 방지 및 최신값 보장
+let _syncInFlight=false;
+let _syncPending=false;
+
 async function syncToCloud(){
+  if(_syncInFlight){_syncPending=true;return;}
+  _syncInFlight=true;
   setSyncStatus('ing');
   try{
-    // 농장 정보 + 출하기록 저장
-    const body=JSON.stringify({
+    // 모든 필드를 한 번에 upsert (id='main' 행이 없어도 자동 생성됨)
+    const body=JSON.stringify([{
+      id:'main',
+      farm_id:JSON.stringify(state.farms),
       records:state.records,
       lf_records:state.lfRecords||{},
       updated_at:new Date().toISOString()
+    }]);
+    const r=await fetch(SUPABASE_URL+'/rest/v1/sales_data',{
+      method:'POST',
+      headers:SB_UPSERT_HEADERS,
+      body
     });
-    const r=await fetch(SUPABASE_URL+'/rest/v1/sales_data?id=eq.main',{method:'PATCH',headers:SB_HEADERS,body});
-    // 농장 목록은 별도 컬럼에 저장
-    const body2=JSON.stringify({farm_id:JSON.stringify(state.farms),updated_at:new Date().toISOString()});
-    await fetch(SUPABASE_URL+'/rest/v1/sales_data?id=eq.main',{method:'PATCH',headers:SB_HEADERS,body:body2});
-    if(r.ok)setSyncStatus('ok');else setSyncStatus('err');
-  }catch(e){setSyncStatus('err');console.error(e);}
+    if(!r.ok){
+      const txt=await r.text();
+      console.error('Supabase save failed:',r.status,txt);
+      setSyncStatus('err','HTTP '+r.status+': '+txt);
+      return;
+    }
+    // 반환된 행이 실제로 있는지 확인 (진짜 저장됐는지 검증)
+    const saved=await r.json();
+    if(!Array.isArray(saved)||saved.length===0){
+      console.error('Supabase save returned no rows');
+      setSyncStatus('err','저장 응답에 데이터가 없습니다');
+      return;
+    }
+    setSyncStatus('ok');
+  }catch(e){
+    console.error('Sync error:',e);
+    setSyncStatus('err',e.message||'네트워크 오류');
+  }finally{
+    _syncInFlight=false;
+    if(_syncPending){_syncPending=false;syncToCloud();}
+  }
 }
 
 async function loadFromCloud(){
   setSyncStatus('ing');
   try{
     const r=await fetch(SUPABASE_URL+'/rest/v1/sales_data?id=eq.main&select=farm_id,records,lf_records',{headers:SB_HEADERS});
-    if(r.ok){
-      const data=await r.json();
-      if(data&&data[0]){
-        if(data[0].farm_id){
-          try{const f=JSON.parse(data[0].farm_id);if(Array.isArray(f))state.farms=f;}catch(e){}
-        }
-        if(data[0].records)state.records=data[0].records;
-        if(data[0].lf_records)state.lfRecords=data[0].lf_records;
-        // localStorage 동기화
-        localStorage.setItem('sf_farms',JSON.stringify(state.farms));
-        localStorage.setItem('sf_sales',JSON.stringify(state.records));
-        localStorage.setItem('sf_lf_all',JSON.stringify(state.lfRecords));
-      }
+    if(!r.ok){
+      console.error('Supabase load failed:',r.status);
+      setSyncStatus('err','불러오기 실패 (HTTP '+r.status+')');
+      return;
+    }
+    const data=await r.json();
+    // 행이 없으면 로컬 데이터 유지 (덮어쓰지 않음 — 중요!)
+    if(!data||data.length===0){
+      console.log('클라우드에 저장된 데이터 없음 — 로컬 데이터 유지');
       setSyncStatus('ok');
-    }else setSyncStatus('err');
-  }catch(e){setSyncStatus('err');console.error(e);}
+      return;
+    }
+    const row=data[0];
+    // 각 필드는 존재할 때만 덮어쓰기
+    if(row.farm_id){
+      try{const f=JSON.parse(row.farm_id);if(Array.isArray(f))state.farms=f;}catch(e){console.warn('farm_id 파싱 실패',e);}
+    }
+    if(row.records&&typeof row.records==='object')state.records=row.records;
+    if(row.lf_records&&typeof row.lf_records==='object')state.lfRecords=row.lf_records;
+    // localStorage 동기화
+    localStorage.setItem('sf_farms',JSON.stringify(state.farms));
+    localStorage.setItem('sf_sales',JSON.stringify(state.records));
+    localStorage.setItem('sf_lf_all',JSON.stringify(state.lfRecords));
+    setSyncStatus('ok');
+  }catch(e){
+    console.error('Load error:',e);
+    setSyncStatus('err',e.message||'네트워크 오류');
+  }
 }
 
 // ===================== 상태 =====================
