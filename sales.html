@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0113)file:///C:/Users/User/Downloads/%EC%8A%A4%EB%A7%88%ED%8A%B8%ED%8C%9C_%ED%8C%90%EB%A7%A4_%EA%B4%80%EB%A6%AC_3.html -->
+<!-- saved from url=(0111)file:///C:/Users/User/Downloads/%EC%8A%A4%EB%A7%88%ED%8A%B8%ED%8C%9C_%ED%8C%90%EB%A7%A4_%EA%B4%80%EB%A6%AC.html -->
 <html lang="ko"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -126,7 +126,7 @@ input.money{text-align:right}
   <div class="header">
     <h1>🥒 스마트팜 판매 관리</h1>
     <div class="header-right">
-      <span id="sync-status" class="sync-status sync-ok" title="마지막 저장 성공: 오후 10:43:19">● 동기화됨</span>
+      <span id="sync-status" class="sync-status sync-ok" title="마지막 저장 성공: 오후 10:21:22">● 동기화됨</span>
       <button class="btn" onclick="exportBackup()" style="background:#f0f7f0;border:1px solid #c8dfc8;color:#2d5a2d" title="현재 모든 데이터를 JSON 파일로 다운로드">💾 백업</button>
       <button class="btn" onclick="document.getElementById(&#39;restore-file&#39;).click()" style="background:#fff8f0;border:1px solid #e8d0b0;color:#8a5a1a" title="백업 파일로 데이터 복원">📥 복원</button>
       <input type="file" id="restore-file" accept=".json,application/json" style="display:none" onchange="importBackup(event)">
@@ -151,7 +151,7 @@ input.money{text-align:right}
     </div>
 
     <!-- 출하 입력 -->
-    <div id="tab-daily">
+    <div id="tab-daily" class="">
       <div class="card">
         <div class="card-title">출하 기록 입력</div>
         <div class="form-row">
@@ -272,9 +272,48 @@ input.money{text-align:right}
         <div id="recent-records"><div class="record-row">
     <div class="record-row-header">
       <span class="market-badge">서울가락시장 (한국청과)</span>
+      <span class="date-info">출하: 2026-04-21</span>
+      <span style="background:#fff8e8;color:#8a5a00;padding:2px 8px;border-radius:5px;font-size:11px;font-weight:600">수수료율 8.5%</span>
+      <button class="btn btn-sm btn-danger" style="margin-left:auto" onclick="deleteRecordById(&#39;r_1776948467334&#39;)">삭제</button>
+    </div>
+    <div class="record-grades"><span class="record-grade-item"><span class="grade-badge badge-특">특</span> 64개 × 24,500원 = <strong>1,568,000원</strong></span></div>
+    <div class="record-totals">
+      총수량 <span>64개</span> 낙찰총액 <span>1,568,000원</span> 입금액 <span>1,434,280원</span> 수수료 <span style="color:#c0392b">-133,720원</span>
+      실수익(입금액) <span style="color:#2d5a2d">1,434,280원</span>
+      
+    </div>
+  </div><div class="record-row">
+    <div class="record-row-header">
+      <span class="market-badge">서울가락시장 (한국청과)</span>
+      <span class="date-info">출하: 2026-04-20</span>
+      <span style="background:#fff8e8;color:#8a5a00;padding:2px 8px;border-radius:5px;font-size:11px;font-weight:600">수수료율 9.4%</span>
+      <button class="btn btn-sm btn-danger" style="margin-left:auto" onclick="deleteRecordById(&#39;r_1776857269029&#39;)">삭제</button>
+    </div>
+    <div class="record-grades"><span class="record-grade-item"><span class="grade-badge badge-특">특</span> 52개 × 22,500원 = <strong>1,170,000원</strong></span></div>
+    <div class="record-totals">
+      총수량 <span>52개</span> 낙찰총액 <span>1,170,000원</span> 입금액 <span>1,059,552원</span> 수수료 <span style="color:#c0392b">-110,448원</span>
+      실수익(입금액) <span style="color:#2d5a2d">1,059,552원</span>
+      
+    </div>
+  </div><div class="record-row">
+    <div class="record-row-header">
+      <span class="market-badge">서울가락시장 (한국청과)</span>
+      <span class="date-info">출하: 2026-04-19</span>
+      <span style="background:#fff8e8;color:#8a5a00;padding:2px 8px;border-radius:5px;font-size:11px;font-weight:600">수수료율 9.4%</span>
+      <button class="btn btn-sm btn-danger" style="margin-left:auto" onclick="deleteRecordById(&#39;r_1776857222757&#39;)">삭제</button>
+    </div>
+    <div class="record-grades"><span class="record-grade-item"><span class="grade-badge badge-특">특</span> 40개 × 22,500원 = <strong>900,000원</strong></span></div>
+    <div class="record-totals">
+      총수량 <span>40개</span> 낙찰총액 <span>900,000원</span> 입금액 <span>815,040원</span> 수수료 <span style="color:#c0392b">-84,960원</span>
+      실수익(입금액) <span style="color:#2d5a2d">815,040원</span>
+      
+    </div>
+  </div><div class="record-row">
+    <div class="record-row-header">
+      <span class="market-badge">서울가락시장 (한국청과)</span>
       <span class="date-info">출하: 2026-04-17</span>
       <span style="background:#fff8e8;color:#8a5a00;padding:2px 8px;border-radius:5px;font-size:11px;font-weight:600">수수료율 9.3%</span>
-      <button class="btn btn-sm btn-danger" style="margin-left:auto" onclick="deleteRecordById(&#39;r_1776777998565&#39;)">삭제</button>
+      <button class="btn btn-sm btn-danger" style="margin-left:auto" onclick="deleteRecordById(&#39;r_1776779232363&#39;)">삭제</button>
     </div>
     <div class="record-grades"><span class="record-grade-item"><span class="grade-badge badge-특">특</span> 51개 × 21,500원 = <strong>1,096,500원</strong></span></div>
     <div class="record-totals">
@@ -291,29 +330,68 @@ input.money{text-align:right}
       <div class="card">
         <div class="week-nav">
           <button onclick="changeWeek(-1)">◀</button>
-          <span id="week-label" style="font-weight:600"></span>
+          <span id="week-label" style="font-weight:600">2026-04-19 ~ 2026-04-25</span>
           <button onclick="changeWeek(1)">▶</button>
           <button class="btn btn-sm" style="margin-left:8px" onclick="goThisWeek()">이번 주</button>
         </div>
         <div style="font-size:12px;font-weight:600;color:#2d5a2d;margin-bottom:6px">📦 공판장</div>
         <div class="summary-grid-5" style="margin-bottom:10px">
-          <div class="metric"><div class="metric-label">출하 횟수</div><div class="metric-val" id="w-count">-</div><div class="metric-sub">회</div></div>
-          <div class="metric"><div class="metric-label">총 수량</div><div class="metric-val" id="w-qty">-</div><div class="metric-sub">개</div></div>
-          <div class="metric"><div class="metric-label">낙찰 총액</div><div class="metric-val" id="w-total">-</div><div class="metric-sub">원</div></div>
-          <div class="metric danger"><div class="metric-label">총 수수료</div><div class="metric-val" id="w-fee">-</div><div class="metric-sub">원</div></div>
-          <div class="metric highlight"><div class="metric-label">공판장 실수익</div><div class="metric-val" id="w-net">-</div><div class="metric-sub">원</div></div>
+          <div class="metric"><div class="metric-label">출하 횟수</div><div class="metric-val" id="w-count">3</div><div class="metric-sub">회</div></div>
+          <div class="metric"><div class="metric-label">총 수량</div><div class="metric-val" id="w-qty">156</div><div class="metric-sub">개</div></div>
+          <div class="metric"><div class="metric-label">낙찰 총액</div><div class="metric-val" id="w-total">3,638,000</div><div class="metric-sub">원</div></div>
+          <div class="metric danger"><div class="metric-label">총 수수료</div><div class="metric-val" id="w-fee">329,128</div><div class="metric-sub">원</div></div>
+          <div class="metric highlight"><div class="metric-label">공판장 실수익</div><div class="metric-val" id="w-net">3,308,872</div><div class="metric-sub">원</div></div>
         </div>
         <div style="font-size:12px;font-weight:600;color:#7a5a2d;margin-bottom:6px">🏪 로컬푸드</div>
         <div style="display:flex;gap:10px;margin-bottom:10px;flex-wrap:wrap">
-          <div class="metric" style="flex:1"><div class="metric-label">로컬푸드 건수</div><div class="metric-val" id="w-lf-count">-</div><div class="metric-sub">건</div></div>
-          <div class="metric" style="flex:2"><div class="metric-label">로컬푸드 입금</div><div class="metric-val" id="w-lf-total">-</div><div class="metric-sub">원</div></div>
+          <div class="metric" style="flex:1"><div class="metric-label">로컬푸드 건수</div><div class="metric-val" id="w-lf-count">2</div><div class="metric-sub">건</div></div>
+          <div class="metric" style="flex:2"><div class="metric-label">로컬푸드 입금</div><div class="metric-val" id="w-lf-total">185,328</div><div class="metric-sub">원</div></div>
         </div>
         <div style="background:#2d5a2d;border-radius:8px;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
           <span style="color:#a8d4a8;font-size:12px;font-weight:600">주간 총 수익</span>
-          <span style="color:#fff;font-size:16px;font-weight:700" id="w-grand-total">-</span>
+          <span style="color:#fff;font-size:16px;font-weight:700" id="w-grand-total">3,494,200원</span>
         </div>
-        <div id="weekly-records"></div>
-        <div id="weekly-lf-records"></div>
+        <div id="weekly-records"><div style="font-size:12px;font-weight:600;color:#2d5a2d;margin-bottom:6px">📦 공판장 출하 기록</div><div class="record-row">
+    <div class="record-row-header">
+      <span class="market-badge">서울가락시장 (한국청과)</span>
+      <span class="date-info">출하: 2026-04-21</span>
+      <span style="background:#fff8e8;color:#8a5a00;padding:2px 8px;border-radius:5px;font-size:11px;font-weight:600">수수료율 8.5%</span>
+      <button class="btn btn-sm btn-danger" style="margin-left:auto" onclick="deleteRecordById(&#39;r_1776948467334&#39;)">삭제</button>
+    </div>
+    <div class="record-grades"><span class="record-grade-item"><span class="grade-badge badge-특">특</span> 64개 × 24,500원 = <strong>1,568,000원</strong></span></div>
+    <div class="record-totals">
+      총수량 <span>64개</span> 낙찰총액 <span>1,568,000원</span> 입금액 <span>1,434,280원</span> 수수료 <span style="color:#c0392b">-133,720원</span>
+      실수익(입금액) <span style="color:#2d5a2d">1,434,280원</span>
+      
+    </div>
+  </div><div class="record-row">
+    <div class="record-row-header">
+      <span class="market-badge">서울가락시장 (한국청과)</span>
+      <span class="date-info">출하: 2026-04-20</span>
+      <span style="background:#fff8e8;color:#8a5a00;padding:2px 8px;border-radius:5px;font-size:11px;font-weight:600">수수료율 9.4%</span>
+      <button class="btn btn-sm btn-danger" style="margin-left:auto" onclick="deleteRecordById(&#39;r_1776857269029&#39;)">삭제</button>
+    </div>
+    <div class="record-grades"><span class="record-grade-item"><span class="grade-badge badge-특">특</span> 52개 × 22,500원 = <strong>1,170,000원</strong></span></div>
+    <div class="record-totals">
+      총수량 <span>52개</span> 낙찰총액 <span>1,170,000원</span> 입금액 <span>1,059,552원</span> 수수료 <span style="color:#c0392b">-110,448원</span>
+      실수익(입금액) <span style="color:#2d5a2d">1,059,552원</span>
+      
+    </div>
+  </div><div class="record-row">
+    <div class="record-row-header">
+      <span class="market-badge">서울가락시장 (한국청과)</span>
+      <span class="date-info">출하: 2026-04-19</span>
+      <span style="background:#fff8e8;color:#8a5a00;padding:2px 8px;border-radius:5px;font-size:11px;font-weight:600">수수료율 9.4%</span>
+      <button class="btn btn-sm btn-danger" style="margin-left:auto" onclick="deleteRecordById(&#39;r_1776857222757&#39;)">삭제</button>
+    </div>
+    <div class="record-grades"><span class="record-grade-item"><span class="grade-badge badge-특">특</span> 40개 × 22,500원 = <strong>900,000원</strong></span></div>
+    <div class="record-totals">
+      총수량 <span>40개</span> 낙찰총액 <span>900,000원</span> 입금액 <span>815,040원</span> 수수료 <span style="color:#c0392b">-84,960원</span>
+      실수익(입금액) <span style="color:#2d5a2d">815,040원</span>
+      
+    </div>
+  </div></div>
+        <div id="weekly-lf-records"><div style="font-size:12px;font-weight:600;color:#7a5a2d;margin:10px 0 6px">🏪 로컬푸드 입금 기록</div><div style="display:flex;align-items:center;gap:10px;padding:8px 12px;background:#f9fdf9;border:1px solid #e0edd0;border-radius:8px;margin-bottom:5px;font-size:13px;flex-wrap:wrap"><span style="color:#5a7a5a;min-width:80px">2026-04-22</span><span style="background:#7a5a2d;color:#fff;padding:2px 9px;border-radius:5px;font-size:11px;font-weight:700">영등점</span><span style="font-weight:700;flex:1">58,960원</span></div><div style="display:flex;align-items:center;gap:10px;padding:8px 12px;background:#f9fdf9;border:1px solid #e0edd0;border-radius:8px;margin-bottom:5px;font-size:13px;flex-wrap:wrap"><span style="color:#5a7a5a;min-width:80px">2026-04-22</span><span style="background:#7a5a2d;color:#fff;padding:2px 9px;border-radius:5px;font-size:11px;font-weight:700">원협하나로</span><span style="font-weight:700;flex:1">126,368원</span></div></div>
       </div>
     </div>
 
@@ -322,33 +400,220 @@ input.money{text-align:right}
       <div class="card">
         <div class="week-nav">
           <button onclick="changeMonth(-1)">◀</button>
-          <span id="month-label" style="font-weight:600"></span>
+          <span id="month-label" style="font-weight:600">2026년 4월</span>
           <button onclick="changeMonth(1)">▶</button>
           <button class="btn btn-sm" style="margin-left:8px" onclick="goThisMonth()">이번 달</button>
         </div>
         <div style="font-size:12px;font-weight:600;color:#2d5a2d;margin-bottom:6px">📦 공판장</div>
         <div class="summary-grid-5" style="margin-bottom:10px">
-          <div class="metric"><div class="metric-label">출하 횟수</div><div class="metric-val" id="m-count">-</div><div class="metric-sub">회</div></div>
-          <div class="metric"><div class="metric-label">총 수량</div><div class="metric-val" id="m-qty">-</div><div class="metric-sub">개</div></div>
-          <div class="metric"><div class="metric-label">낙찰 총액</div><div class="metric-val" id="m-total">-</div><div class="metric-sub">원</div></div>
-          <div class="metric danger"><div class="metric-label">총 수수료</div><div class="metric-val" id="m-fee">-</div><div class="metric-sub">원</div></div>
-          <div class="metric highlight"><div class="metric-label">공판장 실수익</div><div class="metric-val" id="m-net">-</div><div class="metric-sub">원</div></div>
+          <div class="metric"><div class="metric-label">출하 횟수</div><div class="metric-val" id="m-count">4</div><div class="metric-sub">회</div></div>
+          <div class="metric"><div class="metric-label">총 수량</div><div class="metric-val" id="m-qty">207</div><div class="metric-sub">개</div></div>
+          <div class="metric"><div class="metric-label">낙찰 총액</div><div class="metric-val" id="m-total">4,734,500</div><div class="metric-sub">원</div></div>
+          <div class="metric danger"><div class="metric-label">총 수수료</div><div class="metric-val" id="m-fee">430,988</div><div class="metric-sub">원</div></div>
+          <div class="metric highlight"><div class="metric-label">공판장 실수익</div><div class="metric-val" id="m-net">4,303,512</div><div class="metric-sub">원</div></div>
         </div>
         <div style="font-size:12px;font-weight:600;color:#7a5a2d;margin-bottom:6px">🏪 로컬푸드</div>
         <div style="display:flex;gap:10px;margin-bottom:10px;flex-wrap:wrap">
-          <div class="metric" style="flex:1"><div class="metric-label">로컬푸드 건수</div><div class="metric-val" id="m-lf-count">-</div><div class="metric-sub">건</div></div>
-          <div class="metric" style="flex:2"><div class="metric-label">로컬푸드 입금</div><div class="metric-val" id="m-lf-total">-</div><div class="metric-sub">원</div></div>
+          <div class="metric" style="flex:1"><div class="metric-label">로컬푸드 건수</div><div class="metric-val" id="m-lf-count">10</div><div class="metric-sub">건</div></div>
+          <div class="metric" style="flex:2"><div class="metric-label">로컬푸드 입금</div><div class="metric-val" id="m-lf-total">4,489,874</div><div class="metric-sub">원</div></div>
         </div>
         <div style="background:#2d5a2d;border-radius:8px;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
           <span style="color:#a8d4a8;font-size:12px;font-weight:600">월간 총 수익</span>
-          <span style="color:#fff;font-size:16px;font-weight:700" id="m-grand-total">-</span>
+          <span style="color:#fff;font-size:16px;font-weight:700" id="m-grand-total">8,793,386원</span>
         </div>
         <!-- 전년도 비교 -->
-        <div id="m-yoy" style="margin-bottom:12px"></div>
+        <div id="m-yoy" style="margin-bottom:12px"><div style="background:#f4faf4;border:1px solid #d4edd4;border-radius:10px;padding:12px 16px">
+    <div style="font-size:12px;font-weight:700;color:#2d5a2d;margin-bottom:10px">📊 전년도 대비</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px">
+      
+        <div style="background:#fff;border-radius:8px;padding:10px 12px;border:1px solid #e0edd0">
+          <div style="font-size:11px;color:#5a7a5a;font-weight:600;margin-bottom:4px">박스 수량</div>
+          <div style="font-size:13px;font-weight:700;color:#1a1a1a;margin-bottom:3px">207개</div>
+          <div style="font-size:11px;color:#888">전년: 없음</div>
+          <div style="margin-top:4px"><span style="font-size:11px;color:#888">전년 데이터 없음</span></div>
+        </div>
+        <div style="background:#fff;border-radius:8px;padding:10px 12px;border:1px solid #e0edd0">
+          <div style="font-size:11px;color:#5a7a5a;font-weight:600;margin-bottom:4px">낙찰 총액</div>
+          <div style="font-size:13px;font-weight:700;color:#1a1a1a;margin-bottom:3px">4,734,500원</div>
+          <div style="font-size:11px;color:#888">전년: 없음</div>
+          <div style="margin-top:4px"><span style="font-size:11px;color:#888">전년 데이터 없음</span></div>
+        </div>
+        <div style="background:#fff;border-radius:8px;padding:10px 12px;border:1px solid #e0edd0">
+          <div style="font-size:11px;color:#5a7a5a;font-weight:600;margin-bottom:4px">수수료</div>
+          <div style="font-size:13px;font-weight:700;color:#1a1a1a;margin-bottom:3px">430,988원</div>
+          <div style="font-size:11px;color:#888">전년: 없음</div>
+          <div style="margin-top:4px"><span style="font-size:11px;color:#888">전년 데이터 없음</span></div>
+        </div>
+        <div style="background:#fff;border-radius:8px;padding:10px 12px;border:1px solid #e0edd0">
+          <div style="font-size:11px;color:#5a7a5a;font-weight:600;margin-bottom:4px">공판장 실수익</div>
+          <div style="font-size:13px;font-weight:700;color:#1a1a1a;margin-bottom:3px">4,303,512원</div>
+          <div style="font-size:11px;color:#888">전년: 없음</div>
+          <div style="margin-top:4px"><span style="font-size:11px;color:#888">전년 데이터 없음</span></div>
+        </div>
+        <div style="background:#fff;border-radius:8px;padding:10px 12px;border:1px solid #e0edd0">
+          <div style="font-size:11px;color:#5a7a5a;font-weight:600;margin-bottom:4px">로컬푸드</div>
+          <div style="font-size:13px;font-weight:700;color:#1a1a1a;margin-bottom:3px">4,489,874원</div>
+          <div style="font-size:11px;color:#888">전년: 없음</div>
+          <div style="margin-top:4px"><span style="font-size:11px;color:#888">전년 데이터 없음</span></div>
+        </div>
+        <div style="background:#fff;border-radius:8px;padding:10px 12px;border:1px solid #e0edd0">
+          <div style="font-size:11px;color:#5a7a5a;font-weight:600;margin-bottom:4px">월 총 수익</div>
+          <div style="font-size:13px;font-weight:700;color:#1a1a1a;margin-bottom:3px">8,793,386원</div>
+          <div style="font-size:11px;color:#888">전년: 없음</div>
+          <div style="margin-top:4px"><span style="font-size:11px;color:#888">전년 데이터 없음</span></div>
+        </div>
+    </div>
+  </div></div>
+        <!-- 요일별 낙찰가 분석 -->
+        <div style="margin-bottom:12px">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap">
+            <div style="font-size:13px;font-weight:600;color:#2d5a2d">📅 요일별 낙찰가 분석</div>
+            <select id="m-weekday-market" style="padding:5px 10px;border:1px solid #d8ead8;border-radius:6px;font-size:12px;background:#fff;outline:none;font-family:inherit;color:#2d5a2d"><option value="__all__">전체 시장</option><option value="서울가락시장 (한국청과)">서울가락시장 (한국청과)</option></select>
+            <select id="m-weekday-metric" style="padding:5px 10px;border:1px solid #d8ead8;border-radius:6px;font-size:12px;background:#fff;outline:none;font-family:inherit;color:#2d5a2d">
+              <option value="perUnit">개당 평균 낙찰가</option>
+              <option value="perShipment">출하 1회당 평균</option>
+              <option value="total">총 낙찰액</option>
+            </select>
+          </div>
+          <div id="m-weekday-summary">
+      <div style="display:grid;grid-template-columns:38px 1fr auto;gap:10px;align-items:center;margin-bottom:6px">
+        <div style="font-size:12px;font-weight:700;color:#c0392b;text-align:center">
+          일
+        </div>
+        <div style="background:#f0f4f0;border-radius:6px;height:22px;position:relative;overflow:hidden">
+          <div style="background:#e0d0d0;height:100%;width:91.83673469387756%;border-radius:6px;transition:width 0.3s"></div>
+        </div>
+        <div style="font-size:11px;color:#5a7a5a;text-align:right;white-space:nowrap">
+          <strong style="color:#2d5a2d">22,500</strong> 원/개 <span style="color:#aaa;font-size:10px">(1회)</span>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:38px 1fr auto;gap:10px;align-items:center;margin-bottom:6px">
+        <div style="font-size:12px;font-weight:700;color:#2d5a2d;text-align:center">
+          월
+        </div>
+        <div style="background:#f0f4f0;border-radius:6px;height:22px;position:relative;overflow:hidden">
+          <div style="background:#7ab07a;height:100%;width:91.83673469387756%;border-radius:6px;transition:width 0.3s"></div>
+        </div>
+        <div style="font-size:11px;color:#5a7a5a;text-align:right;white-space:nowrap">
+          <strong style="color:#2d5a2d">22,500</strong> 원/개 <span style="color:#aaa;font-size:10px">(1회)</span>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:38px 1fr auto;gap:10px;align-items:center;margin-bottom:6px">
+        <div style="font-size:12px;font-weight:700;color:#2d5a2d;text-align:center">
+          화 ★
+        </div>
+        <div style="background:#f0f4f0;border-radius:6px;height:22px;position:relative;overflow:hidden">
+          <div style="background:#2d5a2d;height:100%;width:100%;border-radius:6px;transition:width 0.3s"></div>
+        </div>
+        <div style="font-size:11px;color:#2d5a2d;text-align:right;white-space:nowrap">
+          <strong style="color:#2d5a2d">24,500</strong> 원/개 <span style="color:#aaa;font-size:10px">(1회)</span>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:38px 1fr auto;gap:10px;align-items:center;margin-bottom:6px">
+        <div style="font-size:12px;font-weight:700;color:#2d5a2d;text-align:center">
+          수
+        </div>
+        <div style="background:#f0f4f0;border-radius:6px;height:22px;position:relative;overflow:hidden">
+          
+        </div>
+        <div style="font-size:11px;color:#5a7a5a;text-align:right;white-space:nowrap">
+          <span style="color:#ccc">기록 없음</span>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:38px 1fr auto;gap:10px;align-items:center;margin-bottom:6px">
+        <div style="font-size:12px;font-weight:700;color:#2d5a2d;text-align:center">
+          목
+        </div>
+        <div style="background:#f0f4f0;border-radius:6px;height:22px;position:relative;overflow:hidden">
+          
+        </div>
+        <div style="font-size:11px;color:#5a7a5a;text-align:right;white-space:nowrap">
+          <span style="color:#ccc">기록 없음</span>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:38px 1fr auto;gap:10px;align-items:center;margin-bottom:6px">
+        <div style="font-size:12px;font-weight:700;color:#2d5a2d;text-align:center">
+          금
+        </div>
+        <div style="background:#f0f4f0;border-radius:6px;height:22px;position:relative;overflow:hidden">
+          <div style="background:#c0392b;height:100%;width:87.75510204081633%;border-radius:6px;transition:width 0.3s"></div>
+        </div>
+        <div style="font-size:11px;color:#c0392b;text-align:right;white-space:nowrap">
+          <strong style="color:#c0392b">21,500</strong> 원/개 <span style="color:#aaa;font-size:10px">(1회)</span>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:38px 1fr auto;gap:10px;align-items:center;margin-bottom:6px">
+        <div style="font-size:12px;font-weight:700;color:#2d5a2d;text-align:center">
+          토
+        </div>
+        <div style="background:#f0f4f0;border-radius:6px;height:22px;position:relative;overflow:hidden">
+          
+        </div>
+        <div style="font-size:11px;color:#5a7a5a;text-align:right;white-space:nowrap">
+          <span style="color:#ccc">기록 없음</span>
+        </div>
+      </div><div style="background:#f4faf4;border-radius:8px;padding:10px 14px;margin-top:10px;font-size:12px;color:#2d5a2d;line-height:1.6">
+        <strong>화요일</strong>이 개당 평균 <strong>24,500원/개</strong>로 가장 높고,
+        <strong>금요일</strong>이 <strong>21,500원/개</strong>로 가장 낮습니다.
+        요일별 차이는 약 <strong style="color:#c0392b">14.0%</strong>입니다.
+      </div></div>
+        </div>
         <div class="month-header-row"><div>일</div><div>월</div><div>화</div><div>수</div><div>목</div><div>금</div><div>토</div></div>
-        <div class="month-grid" id="monthly-grid"></div>
-        <div id="monthly-records"></div>
-        <div id="monthly-lf-records"></div>
+        <div class="month-grid" id="monthly-grid"><div class="month-cell other-month"></div><div class="month-cell other-month"></div><div class="month-cell other-month"></div><div class="month-cell has-data"><span>1</span><span class="cell-amt">65만</span></div><div class="month-cell"><span>2</span></div><div class="month-cell has-data"><span>3</span><span class="cell-amt">235만</span></div><div class="month-cell"><span>4</span></div><div class="month-cell"><span>5</span></div><div class="month-cell"><span>6</span></div><div class="month-cell"><span>7</span></div><div class="month-cell has-data"><span>8</span><span class="cell-amt">51만</span></div><div class="month-cell"><span>9</span></div><div class="month-cell"><span>10</span></div><div class="month-cell"><span>11</span></div><div class="month-cell"><span>12</span></div><div class="month-cell"><span>13</span></div><div class="month-cell"><span>14</span></div><div class="month-cell has-data"><span>15</span><span class="cell-amt">80만</span></div><div class="month-cell"><span>16</span></div><div class="month-cell has-data"><span>17</span><span class="cell-amt">99만</span></div><div class="month-cell"><span>18</span></div><div class="month-cell has-data"><span>19</span><span class="cell-amt">82만</span></div><div class="month-cell has-data"><span>20</span><span class="cell-amt">106만</span></div><div class="month-cell has-data"><span>21</span><span class="cell-amt">143만</span></div><div class="month-cell has-data"><span>22</span><span class="cell-amt">19만</span></div><div class="month-cell today"><span>23</span></div><div class="month-cell"><span>24</span></div><div class="month-cell"><span>25</span></div><div class="month-cell"><span>26</span></div><div class="month-cell"><span>27</span></div><div class="month-cell"><span>28</span></div><div class="month-cell"><span>29</span></div><div class="month-cell"><span>30</span></div></div>
+        <div id="monthly-records"><div style="font-size:12px;font-weight:600;color:#2d5a2d;margin:12px 0 6px">📦 공판장 출하 기록</div><div class="record-row">
+    <div class="record-row-header">
+      <span class="market-badge">서울가락시장 (한국청과)</span>
+      <span class="date-info">출하: 2026-04-21</span>
+      <span style="background:#fff8e8;color:#8a5a00;padding:2px 8px;border-radius:5px;font-size:11px;font-weight:600">수수료율 8.5%</span>
+      <button class="btn btn-sm btn-danger" style="margin-left:auto" onclick="deleteRecordById(&#39;r_1776948467334&#39;)">삭제</button>
+    </div>
+    <div class="record-grades"><span class="record-grade-item"><span class="grade-badge badge-특">특</span> 64개 × 24,500원 = <strong>1,568,000원</strong></span></div>
+    <div class="record-totals">
+      총수량 <span>64개</span> 낙찰총액 <span>1,568,000원</span> 입금액 <span>1,434,280원</span> 수수료 <span style="color:#c0392b">-133,720원</span>
+      실수익(입금액) <span style="color:#2d5a2d">1,434,280원</span>
+      
+    </div>
+  </div><div class="record-row">
+    <div class="record-row-header">
+      <span class="market-badge">서울가락시장 (한국청과)</span>
+      <span class="date-info">출하: 2026-04-20</span>
+      <span style="background:#fff8e8;color:#8a5a00;padding:2px 8px;border-radius:5px;font-size:11px;font-weight:600">수수료율 9.4%</span>
+      <button class="btn btn-sm btn-danger" style="margin-left:auto" onclick="deleteRecordById(&#39;r_1776857269029&#39;)">삭제</button>
+    </div>
+    <div class="record-grades"><span class="record-grade-item"><span class="grade-badge badge-특">특</span> 52개 × 22,500원 = <strong>1,170,000원</strong></span></div>
+    <div class="record-totals">
+      총수량 <span>52개</span> 낙찰총액 <span>1,170,000원</span> 입금액 <span>1,059,552원</span> 수수료 <span style="color:#c0392b">-110,448원</span>
+      실수익(입금액) <span style="color:#2d5a2d">1,059,552원</span>
+      
+    </div>
+  </div><div class="record-row">
+    <div class="record-row-header">
+      <span class="market-badge">서울가락시장 (한국청과)</span>
+      <span class="date-info">출하: 2026-04-19</span>
+      <span style="background:#fff8e8;color:#8a5a00;padding:2px 8px;border-radius:5px;font-size:11px;font-weight:600">수수료율 9.4%</span>
+      <button class="btn btn-sm btn-danger" style="margin-left:auto" onclick="deleteRecordById(&#39;r_1776857222757&#39;)">삭제</button>
+    </div>
+    <div class="record-grades"><span class="record-grade-item"><span class="grade-badge badge-특">특</span> 40개 × 22,500원 = <strong>900,000원</strong></span></div>
+    <div class="record-totals">
+      총수량 <span>40개</span> 낙찰총액 <span>900,000원</span> 입금액 <span>815,040원</span> 수수료 <span style="color:#c0392b">-84,960원</span>
+      실수익(입금액) <span style="color:#2d5a2d">815,040원</span>
+      
+    </div>
+  </div><div class="record-row">
+    <div class="record-row-header">
+      <span class="market-badge">서울가락시장 (한국청과)</span>
+      <span class="date-info">출하: 2026-04-17</span>
+      <span style="background:#fff8e8;color:#8a5a00;padding:2px 8px;border-radius:5px;font-size:11px;font-weight:600">수수료율 9.3%</span>
+      <button class="btn btn-sm btn-danger" style="margin-left:auto" onclick="deleteRecordById(&#39;r_1776779232363&#39;)">삭제</button>
+    </div>
+    <div class="record-grades"><span class="record-grade-item"><span class="grade-badge badge-특">특</span> 51개 × 21,500원 = <strong>1,096,500원</strong></span></div>
+    <div class="record-totals">
+      총수량 <span>51개</span> 낙찰총액 <span>1,096,500원</span> 입금액 <span>994,640원</span> 수수료 <span style="color:#c0392b">-101,860원</span>
+      실수익(입금액) <span style="color:#2d5a2d">994,640원</span>
+      
+    </div>
+  </div></div>
+        <div id="monthly-lf-records"><div style="font-size:12px;font-weight:600;color:#7a5a2d;margin:10px 0 6px">🏪 로컬푸드 입금 기록</div><div style="display:flex;align-items:center;gap:10px;padding:8px 12px;background:#f9fdf9;border:1px solid #e0edd0;border-radius:8px;margin-bottom:5px;font-size:13px;flex-wrap:wrap"><span style="color:#5a7a5a;min-width:80px">2026-04-22</span><span style="background:#7a5a2d;color:#fff;padding:2px 9px;border-radius:5px;font-size:11px;font-weight:700">영등점</span><span style="font-weight:700;flex:1">58,960원</span><button class="btn btn-sm btn-danger" onclick="deleteLfRecord(&#39;lf_1776857321237&#39;)">삭제</button></div><div style="display:flex;align-items:center;gap:10px;padding:8px 12px;background:#f9fdf9;border:1px solid #e0edd0;border-radius:8px;margin-bottom:5px;font-size:13px;flex-wrap:wrap"><span style="color:#5a7a5a;min-width:80px">2026-04-22</span><span style="background:#7a5a2d;color:#fff;padding:2px 9px;border-radius:5px;font-size:11px;font-weight:700">원협하나로</span><span style="font-weight:700;flex:1">126,368원</span><button class="btn btn-sm btn-danger" onclick="deleteLfRecord(&#39;lf_1776857308813&#39;)">삭제</button></div><div style="display:flex;align-items:center;gap:10px;padding:8px 12px;background:#f9fdf9;border:1px solid #e0edd0;border-radius:8px;margin-bottom:5px;font-size:13px;flex-wrap:wrap"><span style="color:#5a7a5a;min-width:80px">2026-04-15</span><span style="background:#7a5a2d;color:#fff;padding:2px 9px;border-radius:5px;font-size:11px;font-weight:700">모현로컬</span><span style="font-weight:700;flex:1">213,030원</span><button class="btn btn-sm btn-danger" onclick="deleteLfRecord(&#39;lf_1776857348965&#39;)">삭제</button></div><div style="display:flex;align-items:center;gap:10px;padding:8px 12px;background:#f9fdf9;border:1px solid #e0edd0;border-radius:8px;margin-bottom:5px;font-size:13px;flex-wrap:wrap"><span style="color:#5a7a5a;min-width:80px">2026-04-15</span><span style="background:#7a5a2d;color:#fff;padding:2px 9px;border-radius:5px;font-size:11px;font-weight:700">어양점</span><span style="font-weight:700;flex:1">589,050원</span><button class="btn btn-sm btn-danger" onclick="deleteLfRecord(&#39;lf_1776857335485&#39;)">삭제</button></div><div style="display:flex;align-items:center;gap:10px;padding:8px 12px;background:#f9fdf9;border:1px solid #e0edd0;border-radius:8px;margin-bottom:5px;font-size:13px;flex-wrap:wrap"><span style="color:#5a7a5a;min-width:80px">2026-04-08</span><span style="background:#7a5a2d;color:#fff;padding:2px 9px;border-radius:5px;font-size:11px;font-weight:700">원협하나로</span><span style="font-weight:700;flex:1">408,672원</span><button class="btn btn-sm btn-danger" onclick="deleteLfRecord(&#39;lf_1776857371413&#39;)">삭제</button></div><div style="display:flex;align-items:center;gap:10px;padding:8px 12px;background:#f9fdf9;border:1px solid #e0edd0;border-radius:8px;margin-bottom:5px;font-size:13px;flex-wrap:wrap"><span style="color:#5a7a5a;min-width:80px">2026-04-08</span><span style="background:#7a5a2d;color:#fff;padding:2px 9px;border-radius:5px;font-size:11px;font-weight:700">영등점</span><span style="font-weight:700;flex:1">96,800원</span><button class="btn btn-sm btn-danger" onclick="deleteLfRecord(&#39;lf_1776857360029&#39;)">삭제</button></div><div style="display:flex;align-items:center;gap:10px;padding:8px 12px;background:#f9fdf9;border:1px solid #e0edd0;border-radius:8px;margin-bottom:5px;font-size:13px;flex-wrap:wrap"><span style="color:#5a7a5a;min-width:80px">2026-04-03</span><span style="background:#7a5a2d;color:#fff;padding:2px 9px;border-radius:5px;font-size:11px;font-weight:700">어양점</span><span style="font-weight:700;flex:1">1,495,530원</span><button class="btn btn-sm btn-danger" onclick="deleteLfRecord(&#39;lf_1776857393001&#39;)">삭제</button></div><div style="display:flex;align-items:center;gap:10px;padding:8px 12px;background:#f9fdf9;border:1px solid #e0edd0;border-radius:8px;margin-bottom:5px;font-size:13px;flex-wrap:wrap"><span style="color:#5a7a5a;min-width:80px">2026-04-03</span><span style="background:#7a5a2d;color:#fff;padding:2px 9px;border-radius:5px;font-size:11px;font-weight:700">모현로컬</span><span style="font-weight:700;flex:1">851,760원</span><button class="btn btn-sm btn-danger" onclick="deleteLfRecord(&#39;lf_1776857386565&#39;)">삭제</button></div><div style="display:flex;align-items:center;gap:10px;padding:8px 12px;background:#f9fdf9;border:1px solid #e0edd0;border-radius:8px;margin-bottom:5px;font-size:13px;flex-wrap:wrap"><span style="color:#5a7a5a;min-width:80px">2026-04-01</span><span style="background:#7a5a2d;color:#fff;padding:2px 9px;border-radius:5px;font-size:11px;font-weight:700">모현로컬</span><span style="font-weight:700;flex:1">383,328원</span><button class="btn btn-sm btn-danger" onclick="deleteLfRecord(&#39;lf_1776857414165&#39;)">삭제</button></div><div style="display:flex;align-items:center;gap:10px;padding:8px 12px;background:#f9fdf9;border:1px solid #e0edd0;border-radius:8px;margin-bottom:5px;font-size:13px;flex-wrap:wrap"><span style="color:#5a7a5a;min-width:80px">2026-04-01</span><span style="background:#7a5a2d;color:#fff;padding:2px 9px;border-radius:5px;font-size:11px;font-weight:700">영등점</span><span style="font-weight:700;flex:1">266,376원</span><button class="btn btn-sm btn-danger" onclick="deleteLfRecord(&#39;lf_1776857408573&#39;)">삭제</button></div></div>
       </div>
     </div>
 
@@ -357,7 +622,7 @@ input.money{text-align:right}
       <div class="card">
         <div class="week-nav">
           <button onclick="changeYear(-1)">◀</button>
-          <span id="year-label" style="font-weight:600"></span>
+          <span id="year-label" style="font-weight:600">2026년</span>
           <button onclick="changeYear(1)">▶</button>
           <button class="btn btn-sm" style="margin-left:8px" onclick="goThisYear()">올해</button>
           <button class="btn btn-sm btn-primary" style="margin-left:auto" onclick="downloadPdf()">📄 PDF 다운로드</button>
@@ -365,41 +630,272 @@ input.money{text-align:right}
         <!-- 공판장 연간 요약 -->
         <div class="card-title" style="margin-bottom:8px">📦 공판장 출하 요약</div>
         <div class="summary-grid-5">
-          <div class="metric"><div class="metric-label">연간 출하</div><div class="metric-val" id="y-count">-</div><div class="metric-sub">회</div></div>
-          <div class="metric"><div class="metric-label">연간 수량</div><div class="metric-val" id="y-qty">-</div><div class="metric-sub">개</div></div>
-          <div class="metric"><div class="metric-label">연간 낙찰액</div><div class="metric-val" id="y-total">-</div><div class="metric-sub">원</div></div>
-          <div class="metric danger"><div class="metric-label">연간 수수료</div><div class="metric-val" id="y-fee">-</div><div class="metric-sub">원</div></div>
-          <div class="metric highlight"><div class="metric-label">공판장 실수익</div><div class="metric-val" id="y-net">-</div><div class="metric-sub">원</div></div>
+          <div class="metric"><div class="metric-label">연간 출하</div><div class="metric-val" id="y-count">4</div><div class="metric-sub">회</div></div>
+          <div class="metric"><div class="metric-label">연간 수량</div><div class="metric-val" id="y-qty">207</div><div class="metric-sub">개</div></div>
+          <div class="metric"><div class="metric-label">연간 낙찰액</div><div class="metric-val" id="y-total">4,734,500</div><div class="metric-sub">원</div></div>
+          <div class="metric danger"><div class="metric-label">연간 수수료</div><div class="metric-val" id="y-fee">430,988</div><div class="metric-sub">원</div></div>
+          <div class="metric highlight"><div class="metric-label">공판장 실수익</div><div class="metric-val" id="y-net">4,303,512</div><div class="metric-sub">원</div></div>
         </div>
         <!-- 시장별 합계 -->
         <div style="margin-bottom:12px">
           <div style="font-size:13px;font-weight:600;color:#2d5a2d;margin-bottom:8px">시장별 합계</div>
-          <div id="y-market-summary"></div>
+          <div id="y-market-summary">
+    <div style="display:flex;align-items:center;gap:10px;padding:8px 12px;background:#f4faf4;border-radius:8px;margin-bottom:5px;font-size:12px;flex-wrap:wrap">
+      <span style="background:#2d5a2d;color:#fff;padding:2px 9px;border-radius:5px;font-size:11px;font-weight:700">서울가락시장 (한국청과)</span>
+      <span style="color:#5a7a5a">4회</span>
+      <span>낙찰 <strong>4,734,500</strong>원</span>
+      <span style="color:#c0392b">수수료 -430,988원</span>
+      <span style="margin-left:auto;font-weight:700;color:#2d5a2d">실수익 4,303,512원</span>
+    </div></div>
+        </div>
+        <div class="divider"></div>
+        <!-- 요일별 낙찰가 분석 -->
+        <div style="margin-bottom:12px">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap">
+            <div style="font-size:13px;font-weight:600;color:#2d5a2d">📅 요일별 낙찰가 분석</div>
+            <select id="y-weekday-market" style="padding:5px 10px;border:1px solid #d8ead8;border-radius:6px;font-size:12px;background:#fff;outline:none;font-family:inherit;color:#2d5a2d"><option value="__all__">전체 시장</option><option value="서울가락시장 (한국청과)">서울가락시장 (한국청과)</option></select>
+            <select id="y-weekday-metric" style="padding:5px 10px;border:1px solid #d8ead8;border-radius:6px;font-size:12px;background:#fff;outline:none;font-family:inherit;color:#2d5a2d">
+              <option value="perUnit">개당 평균 낙찰가</option>
+              <option value="perShipment">출하 1회당 평균</option>
+              <option value="total">총 낙찰액</option>
+            </select>
+          </div>
+          <div id="y-weekday-summary">
+      <div style="display:grid;grid-template-columns:38px 1fr auto;gap:10px;align-items:center;margin-bottom:6px">
+        <div style="font-size:12px;font-weight:700;color:#c0392b;text-align:center">
+          일
+        </div>
+        <div style="background:#f0f4f0;border-radius:6px;height:22px;position:relative;overflow:hidden">
+          <div style="background:#e0d0d0;height:100%;width:91.83673469387756%;border-radius:6px;transition:width 0.3s"></div>
+        </div>
+        <div style="font-size:11px;color:#5a7a5a;text-align:right;white-space:nowrap">
+          <strong style="color:#2d5a2d">22,500</strong> 원/개 <span style="color:#aaa;font-size:10px">(1회)</span>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:38px 1fr auto;gap:10px;align-items:center;margin-bottom:6px">
+        <div style="font-size:12px;font-weight:700;color:#2d5a2d;text-align:center">
+          월
+        </div>
+        <div style="background:#f0f4f0;border-radius:6px;height:22px;position:relative;overflow:hidden">
+          <div style="background:#7ab07a;height:100%;width:91.83673469387756%;border-radius:6px;transition:width 0.3s"></div>
+        </div>
+        <div style="font-size:11px;color:#5a7a5a;text-align:right;white-space:nowrap">
+          <strong style="color:#2d5a2d">22,500</strong> 원/개 <span style="color:#aaa;font-size:10px">(1회)</span>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:38px 1fr auto;gap:10px;align-items:center;margin-bottom:6px">
+        <div style="font-size:12px;font-weight:700;color:#2d5a2d;text-align:center">
+          화 ★
+        </div>
+        <div style="background:#f0f4f0;border-radius:6px;height:22px;position:relative;overflow:hidden">
+          <div style="background:#2d5a2d;height:100%;width:100%;border-radius:6px;transition:width 0.3s"></div>
+        </div>
+        <div style="font-size:11px;color:#2d5a2d;text-align:right;white-space:nowrap">
+          <strong style="color:#2d5a2d">24,500</strong> 원/개 <span style="color:#aaa;font-size:10px">(1회)</span>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:38px 1fr auto;gap:10px;align-items:center;margin-bottom:6px">
+        <div style="font-size:12px;font-weight:700;color:#2d5a2d;text-align:center">
+          수
+        </div>
+        <div style="background:#f0f4f0;border-radius:6px;height:22px;position:relative;overflow:hidden">
+          
+        </div>
+        <div style="font-size:11px;color:#5a7a5a;text-align:right;white-space:nowrap">
+          <span style="color:#ccc">기록 없음</span>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:38px 1fr auto;gap:10px;align-items:center;margin-bottom:6px">
+        <div style="font-size:12px;font-weight:700;color:#2d5a2d;text-align:center">
+          목
+        </div>
+        <div style="background:#f0f4f0;border-radius:6px;height:22px;position:relative;overflow:hidden">
+          
+        </div>
+        <div style="font-size:11px;color:#5a7a5a;text-align:right;white-space:nowrap">
+          <span style="color:#ccc">기록 없음</span>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:38px 1fr auto;gap:10px;align-items:center;margin-bottom:6px">
+        <div style="font-size:12px;font-weight:700;color:#2d5a2d;text-align:center">
+          금
+        </div>
+        <div style="background:#f0f4f0;border-radius:6px;height:22px;position:relative;overflow:hidden">
+          <div style="background:#c0392b;height:100%;width:87.75510204081633%;border-radius:6px;transition:width 0.3s"></div>
+        </div>
+        <div style="font-size:11px;color:#c0392b;text-align:right;white-space:nowrap">
+          <strong style="color:#c0392b">21,500</strong> 원/개 <span style="color:#aaa;font-size:10px">(1회)</span>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:38px 1fr auto;gap:10px;align-items:center;margin-bottom:6px">
+        <div style="font-size:12px;font-weight:700;color:#2d5a2d;text-align:center">
+          토
+        </div>
+        <div style="background:#f0f4f0;border-radius:6px;height:22px;position:relative;overflow:hidden">
+          
+        </div>
+        <div style="font-size:11px;color:#5a7a5a;text-align:right;white-space:nowrap">
+          <span style="color:#ccc">기록 없음</span>
+        </div>
+      </div><div style="background:#f4faf4;border-radius:8px;padding:10px 14px;margin-top:10px;font-size:12px;color:#2d5a2d;line-height:1.6">
+        <strong>화요일</strong>이 개당 평균 <strong>24,500원/개</strong>로 가장 높고,
+        <strong>금요일</strong>이 <strong>21,500원/개</strong>로 가장 낮습니다.
+        요일별 차이는 약 <strong style="color:#c0392b">14.0%</strong>입니다.
+      </div></div>
         </div>
         <div class="divider"></div>
         <!-- 로컬푸드 연간 요약 -->
         <div class="card-title" style="margin-bottom:8px">🏪 로컬푸드 요약</div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">
-          <div class="metric highlight"><div class="metric-label">로컬푸드 총 입금</div><div class="metric-val" id="y-lf-total">-</div><div class="metric-sub">원</div></div>
-          <div class="metric"><div class="metric-label">로컬푸드 건수</div><div class="metric-val" id="y-lf-count">-</div><div class="metric-sub">건</div></div>
+          <div class="metric highlight"><div class="metric-label">로컬푸드 총 입금</div><div class="metric-val" id="y-lf-total">4,489,874</div><div class="metric-sub">원</div></div>
+          <div class="metric"><div class="metric-label">로컬푸드 건수</div><div class="metric-val" id="y-lf-count">10</div><div class="metric-sub">건</div></div>
         </div>
         <!-- 매장별 합계 -->
         <div style="margin-bottom:12px">
           <div style="font-size:13px;font-weight:600;color:#2d5a2d;margin-bottom:8px">매장별 합계</div>
-          <div id="y-lf-store-summary"></div>
+          <div id="y-lf-store-summary">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:7px 12px;background:#f4faf4;border-radius:8px;margin-bottom:5px;font-size:12px">
+      <span style="background:#7a5a2d;color:#fff;padding:2px 9px;border-radius:5px;font-size:11px;font-weight:700">어양점</span>
+      <span style="font-weight:700">2,084,580원</span>
+    </div>
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:7px 12px;background:#f4faf4;border-radius:8px;margin-bottom:5px;font-size:12px">
+      <span style="background:#7a5a2d;color:#fff;padding:2px 9px;border-radius:5px;font-size:11px;font-weight:700">모현로컬</span>
+      <span style="font-weight:700">1,448,118원</span>
+    </div>
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:7px 12px;background:#f4faf4;border-radius:8px;margin-bottom:5px;font-size:12px">
+      <span style="background:#7a5a2d;color:#fff;padding:2px 9px;border-radius:5px;font-size:11px;font-weight:700">원협하나로</span>
+      <span style="font-weight:700">535,040원</span>
+    </div>
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:7px 12px;background:#f4faf4;border-radius:8px;margin-bottom:5px;font-size:12px">
+      <span style="background:#7a5a2d;color:#fff;padding:2px 9px;border-radius:5px;font-size:11px;font-weight:700">영등점</span>
+      <span style="font-weight:700">422,136원</span>
+    </div></div>
         </div>
         <div class="divider"></div>
         <!-- 전체 합산 -->
         <div style="background:#2d5a2d;border-radius:10px;padding:14px 18px;display:flex;justify-content:space-between;align-items:center">
           <span style="color:#a8d4a8;font-size:13px;font-weight:600">연간 총 수익 (공판장 실수익 + 로컬푸드)</span>
-          <span style="color:#fff;font-size:20px;font-weight:700" id="y-grand-total">-</span>
+          <span style="color:#fff;font-size:20px;font-weight:700" id="y-grand-total">8,793,386원</span>
         </div>
         <!-- 전년도 비교 -->
-        <div id="y-yoy" style="margin-top:12px"></div>
+        <div id="y-yoy" style="margin-top:12px"><div style="background:#f4faf4;border:1px solid #d4edd4;border-radius:10px;padding:12px 16px">
+    <div style="font-size:12px;font-weight:700;color:#2d5a2d;margin-bottom:10px">📊 전년도 대비</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px">
+      
+        <div style="background:#fff;border-radius:8px;padding:10px 12px;border:1px solid #e0edd0">
+          <div style="font-size:11px;color:#5a7a5a;font-weight:600;margin-bottom:4px">연간 박스 수량</div>
+          <div style="font-size:13px;font-weight:700;color:#1a1a1a;margin-bottom:3px">207개</div>
+          <div style="font-size:11px;color:#888">전년: 없음</div>
+          <div style="margin-top:4px"><span style="font-size:11px;color:#888">전년 데이터 없음</span></div>
+        </div>
+        <div style="background:#fff;border-radius:8px;padding:10px 12px;border:1px solid #e0edd0">
+          <div style="font-size:11px;color:#5a7a5a;font-weight:600;margin-bottom:4px">낙찰 총액</div>
+          <div style="font-size:13px;font-weight:700;color:#1a1a1a;margin-bottom:3px">4,734,500원</div>
+          <div style="font-size:11px;color:#888">전년: 없음</div>
+          <div style="margin-top:4px"><span style="font-size:11px;color:#888">전년 데이터 없음</span></div>
+        </div>
+        <div style="background:#fff;border-radius:8px;padding:10px 12px;border:1px solid #e0edd0">
+          <div style="font-size:11px;color:#5a7a5a;font-weight:600;margin-bottom:4px">수수료+운송비</div>
+          <div style="font-size:13px;font-weight:700;color:#1a1a1a;margin-bottom:3px">430,988원</div>
+          <div style="font-size:11px;color:#888">전년: 없음</div>
+          <div style="margin-top:4px"><span style="font-size:11px;color:#888">전년 데이터 없음</span></div>
+        </div>
+        <div style="background:#fff;border-radius:8px;padding:10px 12px;border:1px solid #e0edd0">
+          <div style="font-size:11px;color:#5a7a5a;font-weight:600;margin-bottom:4px">공판장 실수익</div>
+          <div style="font-size:13px;font-weight:700;color:#1a1a1a;margin-bottom:3px">4,303,512원</div>
+          <div style="font-size:11px;color:#888">전년: 없음</div>
+          <div style="margin-top:4px"><span style="font-size:11px;color:#888">전년 데이터 없음</span></div>
+        </div>
+        <div style="background:#fff;border-radius:8px;padding:10px 12px;border:1px solid #e0edd0">
+          <div style="font-size:11px;color:#5a7a5a;font-weight:600;margin-bottom:4px">로컬푸드</div>
+          <div style="font-size:13px;font-weight:700;color:#1a1a1a;margin-bottom:3px">4,489,874원</div>
+          <div style="font-size:11px;color:#888">전년: 없음</div>
+          <div style="margin-top:4px"><span style="font-size:11px;color:#888">전년 데이터 없음</span></div>
+        </div>
+        <div style="background:#fff;border-radius:8px;padding:10px 12px;border:1px solid #e0edd0">
+          <div style="font-size:11px;color:#5a7a5a;font-weight:600;margin-bottom:4px">연간 총 수익</div>
+          <div style="font-size:13px;font-weight:700;color:#1a1a1a;margin-bottom:3px">8,793,386원</div>
+          <div style="font-size:11px;color:#888">전년: 없음</div>
+          <div style="margin-top:4px"><span style="font-size:11px;color:#888">전년 데이터 없음</span></div>
+        </div>
+    </div>
+  </div></div>
         <div class="divider"></div>
         <!-- 월별 상세 -->
         <div class="card-title" style="margin-bottom:8px">월별 상세</div>
-        <div class="year-months" id="year-grid"></div>
+        <div class="year-months" id="year-grid"><div class="year-month-card">
+      <div class="m-name">1월</div>
+      <div class="m-stat">공판장 0회 · 0개</div>
+      <div class="m-stat">공판장 실수익 <strong>0원</strong></div>
+      
+      <div class="m-amt" style="margin-top:4px;border-top:1px solid #e0edd0;padding-top:4px">-</div>
+      </div><div class="year-month-card">
+      <div class="m-name">2월</div>
+      <div class="m-stat">공판장 0회 · 0개</div>
+      <div class="m-stat">공판장 실수익 <strong>0원</strong></div>
+      
+      <div class="m-amt" style="margin-top:4px;border-top:1px solid #e0edd0;padding-top:4px">-</div>
+      </div><div class="year-month-card">
+      <div class="m-name">3월</div>
+      <div class="m-stat">공판장 0회 · 0개</div>
+      <div class="m-stat">공판장 실수익 <strong>0원</strong></div>
+      
+      <div class="m-amt" style="margin-top:4px;border-top:1px solid #e0edd0;padding-top:4px">-</div>
+      </div><div class="year-month-card">
+      <div class="m-name">4월</div>
+      <div class="m-stat">공판장 4회 · 207개</div>
+      <div class="m-stat">공판장 실수익 <strong>4,303,512원</strong><span style="color:#c0392b;font-size:10px"> (수수료-430,988)</span></div>
+      <div class="m-stat">로컬푸드 <strong>4,489,874원</strong> (10건)</div>
+      <div class="m-amt" style="margin-top:4px;border-top:1px solid #e0edd0;padding-top:4px">8,793,386원</div>
+      <div style="font-size:10px;font-weight:700;color:#c0392b;margin-top:2px">▲ +8,793,386원 (+0%)</div></div><div class="year-month-card">
+      <div class="m-name">5월</div>
+      <div class="m-stat">공판장 0회 · 0개</div>
+      <div class="m-stat">공판장 실수익 <strong>0원</strong></div>
+      
+      <div class="m-amt" style="margin-top:4px;border-top:1px solid #e0edd0;padding-top:4px">-</div>
+      </div><div class="year-month-card">
+      <div class="m-name">6월</div>
+      <div class="m-stat">공판장 0회 · 0개</div>
+      <div class="m-stat">공판장 실수익 <strong>0원</strong></div>
+      
+      <div class="m-amt" style="margin-top:4px;border-top:1px solid #e0edd0;padding-top:4px">-</div>
+      </div><div class="year-month-card">
+      <div class="m-name">7월</div>
+      <div class="m-stat">공판장 0회 · 0개</div>
+      <div class="m-stat">공판장 실수익 <strong>0원</strong></div>
+      
+      <div class="m-amt" style="margin-top:4px;border-top:1px solid #e0edd0;padding-top:4px">-</div>
+      </div><div class="year-month-card">
+      <div class="m-name">8월</div>
+      <div class="m-stat">공판장 0회 · 0개</div>
+      <div class="m-stat">공판장 실수익 <strong>0원</strong></div>
+      
+      <div class="m-amt" style="margin-top:4px;border-top:1px solid #e0edd0;padding-top:4px">-</div>
+      </div><div class="year-month-card">
+      <div class="m-name">9월</div>
+      <div class="m-stat">공판장 0회 · 0개</div>
+      <div class="m-stat">공판장 실수익 <strong>0원</strong></div>
+      
+      <div class="m-amt" style="margin-top:4px;border-top:1px solid #e0edd0;padding-top:4px">-</div>
+      </div><div class="year-month-card">
+      <div class="m-name">10월</div>
+      <div class="m-stat">공판장 0회 · 0개</div>
+      <div class="m-stat">공판장 실수익 <strong>0원</strong></div>
+      
+      <div class="m-amt" style="margin-top:4px;border-top:1px solid #e0edd0;padding-top:4px">-</div>
+      </div><div class="year-month-card">
+      <div class="m-name">11월</div>
+      <div class="m-stat">공판장 0회 · 0개</div>
+      <div class="m-stat">공판장 실수익 <strong>0원</strong></div>
+      
+      <div class="m-amt" style="margin-top:4px;border-top:1px solid #e0edd0;padding-top:4px">-</div>
+      </div><div class="year-month-card">
+      <div class="m-name">12월</div>
+      <div class="m-stat">공판장 0회 · 0개</div>
+      <div class="m-stat">공판장 실수익 <strong>0원</strong></div>
+      
+      <div class="m-amt" style="margin-top:4px;border-top:1px solid #e0edd0;padding-top:4px">-</div>
+      </div></div>
       </div>
     </div>
 
@@ -452,17 +948,103 @@ input.money{text-align:right}
           <div class="card-title" style="margin-bottom:0">매장별 합계</div>
           <div class="week-nav" style="margin-bottom:0">
             <button onclick="changeLfMonth(-1)">◀</button>
-            <span id="lf-month-label" style="font-weight:600;font-size:13px"></span>
+            <span id="lf-month-label" style="font-weight:600;font-size:13px">2026년 4월</span>
             <button onclick="changeLfMonth(1)">▶</button>
             <button class="btn btn-sm" style="margin-left:6px" onclick="goLfThisMonth()">이번 달</button>
-            <button class="btn btn-sm" style="margin-left:4px" onclick="setLfView(&#39;month&#39;)" id="lf-btn-month">월간</button>
-            <button class="btn btn-sm" style="margin-left:4px" onclick="setLfView(&#39;year&#39;)" id="lf-btn-year">연간</button>
+            <button class="btn btn-sm" style="background: rgb(45, 90, 45); color: rgb(255, 255, 255); border-color: rgb(45, 90, 45);" onclick="setLfView(&#39;month&#39;)" id="lf-btn-month">월간</button>
+            <button class="btn btn-sm" style="" onclick="setLfView(&#39;year&#39;)" id="lf-btn-year">연간</button>
           </div>
         </div>
-        <div id="lf-store-summary"></div>
+        <div id="lf-store-summary">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:#f4faf4;border-radius:8px;margin-bottom:6px;font-size:13px">
+      <span style="font-weight:600;color:#2d5a2d">어양점</span>
+      <span style="font-weight:700">2,084,580원</span>
+    </div>
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:#f4faf4;border-radius:8px;margin-bottom:6px;font-size:13px">
+      <span style="font-weight:600;color:#2d5a2d">영등점</span>
+      <span style="font-weight:700">422,136원</span>
+    </div>
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:#f4faf4;border-radius:8px;margin-bottom:6px;font-size:13px">
+      <span style="font-weight:600;color:#2d5a2d">모현로컬</span>
+      <span style="font-weight:700">1,448,118원</span>
+    </div>
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:#f4faf4;border-radius:8px;margin-bottom:6px;font-size:13px">
+      <span style="font-weight:600;color:#2d5a2d">원협하나로</span>
+      <span style="font-weight:700">535,040원</span>
+    </div><div style="display:flex;justify-content:space-between;padding:10px 12px;background:#2d5a2d;border-radius:8px;margin-top:8px;font-size:14px;font-weight:700;color:#fff"><span>합계</span><span>4,489,874원</span></div></div>
         <div class="divider"></div>
         <div class="card-title">입금 기록</div>
-        <div id="lf-records-list"></div>
+        <div id="lf-records-list">
+    <div style="display:flex;align-items:center;gap:10px;padding:8px 12px;background:#f9fdf9;border:1px solid #e0edd0;border-radius:8px;margin-bottom:6px;font-size:13px;flex-wrap:wrap">
+      <span style="color:#5a7a5a;min-width:80px">2026-04-22</span>
+      <span style="background:#7a5a2d;color:#fff;padding:2px 9px;border-radius:5px;font-size:11px;font-weight:700">영등점</span>
+      <span style="font-weight:700;flex:1">58,960원</span>
+      
+      <button class="btn btn-sm btn-danger" onclick="deleteLfRecord(&#39;lf_1776857321237&#39;)">삭제</button>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px;padding:8px 12px;background:#f9fdf9;border:1px solid #e0edd0;border-radius:8px;margin-bottom:6px;font-size:13px;flex-wrap:wrap">
+      <span style="color:#5a7a5a;min-width:80px">2026-04-22</span>
+      <span style="background:#7a5a2d;color:#fff;padding:2px 9px;border-radius:5px;font-size:11px;font-weight:700">원협하나로</span>
+      <span style="font-weight:700;flex:1">126,368원</span>
+      
+      <button class="btn btn-sm btn-danger" onclick="deleteLfRecord(&#39;lf_1776857308813&#39;)">삭제</button>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px;padding:8px 12px;background:#f9fdf9;border:1px solid #e0edd0;border-radius:8px;margin-bottom:6px;font-size:13px;flex-wrap:wrap">
+      <span style="color:#5a7a5a;min-width:80px">2026-04-15</span>
+      <span style="background:#7a5a2d;color:#fff;padding:2px 9px;border-radius:5px;font-size:11px;font-weight:700">모현로컬</span>
+      <span style="font-weight:700;flex:1">213,030원</span>
+      
+      <button class="btn btn-sm btn-danger" onclick="deleteLfRecord(&#39;lf_1776857348965&#39;)">삭제</button>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px;padding:8px 12px;background:#f9fdf9;border:1px solid #e0edd0;border-radius:8px;margin-bottom:6px;font-size:13px;flex-wrap:wrap">
+      <span style="color:#5a7a5a;min-width:80px">2026-04-15</span>
+      <span style="background:#7a5a2d;color:#fff;padding:2px 9px;border-radius:5px;font-size:11px;font-weight:700">어양점</span>
+      <span style="font-weight:700;flex:1">589,050원</span>
+      
+      <button class="btn btn-sm btn-danger" onclick="deleteLfRecord(&#39;lf_1776857335485&#39;)">삭제</button>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px;padding:8px 12px;background:#f9fdf9;border:1px solid #e0edd0;border-radius:8px;margin-bottom:6px;font-size:13px;flex-wrap:wrap">
+      <span style="color:#5a7a5a;min-width:80px">2026-04-08</span>
+      <span style="background:#7a5a2d;color:#fff;padding:2px 9px;border-radius:5px;font-size:11px;font-weight:700">원협하나로</span>
+      <span style="font-weight:700;flex:1">408,672원</span>
+      
+      <button class="btn btn-sm btn-danger" onclick="deleteLfRecord(&#39;lf_1776857371413&#39;)">삭제</button>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px;padding:8px 12px;background:#f9fdf9;border:1px solid #e0edd0;border-radius:8px;margin-bottom:6px;font-size:13px;flex-wrap:wrap">
+      <span style="color:#5a7a5a;min-width:80px">2026-04-08</span>
+      <span style="background:#7a5a2d;color:#fff;padding:2px 9px;border-radius:5px;font-size:11px;font-weight:700">영등점</span>
+      <span style="font-weight:700;flex:1">96,800원</span>
+      
+      <button class="btn btn-sm btn-danger" onclick="deleteLfRecord(&#39;lf_1776857360029&#39;)">삭제</button>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px;padding:8px 12px;background:#f9fdf9;border:1px solid #e0edd0;border-radius:8px;margin-bottom:6px;font-size:13px;flex-wrap:wrap">
+      <span style="color:#5a7a5a;min-width:80px">2026-04-03</span>
+      <span style="background:#7a5a2d;color:#fff;padding:2px 9px;border-radius:5px;font-size:11px;font-weight:700">어양점</span>
+      <span style="font-weight:700;flex:1">1,495,530원</span>
+      
+      <button class="btn btn-sm btn-danger" onclick="deleteLfRecord(&#39;lf_1776857393001&#39;)">삭제</button>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px;padding:8px 12px;background:#f9fdf9;border:1px solid #e0edd0;border-radius:8px;margin-bottom:6px;font-size:13px;flex-wrap:wrap">
+      <span style="color:#5a7a5a;min-width:80px">2026-04-03</span>
+      <span style="background:#7a5a2d;color:#fff;padding:2px 9px;border-radius:5px;font-size:11px;font-weight:700">모현로컬</span>
+      <span style="font-weight:700;flex:1">851,760원</span>
+      
+      <button class="btn btn-sm btn-danger" onclick="deleteLfRecord(&#39;lf_1776857386565&#39;)">삭제</button>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px;padding:8px 12px;background:#f9fdf9;border:1px solid #e0edd0;border-radius:8px;margin-bottom:6px;font-size:13px;flex-wrap:wrap">
+      <span style="color:#5a7a5a;min-width:80px">2026-04-01</span>
+      <span style="background:#7a5a2d;color:#fff;padding:2px 9px;border-radius:5px;font-size:11px;font-weight:700">모현로컬</span>
+      <span style="font-weight:700;flex:1">383,328원</span>
+      
+      <button class="btn btn-sm btn-danger" onclick="deleteLfRecord(&#39;lf_1776857414165&#39;)">삭제</button>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px;padding:8px 12px;background:#f9fdf9;border:1px solid #e0edd0;border-radius:8px;margin-bottom:6px;font-size:13px;flex-wrap:wrap">
+      <span style="color:#5a7a5a;min-width:80px">2026-04-01</span>
+      <span style="background:#7a5a2d;color:#fff;padding:2px 9px;border-radius:5px;font-size:11px;font-weight:700">영등점</span>
+      <span style="font-weight:700;flex:1">266,376원</span>
+      
+      <button class="btn btn-sm btn-danger" onclick="deleteLfRecord(&#39;lf_1776857408573&#39;)">삭제</button>
+    </div></div>
       </div>
     </div>
 
@@ -952,6 +1534,178 @@ function getYearStats(farmId, yr){
   return{...s,lfTotal,grand:s.net+lfTotal};
 }
 
+// 요일별 낙찰가 분석 (prefix: 'y'=연간, 'm'=월간)
+const WEEKDAY_NAMES=['일','월','화','수','목','금','토'];
+function aggregateByWeekday(recs,metric){
+  const byDay=WEEKDAY_NAMES.map(()=>({count:0,qty:0,total:0}));
+  recs.forEach(r=>{
+    const wd=new Date(r.shipDate).getDay();
+    byDay[wd].count++;
+    byDay[wd].qty+=(r.totalQty||0);
+    byDay[wd].total+=(r.totalPrice||0);
+  });
+  const values=byDay.map(d=>{
+    if(metric==='perUnit')return d.qty>0?d.total/d.qty:0;
+    if(metric==='perShipment')return d.count>0?d.total/d.count:0;
+    return d.total;
+  });
+  return{byDay,values};
+}
+function renderWeekdayAnalysis(allRecs,prefix,prevRecs,prevYearLabel,currYearLabel){
+  prefix=prefix||'y';
+  const auctionRecs=allRecs.filter(r=>!r.isLocal&&r.shipDate&&r.totalPrice>0);
+  const prevAuctionRecs=(prevRecs||[]).filter(r=>!r.isLocal&&r.shipDate&&r.totalPrice>0);
+  const marketSel=document.getElementById(prefix+'-weekday-market');
+  const metricSel=document.getElementById(prefix+'-weekday-metric');
+  const summaryEl=document.getElementById(prefix+'-weekday-summary');
+  if(!marketSel||!summaryEl)return;
+
+  // 시장 드롭다운 채우기 (현재+전년 합집합, 현재 선택값 유지)
+  const prevMarketSel=marketSel.value;
+  const markets=[...new Set([...auctionRecs,...prevAuctionRecs].map(r=>r.market))].sort();
+  marketSel.innerHTML='<option value="__all__">전체 시장</option>'+
+    markets.map(m=>`<option value="${m}">${m}</option>`).join('');
+  if(prevMarketSel&&(prevMarketSel==='__all__'||markets.includes(prevMarketSel)))marketSel.value=prevMarketSel;
+
+  function draw(){
+    const selMarket=marketSel.value;
+    const metric=metricSel.value;
+    const recs=selMarket==='__all__'?auctionRecs:auctionRecs.filter(r=>r.market===selMarket);
+    const pRecs=selMarket==='__all__'?prevAuctionRecs:prevAuctionRecs.filter(r=>r.market===selMarket);
+    if(!recs.length){
+      summaryEl.innerHTML='<div style="color:#aaa;font-size:13px;padding:8px 0">해당 조건에 출하 기록이 없습니다.</div>';
+      return;
+    }
+    const{byDay,values}=aggregateByWeekday(recs,metric);
+    const prev=aggregateByWeekday(pRecs,metric);
+    const pByDay=prev.byDay,pValues=prev.values;
+
+    // 올해 최고/최저
+    const validIdx=values.map((v,i)=>({v,i})).filter(x=>byDay[x.i].count>0);
+    const maxV=validIdx.length?Math.max(...validIdx.map(x=>x.v)):0;
+    const minV=validIdx.length?Math.min(...validIdx.map(x=>x.v)):0;
+    const bestIdx=validIdx.find(x=>x.v===maxV)?.i??-1;
+    const worstIdx=validIdx.find(x=>x.v===minV)?.i??-1;
+    // 작년 최고
+    const prevValidIdx=pValues.map((v,i)=>({v,i})).filter(x=>pByDay[x.i].count>0);
+    const prevMaxV=prevValidIdx.length?Math.max(...prevValidIdx.map(x=>x.v)):0;
+    const prevBestIdx=prevValidIdx.find(x=>x.v===prevMaxV)?.i??-1;
+
+    const metricLabel=metric==='perUnit'?'개당':metric==='perShipment'?'회당':'총';
+    const unit=metric==='perUnit'?'원/개':metric==='perShipment'?'원/회':'원';
+    const hasPrev=prevValidIdx.length>0;
+    const yLabelPrev=prevYearLabel||'작년';
+    const yLabelCurr=currYearLabel||'올해';
+    const yTagPrev=prevYearLabel?("'"+String(prevYearLabel).slice(-2)):"작년";
+
+    // 전년 대비 증감 (올해/작년 모두 데이터 있는 요일만)
+    const deltas=WEEKDAY_NAMES.map((_,i)=>{
+      if(byDay[i].count>0&&pByDay[i].count>0&&pValues[i]>0){
+        return((values[i]-pValues[i])/pValues[i]*100);
+      }
+      return null;
+    });
+    const deltaValid=deltas.map((d,i)=>({d,i})).filter(x=>x.d!==null);
+    let biggestUp=null,biggestDown=null;
+    if(deltaValid.length){
+      biggestUp=deltaValid.reduce((a,b)=>a.d>b.d?a:b);
+      biggestDown=deltaValid.reduce((a,b)=>a.d<b.d?a:b);
+      if(biggestUp.d<=0)biggestUp=null;
+      if(biggestDown.d>=0)biggestDown=null;
+    }
+
+    // 상단 전년 비교 요약 박스
+    let yoyBox='';
+    if(hasPrev){
+      const bestMoved=prevBestIdx>=0&&bestIdx>=0&&prevBestIdx!==bestIdx;
+      const bestLine=bestMoved
+        ?`최고가 요일: ${yLabelPrev} <strong>${WEEKDAY_NAMES[prevBestIdx]}요일</strong> → ${yLabelCurr} <strong>${WEEKDAY_NAMES[bestIdx]}요일</strong> (변경)`
+        :(prevBestIdx>=0?`최고가 요일: ${yLabelPrev} <strong>${WEEKDAY_NAMES[prevBestIdx]}요일</strong> → ${yLabelCurr} <strong>${WEEKDAY_NAMES[bestIdx]}요일</strong> (유지)`:'');
+      const upLine=biggestUp
+        ?`▲ 가장 많이 오른 요일: <strong>${WEEKDAY_NAMES[biggestUp.i]}요일</strong> <span style="color:#c0392b;font-weight:700">+${biggestUp.d.toFixed(1)}%</span> <span style="color:#8aaa8a">(${fmtN(Math.round(pValues[biggestUp.i]))} → ${fmtN(Math.round(values[biggestUp.i]))}${unit})</span>`
+        :'▲ 작년보다 오른 요일이 없습니다';
+      const downLine=biggestDown
+        ?`▼ 가장 많이 떨어진 요일: <strong>${WEEKDAY_NAMES[biggestDown.i]}요일</strong> <span style="color:#0c447c;font-weight:700">${biggestDown.d.toFixed(1)}%</span> <span style="color:#8aaa8a">(${fmtN(Math.round(pValues[biggestDown.i]))} → ${fmtN(Math.round(values[biggestDown.i]))}${unit})</span>`
+        :'▼ 작년보다 떨어진 요일이 없습니다';
+      yoyBox=`<div style="background:#f4faf4;border-radius:8px;padding:12px 14px;margin-bottom:12px;font-size:12px;color:#2d5a2d;line-height:1.8;border-left:3px solid #2d5a2d">
+        <div style="font-weight:700;color:#2d5a2d;margin-bottom:4px">${yLabelPrev} 대비 변화 요약</div>
+        <div>${upLine}</div>
+        <div>${downLine}</div>
+        ${bestLine?`<div style="color:#5a7a5a;margin-top:2px">${bestLine}</div>`:''}
+      </div>`;
+    }
+
+    // 범례
+    const legend=hasPrev?`<div style="display:flex;justify-content:flex-end;gap:14px;font-size:11px;color:#5a7a5a;margin-bottom:6px;padding-right:4px;flex-wrap:wrap">
+      <div style="display:flex;align-items:center;gap:5px"><div style="width:12px;height:12px;background:#2d5a2d;border-radius:3px"></div>${yLabelCurr}</div>
+      <div style="display:flex;align-items:center;gap:5px"><span style="color:#aaa;font-size:12px">vs</span><span style="color:#8aaa8a">${yLabelPrev}</span></div>
+    </div>`:'';
+
+    // 요일 막대 (A방식)
+    const cols=hasPrev?'38px 1fr 245px':'38px 1fr auto';
+    const bars=byDay.map((d,i)=>{
+      const hasData=d.count>0;
+      const v=values[i];
+      const pct=maxV>0?(v/maxV*100):0;
+      const isBest=i===bestIdx&&hasData;
+      const isWorst=i===worstIdx&&hasData&&bestIdx!==worstIdx;
+      const isSunday=i===0;
+      const barColor=isBest?'#2d5a2d':isWorst?'#c0392b':isSunday?'#e0d0d0':'#7ab07a';
+      const labelColor=isBest?'#2d5a2d':isWorst?'#c0392b':'#5a7a5a';
+
+      // 전년 비교 라벨
+      let yoyText='';
+      if(hasData){
+        if(pByDay[i].count>0&&pValues[i]>0){
+          const delta=((v-pValues[i])/pValues[i]*100);
+          const arrow=delta>=0?'▲':'▼';
+          const arrowColor=delta>=0?'#c0392b':'#0c447c';
+          const sign=delta>=0?'+':'';
+          yoyText=` <span style="color:${arrowColor};font-weight:700;margin-left:4px">${arrow} ${sign}${delta.toFixed(1)}%</span> <span style="color:#aaa;margin-left:4px">vs</span> <span style="color:#8aaa8a">${fmtN(Math.round(pValues[i]))}<span style="font-size:10px">(${yTagPrev})</span></span>`;
+        }else if(hasPrev){
+          yoyText=` <span style="color:#ccc;margin-left:4px">${yLabelPrev} 기록 없음</span>`;
+        }
+      }
+      const rightContent=hasData
+        ?`<strong style="color:${labelColor==='#c0392b'?'#c0392b':'#2d5a2d'}">${fmtN(Math.round(v))}</strong> ${unit} <span style="color:#aaa;font-size:10px">(${d.count}회)</span>${yoyText}`
+        :'<span style="color:#ccc">기록 없음</span>';
+
+      return `
+      <div style="display:grid;grid-template-columns:${cols};gap:10px;align-items:center;margin-bottom:6px">
+        <div style="font-size:12px;font-weight:700;color:${isSunday?'#c0392b':'#2d5a2d'};text-align:center">
+          ${WEEKDAY_NAMES[i]}${isBest?' ★':''}
+        </div>
+        <div style="background:#f0f4f0;border-radius:6px;height:22px;position:relative;overflow:hidden">
+          ${hasData?`<div style="background:${barColor};height:100%;width:${Math.max(pct,2)}%;border-radius:6px;transition:width 0.3s"></div>`:''}
+        </div>
+        <div style="font-size:11px;color:${labelColor};text-align:right;white-space:nowrap">
+          ${rightContent}
+        </div>
+      </div>`;
+    }).join('');
+
+    // 하단 해석 문구
+    let insight='';
+    if(validIdx.length>=2&&minV>0){
+      const diffPct=((maxV-minV)/minV*100).toFixed(1);
+      insight=`<div style="background:#f4faf4;border-radius:8px;padding:10px 14px;margin-top:10px;font-size:12px;color:#2d5a2d;line-height:1.6">
+        <strong>${WEEKDAY_NAMES[bestIdx]}요일</strong>이 ${metricLabel} 평균 <strong>${fmtN(Math.round(maxV))}${unit}</strong>로 가장 높고,
+        <strong>${WEEKDAY_NAMES[worstIdx]}요일</strong>이 <strong>${fmtN(Math.round(minV))}${unit}</strong>로 가장 낮습니다.
+        요일별 차이는 약 <strong style="color:#c0392b">${diffPct}%</strong>입니다.
+      </div>`;
+    }else if(validIdx.length===1){
+      insight=`<div style="background:#fff8e8;border-radius:8px;padding:10px 14px;margin-top:10px;font-size:12px;color:#8a5a00">
+        데이터가 한 요일에만 있어 비교가 어렵습니다.
+      </div>`;
+    }
+    summaryEl.innerHTML=yoyBox+legend+bars+insight;
+  }
+
+  marketSel.onchange=draw;
+  metricSel.onchange=draw;
+  draw();
+}
+
 function renderMonthly(){
   if(!state.currentMonth)state.currentMonth={y:today.getFullYear(),m:today.getMonth()};
   const{y,m}=state.currentMonth;
@@ -982,6 +1736,10 @@ function renderMonthly(){
     {label:'로컬푸드',curr:curr.lfTotal,prev:prev.lfTotal,unit:'원'},
     {label:'월 총 수익',curr:curr.grand,prev:prev.grand,unit:'원'},
   ]);
+  // 요일별 낙찰가 분석 (전년도 같은 달 비교 포함)
+  const prevYmStr=(y-1)+'-'+pad(m+1);
+  const prevMonthRecs=getRecords(state.currentFarm).filter(r=>r.shipDate&&r.shipDate.startsWith(prevYmStr));
+  renderWeekdayAnalysis(recs,'m',prevMonthRecs,(y-1)+'년 '+(m+1)+'월',y+'년 '+(m+1)+'월');
   // 캘린더
   const dim=new Date(y,m+1,0).getDate();
   const fd=new Date(y,m,1).getDay();
@@ -1040,6 +1798,10 @@ function renderYearly(){
       <span style="margin-left:auto;font-weight:700;color:#2d5a2d">실수익 ${fmtN(s.net)}원</span>
     </div>`).join('');
   mSumEl.innerHTML=mRows||'<div style="color:#aaa;font-size:13px">출하 기록이 없습니다.</div>';
+
+  // 요일별 낙찰가 분석 (전년도 비교 포함)
+  const prevYrRecs=getRecords(state.currentFarm).filter(r=>r.shipDate&&r.shipDate.startsWith((yr-1)+''));
+  renderWeekdayAnalysis(allRecs,'y',prevYrRecs,(yr-1)+'년',yr+'년');
 
   // 로컬푸드 연간
   const lfRecs=getLfRecords(state.currentFarm).filter(r=>r.date&&r.date.startsWith(yr+''));
