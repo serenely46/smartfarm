@@ -1,0 +1,1622 @@
+<!DOCTYPE html>
+<!-- saved from url=(0111)file:///C:/Users/User/Downloads/%EC%8A%A4%EB%A7%88%ED%8A%B8%ED%8C%9C_%EB%B0%A9%EC%A0%9C_%EA%B4%80%EB%A6%AC.html -->
+<html lang="ko"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>스마트팜 방제 관리</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans KR',sans-serif;background:#f0f4f0;color:#1a1a1a;font-size:14px}
+.app{max-width:1020px;margin:0 auto;padding:1.5rem}
+.header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:2px solid #c8dfc8}
+.header h1{font-size:20px;font-weight:700;color:#2d5a2d}
+.header-right{display:flex;align-items:center;gap:10px}
+.sync-status{font-size:12px;padding:4px 10px;border-radius:6px;font-weight:500}
+.sync-ok{background:#e8f8f0;color:#1B7A4A}
+.sync-ing{background:#fff8e8;color:#8a5a00}
+.sync-err{background:#fff0f0;color:#c0392b}
+.btn{background:#fff;border:1px solid #c8dfc8;border-radius:8px;padding:7px 16px;font-size:13px;cursor:pointer;color:#2d5a2d;transition:background 0.15s;font-family:inherit;font-weight:500}
+.btn:hover{background:#e8f4e8}
+.btn-primary{background:#2d5a2d;border-color:#2d5a2d;color:#fff}
+.btn-primary:hover{background:#1e3d1e}
+.btn-danger{background:#fff;border-color:#f5c0c0;color:#c0392b}
+.btn-danger:hover{background:#fff5f5}
+.btn-sm{padding:4px 10px;font-size:12px}
+
+/* 농장 탭 */
+.farm-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:1.5rem}
+.farm-tab{background:#fff;border:1px solid #c8dfc8;border-radius:8px;padding:8px 18px;font-size:13px;cursor:pointer;color:#5a7a5a;transition:all 0.15s;font-weight:500}
+.farm-tab.active{background:#2d5a2d;border-color:#2d5a2d;color:#fff;font-weight:700}
+.farm-tab:hover:not(.active){background:#e8f4e8}
+
+/* 섹션 탭 */
+.section-tabs{display:flex;gap:0;margin-bottom:1.5rem;border:1px solid #c8dfc8;border-radius:8px;overflow:hidden;width:fit-content;background:#fff;flex-wrap:wrap}
+.section-tab{background:transparent;border:none;padding:8px 18px;font-size:13px;cursor:pointer;color:#888;transition:all 0.15s;border-right:1px solid #c8dfc8;font-family:inherit}
+.section-tab:last-child{border-right:none}
+.section-tab.active{background:#e8f4e8;color:#2d5a2d;font-weight:600}
+
+/* 카드 */
+.card{background:#fff;border:1px solid #d8ead8;border-radius:12px;padding:1.4rem;margin-bottom:1rem;box-shadow:0 1px 4px rgba(45,90,45,0.06)}
+.card-title{font-size:14px;font-weight:700;color:#2d5a2d;margin-bottom:1rem}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:10px}
+.form-row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:10px}
+.form-row4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px;margin-bottom:10px}
+.form-group{display:flex;flex-direction:column;gap:5px}
+.form-group label{font-size:12px;color:#5a7a5a;font-weight:600}
+.form-group input,.form-group select,.form-group textarea{padding:8px 11px;border:1px solid #d8ead8;border-radius:8px;font-size:13px;color:#1a1a1a;background:#fff;outline:none;transition:border 0.15s;font-family:inherit}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:#2d5a2d}
+.form-group textarea{resize:vertical;min-height:60px}
+.divider{height:1px;background:#eaf4ea;margin:1rem 0}
+.hint{font-size:12px;color:#8aaa8a;margin-bottom:8px}
+
+/* 병해충 선택 칩 */
+.pest-chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
+.pest-chip{background:#fff;border:1px solid #d8ead8;border-radius:20px;padding:5px 13px;font-size:12px;cursor:pointer;color:#5a7a5a;transition:all 0.15s;font-family:inherit}
+.pest-chip:hover{background:#eaf4ea}
+.pest-chip.active{background:#2d5a2d;border-color:#2d5a2d;color:#fff;font-weight:600}
+.pest-type-label{font-size:11px;color:#8aaa8a;font-weight:600;margin:4px 0 2px;width:100%}
+
+/* 별점 */
+.rating{display:flex;gap:3px;align-items:center}
+.star{font-size:22px;cursor:pointer;color:#d8d0c0;transition:color 0.1s;user-select:none}
+.star.active{color:#f5b800}
+.star:hover{color:#f5b800}
+.rating-label{font-size:12px;color:#5a7a5a;margin-left:8px;font-weight:600}
+
+/* 요약 카드 */
+.summary-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:1.2rem}
+.summary-grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:1.2rem}
+.metric{background:#f4faf4;border-radius:8px;padding:13px;border:1px solid #e0edd0}
+.metric-label{font-size:11px;color:#5a7a5a;margin-bottom:5px;font-weight:600}
+.metric-val{font-size:18px;font-weight:700;color:#1a1a1a}
+.metric-sub{font-size:11px;color:#aaa;margin-top:2px}
+.metric.highlight{background:#2d5a2d;border-color:#2d5a2d}
+.metric.highlight .metric-label{color:#a8d4a8}
+.metric.highlight .metric-val{color:#fff}
+.metric.highlight .metric-sub{color:#7ab07a}
+.metric.danger{background:#fff5f5;border-color:#ffd0d0}
+.metric.danger .metric-val{color:#c0392b}
+.metric.warn{background:#fff8e8;border-color:#f5dcb0}
+.metric.warn .metric-val{color:#8a5a00}
+
+/* 방제 기록 */
+.record-row{background:#f9fdf9;border:1px solid #e0edd0;border-radius:8px;padding:12px 14px;margin-bottom:8px;font-size:13px}
+.record-row-header{display:flex;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap}
+.farm-badge{background:#2d5a2d;color:#fff;padding:3px 10px;border-radius:6px;font-size:12px;font-weight:700}
+.date-info{color:#5a7a5a;font-size:12px}
+.record-body{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:#5a7a5a;margin-bottom:6px}
+.record-body span.highlight-txt{color:#1a1a1a;font-weight:600}
+.pest-tag{display:inline-block;background:#fff5ee;color:#c0604b;border:1px solid #f4d0c0;padding:2px 8px;border-radius:5px;font-size:11px;font-weight:600;margin-right:4px}
+.pest-tag.fungus{background:#f0f5ff;color:#4b70c0;border-color:#c8d4f0}
+.record-footer{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;font-size:12px;color:#5a7a5a;border-top:1px solid #e0edd0;padding-top:6px;margin-top:6px}
+.record-actions{display:flex;gap:6px}
+
+/* 병해충 추이 */
+.trend-card{background:#f4faf4;border:1px solid #e0edd0;border-radius:8px;padding:12px;margin-bottom:8px}
+.trend-header{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px}
+.trend-name{font-weight:700;color:#2d5a2d;font-size:14px}
+.trend-count{font-size:12px;color:#5a7a5a;font-weight:600}
+.trend-bars{display:grid;grid-template-columns:repeat(12,1fr);gap:3px;align-items:end;height:54px}
+.trend-bar{background:#e0edd0;border-radius:3px 3px 0 0;position:relative;transition:background 0.15s;min-height:2px}
+.trend-bar.has-data{background:#2d5a2d}
+.trend-bar:hover{background:#1e3d1e}
+.trend-bar-label{font-size:9px;color:#8aaa8a;text-align:center;margin-top:2px}
+.trend-months{display:grid;grid-template-columns:repeat(12,1fr);gap:3px;font-size:9px;color:#aaa;text-align:center;margin-top:3px}
+.trend-tooltip{position:absolute;bottom:100%;left:50%;transform:translateX(-50%);background:#1e3d1e;color:#fff;padding:3px 7px;border-radius:4px;font-size:10px;white-space:nowrap;opacity:0;pointer-events:none;margin-bottom:4px;z-index:5}
+.trend-bar:hover .trend-tooltip{opacity:1}
+
+/* 농약 랭킹 */
+.rank-row{display:flex;align-items:center;gap:10px;padding:10px 12px;background:#f9fdf9;border:1px solid #e0edd0;border-radius:8px;margin-bottom:6px}
+.rank-num{background:#2d5a2d;color:#fff;width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0}
+.rank-num.gold{background:#d4a000}
+.rank-num.silver{background:#8a8a8a}
+.rank-num.bronze{background:#a86b2c}
+.rank-info{flex:1;min-width:0}
+.rank-name{font-weight:700;font-size:13px;color:#1a1a1a;margin-bottom:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rank-meta{font-size:11px;color:#8aaa8a}
+.rank-value{font-weight:700;color:#2d5a2d;font-size:13px;text-align:right}
+
+/* 농약 비교 테이블 */
+.compare-table{width:100%;border-collapse:collapse;font-size:12px}
+.compare-table th{background:#eaf4ea;color:#2d5a2d;font-weight:700;padding:8px;text-align:center;border:1px solid #d8ead8;font-size:11px}
+.compare-table td{padding:8px;border:1px solid #eaf4ea;text-align:center}
+.compare-table td:first-child{text-align:left;font-weight:600}
+.compare-table tr:hover td{background:#f4faf4}
+.star-display{color:#f5b800;letter-spacing:-1px}
+
+/* 모달 */
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,0.4);display:flex;align-items:center;justify-content:center;z-index:100}
+.modal{background:#fff;border:1px solid #d8ead8;border-radius:14px;padding:1.8rem;width:580px;max-width:95vw;max-height:90vh;overflow-y:auto;box-shadow:0 8px 32px rgba(0,0,0,0.12)}
+.modal h2{font-size:17px;font-weight:700;margin-bottom:1.3rem;color:#2d5a2d}
+.modal-footer{display:flex;justify-content:flex-end;gap:8px;margin-top:1.3rem}
+.hidden{display:none}
+.no-data{text-align:center;padding:3rem 1rem;color:#aaa;font-size:13px}
+.no-farm{text-align:center;padding:4rem;color:#aaa;font-size:14px}
+input.money{text-align:right}
+
+/* 검색 */
+.search-bar{display:flex;gap:8px;align-items:center;margin-bottom:12px;flex-wrap:wrap}
+.search-bar input,.search-bar select{padding:6px 10px;border:1px solid #d8ead8;border-radius:6px;font-size:12px;outline:none;font-family:inherit;color:#1a1a1a}
+.search-bar input{flex:1;min-width:180px}
+
+/* 제품 추가 카드 */
+.product-card{background:#f9fdf9;border:1px solid #e0edd0;border-radius:10px;padding:14px;margin-bottom:8px}
+.product-header{display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap}
+.product-num{background:#2d5a2d;color:#fff;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0}
+.product-type-select{border:1px solid #d8ead8;border-radius:6px;padding:4px 8px;font-size:12px;background:#fff;font-weight:600;outline:none;font-family:inherit;cursor:pointer}
+.product-type-select.t-pesticide{color:#c0604b}
+.product-type-select.t-nutrient{color:#4b70c0}
+.product-type-select.t-adjuvant{color:#5a5a5a}
+.product-type-select.t-other{color:#7a5a2d}
+.product-name-input{flex:1;min-width:120px;border:1px solid #d8ead8;border-radius:6px;padding:6px 10px;font-size:13px;font-weight:500;outline:none;font-family:inherit;color:#1a1a1a}
+.product-remove{background:transparent;border:none;color:#c0604b;font-size:18px;cursor:pointer;padding:0 8px;font-family:inherit;line-height:1}
+.product-remove:hover{color:#8a2818}
+.product-fields{display:grid;grid-template-columns:1.2fr 1.4fr 0.8fr 1.4fr;gap:8px;align-items:end}
+.product-mini-label{font-size:10px;color:#5a7a5a;font-weight:600;margin-bottom:3px}
+.product-fields input{width:100%;border:1px solid #d8ead8;border-radius:6px;padding:5px 8px;font-size:12px;outline:none;font-family:inherit;color:#1a1a1a}
+.product-fields input.money{text-align:right}
+.product-subtotal{background:#eaf4ea;border-radius:6px;padding:6px 10px;font-size:12px;text-align:right;font-weight:700;color:#2d5a2d;min-height:28px;display:flex;align-items:center;justify-content:flex-end}
+.add-product-btn{background:#2d5a2d;color:#fff;border:none;padding:6px 14px;border-radius:8px;font-size:12px;font-weight:500;cursor:pointer;font-family:inherit}
+.add-product-btn:hover{background:#1e3d1e}
+.products-total{background:#2d5a2d;border-radius:8px;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;margin-top:10px}
+.products-total-label{font-size:12px;color:#a8d4a8;font-weight:500}
+.products-total-val{font-size:18px;font-weight:700;color:#fff}
+
+/* 제품 종류 태그 (기록 목록용) */
+.type-tag{padding:1px 6px;border-radius:4px;font-size:10px;font-weight:600;flex-shrink:0}
+.type-tag.t-pesticide{background:#fff5ee;color:#c0604b}
+.type-tag.t-nutrient{background:#ecf3ff;color:#4b70c0}
+.type-tag.t-adjuvant{background:#f0f0ee;color:#5a5a5a}
+.type-tag.t-other{background:#fdf6e8;color:#7a5a2d}
+
+/* 기록 내 제품 한 줄 */
+.product-row{background:#fff;border:1px solid #eaf4ea;border-radius:6px;padding:8px 10px;margin-bottom:5px}
+.product-row-content{display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:12px}
+.product-row-name{font-weight:600;color:#1a1a1a}
+.product-row-meta{color:#888}
+.product-row-meta strong{color:#2d5a2d;font-weight:700}
+
+/* 모드 토글 */
+.mode-toggle{display:inline-flex;background:#eaf4ea;border-radius:6px;padding:2px;flex-shrink:0}
+.mode-toggle button{background:transparent;border:none;padding:3px 9px;font-size:11px;color:#5a7a5a;cursor:pointer;font-family:inherit;border-radius:4px}
+.mode-toggle button.active{background:#2d5a2d;color:#fff;font-weight:600}
+
+/* 사용량/사용용량 강조 */
+.input-with-unit{display:flex;gap:3px;align-items:center}
+.input-with-unit input{flex:1;min-width:0;border:1px solid #d8ead8;border-radius:6px;padding:5px 8px;font-size:12px;text-align:right;outline:none;font-family:inherit;color:#1a1a1a}
+.input-with-unit .unit-suffix{font-size:11px;color:#5a7a5a;font-weight:600;padding:0 2px}
+.input-with-unit select.unit-select{border:1px solid #d8ead8;border-radius:6px;padding:0 6px;font-size:11px;background:#fff;outline:none;font-family:inherit;color:#5a7a5a;cursor:pointer;min-width:48px}
+.usage-hi label{color:#c0604b!important;font-weight:700}
+.usage-hi input{border-color:#f4d0c0;background:#fff8f5}
+.calc-hint{background:#fff8f5;border-radius:6px;padding:5px 10px;font-size:11px;color:#5a7a5a;margin-top:6px}
+.calc-hint strong{color:#2d5a2d;font-weight:700}
+
+/* 제품별 병해충/영양 목적 섹션 */
+.product-extra{background:#fff;border-radius:8px;padding:10px 12px;margin-top:10px}
+.product-extra.pest-box{border:1px solid #f4d0c0}
+.product-extra.nutrient-box{border:1px solid #c8d4f0}
+.product-extra-title{font-size:11px;font-weight:700;margin-bottom:6px}
+.product-extra.pest-box .product-extra-title{color:#c0604b}
+.product-extra.nutrient-box .product-extra-title{color:#4b70c0}
+.pest-type-label-sm{font-size:10px;color:#8aaa8a;font-weight:600;margin:4px 0 3px}
+.mini-chip{background:#fff;border:1px solid #d8ead8;border-radius:14px;padding:2px 9px;font-size:11px;cursor:pointer;color:#5a7a5a;font-family:inherit;line-height:1.4}
+.mini-chip:hover{background:#eaf4ea}
+.mini-chip.active.pest-active{background:#c0604b;border-color:#c0604b;color:#fff;font-weight:600}
+.mini-chip.active.nutrient-active{background:#4b70c0;border-color:#4b70c0;color:#fff;font-weight:600}
+.mini-chips{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:6px}
+.product-extra input.other-input{width:100%;border:1px solid #d8ead8;border-radius:6px;padding:5px 8px;font-size:11px;outline:none;font-family:inherit;color:#1a1a1a;margin-top:4px}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="header">
+    <h1>🌱 스마트팜 방제 관리</h1>
+    <div class="header-right">
+      <span id="sync-status" class="sync-status sync-ok" title="마지막 저장 성공: 오후 8:38:37">● 동기화됨</span>
+      <button class="btn btn-sm" onclick="backupData()">💾 백업</button>
+      <button class="btn btn-sm" onclick="document.getElementById(&#39;restore-file&#39;).click()">📥 복원</button>
+      <input type="file" id="restore-file" accept=".json" style="display:none" onchange="restoreData(event)">
+    </div>
+  </div>
+
+  <!-- 농장 탭 -->
+  <div id="farm-tabs" class="farm-tabs"><button class="farm-tab active" onclick="selectFarm(&#39;farm_1775735422651&#39;)">도하오이 (신흥온실)</button><button class="farm-tab " onclick="selectFarm(&#39;farm_1775735483042&#39;)">도하오이 (창평온실)</button></div>
+  <div id="no-farm" class="no-farm hidden">
+    <p style="margin-bottom:8px;font-size:16px">판매관리 앱에 등록된 농장이 없습니다.</p>
+    <p style="font-size:13px">먼저 <strong>스마트팜 판매 관리</strong> 앱에서 농장을 추가해주세요.</p>
+    <p style="font-size:12px;color:#8aaa8a;margin-top:8px">농장 목록은 판매관리 앱과 자동으로 공유됩니다.</p>
+  </div>
+
+  <div id="main-content" class="">
+    <!-- 섹션 탭 -->
+    <div class="section-tabs">
+      <button class="section-tab active" onclick="switchTab(&#39;input&#39;)">✏️ 방제 입력</button>
+      <button class="section-tab" onclick="switchTab(&#39;records&#39;)">📋 방제 기록</button>
+      <button class="section-tab" onclick="switchTab(&#39;pest-trend&#39;)">🐛 병해충 추이</button>
+      <button class="section-tab" onclick="switchTab(&#39;pesticide-rank&#39;)">💊 농약 랭킹</button>
+      <button class="section-tab" onclick="switchTab(&#39;cost&#39;)">💰 비용 분석</button>
+      <button class="section-tab" onclick="switchTab(&#39;compare&#39;)">⭐ 농약 비교</button>
+    </div>
+
+    <!-- 방제 입력 -->
+    <div id="tab-input">
+      <div class="card">
+        <div class="card-title">📅 방제 기본 정보</div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>방제 일자</label>
+            <input type="date" id="inp-date">
+          </div>
+          <div class="form-group">
+            <label>방제 작업자</label>
+            <input type="text" id="inp-worker" placeholder="작업자 이름" list="worker-list">
+            <datalist id="worker-list"></datalist>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+          <div class="card-title" style="margin-bottom:0">💊 사용 제품 <span style="color:#aaa;font-weight:400;font-size:11px;margin-left:4px">혼용한 모든 제품을 추가하세요</span></div>
+          <button class="add-product-btn" onclick="addProduct()">＋ 제품 추가</button>
+        </div>
+        <div id="products-list"><div style="text-align:center;padding:1.5rem;color:#aaa;font-size:13px;background:#f9fdf9;border:1px dashed #d8ead8;border-radius:10px">＋ 제품 추가 버튼을 눌러 사용한 제품을 입력하세요</div></div>
+        <datalist id="product-name-list"></datalist>
+        <datalist id="vendor-list"></datalist>
+        <div class="products-total">
+          <span class="products-total-label" id="products-total-label">총 합계</span>
+          <span class="products-total-val" id="products-total-val">0원</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">⭐ 효과 평가 <span style="color:#aaa;font-weight:400;font-size:11px">(나중에 재방문해서 입력 가능)</span></div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>효과 평점</label>
+            <div class="rating" id="rating-input">
+              <span class="star" data-rating="1">★</span>
+              <span class="star" data-rating="2">★</span>
+              <span class="star" data-rating="3">★</span>
+              <span class="star" data-rating="4">★</span>
+              <span class="star" data-rating="5">★</span>
+              <span class="rating-label" id="rating-label">미평가</span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>메모</label>
+            <input type="text" id="inp-memo" placeholder="효과, 특이사항 등">
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex;justify-content:flex-end;gap:8px;margin-bottom:1.5rem">
+        <button class="btn" onclick="resetForm()">초기화</button>
+        <button class="btn btn-primary" onclick="saveRecord()">💾 저장</button>
+      </div>
+      <div id="save-status" style="text-align:center;font-size:13px;color:#1B7A4A;font-weight:600;margin-bottom:1rem;min-height:20px"></div>
+    </div>
+
+    <!-- 방제 기록 -->
+    <div id="tab-records" class="hidden">
+      <div class="card">
+        <div class="card-title">📋 방제 기록</div>
+        <div class="summary-grid-3">
+          <div class="metric"><div class="metric-label">올해 방제 횟수</div><div class="metric-val" id="r-year-count">0</div><div class="metric-sub">회</div></div>
+          <div class="metric"><div class="metric-label">최근 30일 방제</div><div class="metric-val" id="r-month-count">0</div><div class="metric-sub">회</div></div>
+          <div class="metric warn"><div class="metric-label">마지막 방제일</div><div class="metric-val" id="r-last-date">-</div><div class="metric-sub" id="r-last-days">기록 없음</div></div>
+        </div>
+        <div class="search-bar">
+          <input type="text" id="r-search" placeholder="🔍 농약명, 병해충, 메모 검색..." oninput="renderRecords()">
+          <select id="r-year-filter" onchange="renderRecords()"><option value="__all__">전체 연도</option></select>
+          <select id="r-month-filter" onchange="renderRecords()">
+            <option value="__all__">전체 월</option>
+            <option value="1">1월</option><option value="2">2월</option><option value="3">3월</option>
+            <option value="4">4월</option><option value="5">5월</option><option value="6">6월</option>
+            <option value="7">7월</option><option value="8">8월</option><option value="9">9월</option>
+            <option value="10">10월</option><option value="11">11월</option><option value="12">12월</option>
+          </select>
+        </div>
+        <div id="records-list"><div class="no-data">기록이 없습니다. <strong>✏️ 방제 입력</strong> 탭에서 추가하세요.</div></div>
+      </div>
+    </div>
+
+    <!-- 병해충 추이 -->
+    <div id="tab-pest-trend" class="hidden">
+      <div class="card">
+        <div class="card-title">🐛 월별 병해충 발생 추이</div>
+        <div style="display:flex;gap:8px;align-items:center;margin-bottom:12px;flex-wrap:wrap">
+          <div style="font-size:13px;font-weight:600;color:#2d5a2d">기준 연도:</div>
+          <select id="trend-year" onchange="renderPestTrend()" style="padding:5px 12px;border:1px solid #d8ead8;border-radius:6px;font-size:12px;outline:none;font-family:inherit;color:#2d5a2d"></select>
+        </div>
+        <div class="hint">각 병해충이 월별로 몇 번 발생했는지 보여줍니다. 매년 어떤 시기에 어떤 병해충이 문제되는지 패턴을 파악할 수 있습니다.</div>
+        <div id="pest-trend-list"></div>
+      </div>
+    </div>
+
+    <!-- 농약 랭킹 -->
+    <div id="tab-pesticide-rank" class="hidden">
+      <div class="card">
+        <div class="card-title">💊 농약 사용 빈도 랭킹</div>
+        <div style="display:flex;gap:8px;align-items:center;margin-bottom:12px;flex-wrap:wrap">
+          <div style="font-size:13px;font-weight:600;color:#2d5a2d">기간:</div>
+          <select id="rank-period" onchange="renderPesticideRank()" style="padding:5px 12px;border:1px solid #d8ead8;border-radius:6px;font-size:12px;outline:none;font-family:inherit;color:#2d5a2d">
+            <option value="year">올해</option>
+            <option value="all">전체</option>
+          </select>
+          <select id="rank-year" onchange="renderPesticideRank()" style="padding:5px 12px;border:1px solid #d8ead8;border-radius:6px;font-size:12px;outline:none;font-family:inherit;color:#2d5a2d"></select>
+        </div>
+        <div id="pesticide-rank-list"></div>
+      </div>
+    </div>
+
+    <!-- 비용 분석 -->
+    <div id="tab-cost" class="hidden">
+      <div class="card">
+        <div class="card-title">💰 농약 비용 현황</div>
+        <div style="display:flex;gap:8px;align-items:center;margin-bottom:12px;flex-wrap:wrap">
+          <div style="font-size:13px;font-weight:600;color:#2d5a2d">연도:</div>
+          <select id="cost-year" onchange="renderCost()" style="padding:5px 12px;border:1px solid #d8ead8;border-radius:6px;font-size:12px;outline:none;font-family:inherit;color:#2d5a2d"></select>
+        </div>
+        <div class="summary-grid-3">
+          <div class="metric highlight"><div class="metric-label" id="cost-year-label">올해 총 농약비</div><div class="metric-val" id="c-total">-</div><div class="metric-sub">원</div></div>
+          <div class="metric"><div class="metric-label">방제 횟수</div><div class="metric-val" id="c-count">-</div><div class="metric-sub">회</div></div>
+          <div class="metric"><div class="metric-label">전년 대비</div><div class="metric-val" id="c-yoy">-</div><div class="metric-sub" id="c-yoy-sub">-</div></div>
+        </div>
+        <div class="divider"></div>
+        <div style="font-size:13px;font-weight:700;color:#2d5a2d;margin-bottom:10px">월별 비용</div>
+        <div id="cost-monthly"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">📊 농약별 비용 순위</div>
+        <div id="cost-by-pesticide"></div>
+      </div>
+    </div>
+
+    <!-- 농약 비교 -->
+    <div id="tab-compare" class="hidden">
+      <div class="card">
+        <div class="card-title">⭐ 농약 종합 비교</div>
+        <div class="hint">사용 이력이 있는 모든 농약의 효과 평점, 재발까지 걸린 기간, 사용 횟수당 평균 가격을 비교합니다. 효과 평점 순으로 정렬되며, 같은 병해충에 어떤 농약이 가장 효과적이었는지 확인할 수 있습니다.</div>
+        <div style="display:flex;gap:8px;align-items:center;margin-bottom:12px;flex-wrap:wrap">
+          <div style="font-size:13px;font-weight:600;color:#2d5a2d">대상 병해충:</div>
+          <select id="compare-pest" onchange="renderCompare()" style="padding:5px 12px;border:1px solid #d8ead8;border-radius:6px;font-size:12px;outline:none;font-family:inherit;color:#2d5a2d">
+            <option value="__all__">전체 병해충</option>
+          </select>
+        </div>
+        <div id="compare-table-wrap"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ===================== Supabase 설정 (판매관리와 동일한 프로젝트) =====================
+const SUPABASE_URL='https://ljirwirzbgqmfxwmeiad.supabase.co';
+const SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxqaXJ3aXJ6YmdxbWZ4d21laWFkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU2NDk2OTQsImV4cCI6MjA5MTIyNTY5NH0.07hlyBkL4Y2smVJL7e4rDu4aBdAQ75c-vvARU-XR0Tk';
+const SB_HEADERS={'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY};
+
+// ===================== 사전 정의 병해충 목록 =====================
+const PEST_LIST={
+  pest:['응애','총채벌레','가루이','진딧물','온실가루이','잎굴파리','파밤나방','담배나방','민달팽이','거세미나방'],
+  fungus:['흰가루병','노균병','잿빛곰팡이병','덩굴쪼김병','역병','균핵병','점무늬병','갈색무늬병','시들음병','탄저병']
+};
+// 영양 목적 사전 정의
+const NUTRIENT_PURPOSES=['칼슘 보충','마그네슘 보충','질소 보충','칼륨 보충','미량요소','생육 촉진','착과 촉진','엽면시비','뿌리 활력','과실 비대','당도 증진','노화 방지'];
+// 단위 정의
+const UNITS={
+  liquid:['ml','L'],
+  solid:['g','kg']
+};
+// 단위 환산 (모두 ml 또는 g 기준)
+const UNIT_CONVERT={ml:1,L:1000,g:1,kg:1000};
+function isLiquidUnit(u){return u==='ml'||u==='L';}
+function convertToBase(value,unit){return (Number(value)||0)*(UNIT_CONVERT[unit]||1);}
+
+// ===================== 상태 =====================
+let state={
+  farms:JSON.parse(localStorage.getItem('sf_farms')||'[]'),
+  records:JSON.parse(localStorage.getItem('sf_pest_records')||'{}'),
+  productCatalog:JSON.parse(localStorage.getItem('sf_product_catalog')||'{}'),
+  currentFarm:null,
+  rating:0,
+  products:[]
+};
+
+// 제품 종류 정의
+const PRODUCT_TYPES=[
+  {value:'pesticide',label:'🧪 농약',cls:'t-pesticide'},
+  {value:'nutrient',label:'🌿 영양제',cls:'t-nutrient'},
+  {value:'adjuvant',label:'💧 전착제',cls:'t-adjuvant'},
+  {value:'other',label:'📦 기타',cls:'t-other'}
+];
+const PRODUCT_TYPE_MAP={};PRODUCT_TYPES.forEach(t=>PRODUCT_TYPE_MAP[t.value]=t);
+
+// ===================== 유틸 =====================
+const fmtN=n=>Number(n||0).toLocaleString('ko-KR');
+const escHtml=s=>String(s==null?'':s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+const getMoney=el=>{if(!el)return 0;const v=(el.value||'').replace(/[^0-9.-]/g,'');return Number(v)||0;};
+function moneyInput(el){
+  const raw=(el.value||'').replace(/[^0-9]/g,'');
+  el.value=raw?Number(raw).toLocaleString('ko-KR'):'';
+}
+function todayStr(){
+  const d=new Date();
+  return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+}
+function daysBetween(d1,d2){
+  if(!d1||!d2)return null;
+  const a=new Date(d1),b=new Date(d2);
+  return Math.round((b-a)/(1000*60*60*24));
+}
+
+// ===================== 동기화 =====================
+function setSyncStatus(s,msg){
+  const el=document.getElementById('sync-status');
+  if(!el)return;
+  if(s==='ok'){el.className='sync-status sync-ok';el.textContent='● 동기화됨';el.title='마지막 저장 성공: '+new Date().toLocaleTimeString('ko-KR');}
+  else if(s==='ing'){el.className='sync-status sync-ing';el.textContent='● 동기화 중...';el.title='';}
+  else{el.className='sync-status sync-err';el.textContent='● 동기화 실패';el.title=msg||'';}
+}
+
+async function syncToCloud(){
+  setSyncStatus('ing');
+  try{
+    const body=JSON.stringify({
+      records:state.records,
+      catalog:state.productCatalog,
+      updated_at:new Date().toISOString()
+    });
+    // pest_control_data 테이블 시도
+    let r=await fetch(SUPABASE_URL+'/rest/v1/pest_control_data?id=eq.main',{method:'PATCH',headers:SB_HEADERS,body});
+    if(!r.ok&&(r.status===404||r.status===400)){
+      // catalog 컬럼이 없을 수 있음 - records만 재시도
+      const fallbackBody=JSON.stringify({records:state.records,updated_at:new Date().toISOString()});
+      r=await fetch(SUPABASE_URL+'/rest/v1/pest_control_data?id=eq.main',{method:'PATCH',headers:SB_HEADERS,body:fallbackBody});
+      if(!r.ok&&(r.status===404||r.status===400)){
+        // 행이 없으면 INSERT
+        const insertBody=JSON.stringify({id:'main',records:state.records,updated_at:new Date().toISOString()});
+        r=await fetch(SUPABASE_URL+'/rest/v1/pest_control_data',{method:'POST',headers:{...SB_HEADERS,'Prefer':'return=minimal'},body:insertBody});
+      }
+    }
+    if(r.ok){setSyncStatus('ok');}
+    else{const txt=await r.text();console.error('sync err',r.status,txt);setSyncStatus('err','HTTP '+r.status+': '+txt);}
+  }catch(e){console.error(e);setSyncStatus('err',e.message||'네트워크 오류');}
+}
+
+async function loadFromCloud(){
+  setSyncStatus('ing');
+  try{
+    // 1. 농장 목록은 판매관리 테이블에서 가져오기 (공유)
+    const rFarm=await fetch(SUPABASE_URL+'/rest/v1/sales_data?id=eq.main&select=farm_id',{headers:SB_HEADERS});
+    if(rFarm.ok){
+      const data=await rFarm.json();
+      if(data&&data[0]&&data[0].farm_id){
+        try{
+          const f=JSON.parse(data[0].farm_id);
+          if(Array.isArray(f)){
+            state.farms=f;
+            localStorage.setItem('sf_farms',JSON.stringify(state.farms));
+          }
+        }catch(e){console.error('farm parse',e);}
+      }
+    }
+    // 2. 방제 기록 + 카탈로그 (catalog 컬럼이 없으면 records만)
+    let r=await fetch(SUPABASE_URL+'/rest/v1/pest_control_data?id=eq.main&select=records,catalog',{headers:SB_HEADERS});
+    if(!r.ok&&(r.status===400||r.status===404)){
+      r=await fetch(SUPABASE_URL+'/rest/v1/pest_control_data?id=eq.main&select=records',{headers:SB_HEADERS});
+    }
+    if(r.ok){
+      const data=await r.json();
+      if(data&&data[0]){
+        if(data[0].records){
+          state.records=data[0].records;
+          localStorage.setItem('sf_pest_records',JSON.stringify(state.records));
+        }
+        if(data[0].catalog){
+          state.productCatalog=data[0].catalog;
+          localStorage.setItem('sf_product_catalog',JSON.stringify(state.productCatalog));
+        }
+      }
+      setSyncStatus('ok');
+    }else if(r.status===404||r.status===400){
+      // 테이블이 아직 없을 수 있음 - localStorage만 사용
+      setSyncStatus('err','방제 테이블 미생성 - 로컬저장만 동작');
+    }else{
+      const txt=await r.text();console.error('load err',r.status,txt);
+      setSyncStatus('err','HTTP '+r.status);
+    }
+  }catch(e){console.error(e);setSyncStatus('err',e.message||'네트워크 오류');}
+}
+
+// ===================== 백업/복원 =====================
+function backupData(){
+  try{
+    const ts=new Date().toISOString().replace(/[:.]/g,'-').slice(0,19);
+    const backup={
+      app:'smartfarm-pest-control',
+      version:2,
+      exportedAt:new Date().toISOString(),
+      data:{farms:state.farms,records:state.records,productCatalog:state.productCatalog}
+    };
+    const blob=new Blob([JSON.stringify(backup,null,2)],{type:'application/json'});
+    const a=document.createElement('a');
+    a.href=URL.createObjectURL(blob);
+    a.download='도하오이_방제관리_백업_'+ts+'.json';
+    document.body.appendChild(a);a.click();a.remove();
+    let totalRec=0;Object.values(state.records).forEach(arr=>{if(Array.isArray(arr))totalRec+=arr.length;});
+    alert('✅ 백업 완료\n\n농장: '+state.farms.length+'개\n방제 기록: '+totalRec+'건');
+  }catch(e){alert('백업 실패: '+e.message);}
+}
+
+function restoreData(ev){
+  const file=ev.target.files[0];
+  if(!file)return;
+  const reader=new FileReader();
+  reader.onload=async(e)=>{
+    try{
+      const backup=JSON.parse(e.target.result);
+      if(backup.app&&backup.app!=='smartfarm-pest-control'){
+        if(!confirm('다른 앱의 백업 파일입니다. 계속 복원하시겠습니까?'))return;
+      }
+      const d=backup.data||backup;
+      if(!d.records)throw new Error('잘못된 백업 파일');
+      if(!confirm('현재 데이터를 덮어씁니다. 계속하시겠습니까?'))return;
+      state.records=d.records||{};
+      localStorage.setItem('sf_pest_records',JSON.stringify(state.records));
+      if(d.productCatalog){
+        state.productCatalog=d.productCatalog;
+        localStorage.setItem('sf_product_catalog',JSON.stringify(state.productCatalog));
+      }
+      await syncToCloud();
+      alert('✅ 복원 완료');
+      location.reload();
+    }catch(err){alert('복원 실패: '+err.message);}
+    ev.target.value='';
+  };
+  reader.readAsText(file);
+}
+
+// ===================== 농장 탭 렌더 =====================
+function renderFarmTabs(){
+  const wrap=document.getElementById('farm-tabs');
+  if(state.farms.length===0){
+    wrap.innerHTML='';
+    document.getElementById('no-farm').classList.remove('hidden');
+    document.getElementById('main-content').classList.add('hidden');
+    return;
+  }
+  document.getElementById('no-farm').classList.add('hidden');
+  document.getElementById('main-content').classList.remove('hidden');
+  if(!state.currentFarm||!state.farms.find(f=>f.id===state.currentFarm)){
+    state.currentFarm=state.farms[0].id;
+  }
+  let html='';
+  state.farms.forEach(f=>{
+    const name=f.greenhouse?`도하오이 (${f.greenhouse})`:(f.name||'농장');
+    html+=`<button class="farm-tab ${state.currentFarm===f.id?'active':''}" onclick="selectFarm('${escHtml(f.id)}')">${escHtml(name)}</button>`;
+  });
+  wrap.innerHTML=html;
+}
+
+function selectFarm(id){
+  state.currentFarm=id;
+  renderFarmTabs();
+  renderAll();
+}
+
+// ===================== 탭 전환 =====================
+function switchTab(name){
+  document.querySelectorAll('.section-tab').forEach((t,i)=>{
+    const tabs=['input','records','pest-trend','pesticide-rank','cost','compare'];
+    t.classList.toggle('active',tabs[i]===name);
+  });
+  ['input','records','pest-trend','pesticide-rank','cost','compare'].forEach(n=>{
+    document.getElementById('tab-'+n).classList.toggle('hidden',n!==name);
+  });
+  if(name==='records')renderRecords();
+  else if(name==='pest-trend')renderPestTrend();
+  else if(name==='pesticide-rank')renderPesticideRank();
+  else if(name==='cost')renderCost();
+  else if(name==='compare')renderCompare();
+}
+
+// ===================== 별점 =====================
+document.querySelectorAll('#rating-input .star').forEach(s=>{
+  s.addEventListener('click',()=>{
+    state.rating=Number(s.dataset.rating);
+    updateRatingUI();
+  });
+});
+function updateRatingUI(){
+  document.querySelectorAll('#rating-input .star').forEach(s=>{
+    s.classList.toggle('active',Number(s.dataset.rating)<=state.rating);
+  });
+  const labels=['미평가','매우 나쁨','나쁨','보통','좋음','매우 좋음'];
+  document.getElementById('rating-label').textContent=labels[state.rating]||'미평가';
+}
+
+// ===================== 제품 리스트 관리 =====================
+function addProduct(data){
+  const p=Object.assign({
+    _key:'p_'+Date.now()+'_'+Math.random().toString(36).slice(2,7),
+    type:'pesticide',
+    name:'',
+    vendor:'',
+    unitPrice:0,
+    mode:'bottle',           // 'bottle' = 통 단위, 'volume' = 용량 단위
+    qty:1,                   // 통 모드: 사용한 통 수
+    bottleCapacity:0,        // 용량 모드: 병당 총 용량
+    bottleUnit:'ml',         // 병당 용량 단위
+    usedAmount:0,            // 용량 모드: 사용한 양
+    usedUnit:'ml',           // 사용량 단위
+    pests:[],                // 농약: 대상 병해충
+    nutrientPurposes:[],     // 영양제: 영양 목적
+    severity:''              // 농약: 발생 정도
+  },data||{});
+  state.products.push(p);
+  renderProducts();
+}
+
+function removeProduct(key){
+  state.products=state.products.filter(p=>p._key!==key);
+  renderProducts();
+}
+
+// 카탈로그에서 제품 정보 조회 (병당 용량 자동 채우기용)
+function lookupCatalog(name){
+  if(!name)return null;
+  return state.productCatalog[name.trim()]||null;
+}
+
+// 제품 카탈로그 저장
+function saveCatalog(name,data){
+  if(!name||!name.trim())return;
+  const key=name.trim();
+  state.productCatalog[key]=Object.assign({},state.productCatalog[key]||{},data);
+  localStorage.setItem('sf_product_catalog',JSON.stringify(state.productCatalog));
+}
+
+// 제품의 통 수 계산 (모드에 따라)
+function calcBottles(p){
+  if(p.mode==='volume'){
+    if(!p.bottleCapacity||!p.usedAmount)return 0;
+    const baseUsed=convertToBase(p.usedAmount,p.usedUnit);
+    const baseCapacity=convertToBase(p.bottleCapacity,p.bottleUnit);
+    return baseCapacity>0?baseUsed/baseCapacity:0;
+  }
+  return Number(p.qty)||0;
+}
+function calcSubtotal(p){
+  return Math.round((p.unitPrice||0)*calcBottles(p));
+}
+
+function updateProduct(key,field,value){
+  const p=state.products.find(x=>x._key===key);
+  if(!p)return;
+  const numFields=['unitPrice','qty','bottleCapacity','usedAmount'];
+  if(numFields.includes(field)){
+    const raw=String(value).replace(/[^0-9.]/g,'');
+    p[field]=raw?Number(raw):0;
+  }else{
+    p[field]=value;
+  }
+  // 제품명 입력 시 카탈로그에서 자동 채우기
+  if(field==='name'){
+    const cat=lookupCatalog(value);
+    if(cat){
+      if(!p.bottleCapacity&&cat.bottleCapacity)p.bottleCapacity=cat.bottleCapacity;
+      if(cat.bottleUnit)p.bottleUnit=cat.bottleUnit;
+      if(!p.usedUnit||p.usedUnit===p.bottleUnit){p.usedUnit=cat.bottleUnit||'ml';}
+      // 자동 채워진 경우만 재렌더
+      if(cat.bottleCapacity){renderProducts();return;}
+    }
+  }
+  renderProductsTotal();
+  // 소계 셀만 업데이트
+  const subtotalEl=document.getElementById('subtotal-'+key);
+  if(subtotalEl)subtotalEl.textContent=fmtN(calcSubtotal(p))+'원';
+  // 계산 힌트 업데이트
+  const hintEl=document.getElementById('hint-'+key);
+  if(hintEl){
+    hintEl.innerHTML=buildCalcHint(p);
+    hintEl.style.display=p.mode==='volume'&&calcBottles(p)>0?'block':'none';
+  }
+}
+
+// 모드 토글
+function setProductMode(key,mode){
+  const p=state.products.find(x=>x._key===key);
+  if(!p)return;
+  p.mode=mode;
+  renderProducts();
+}
+
+// 종류 변경
+function setProductType(key,type){
+  const p=state.products.find(x=>x._key===key);
+  if(!p)return;
+  p.type=type;
+  // 종류별 단위 디폴트
+  if(type==='pesticide'||type==='nutrient'||type==='adjuvant'){
+    if(!p.bottleUnit)p.bottleUnit='ml';
+    if(!p.usedUnit)p.usedUnit='ml';
+  }
+  renderProducts();
+}
+
+// 병해충/영양 목적 토글
+function toggleProductPest(key,pest){
+  const p=state.products.find(x=>x._key===key);
+  if(!p)return;
+  p.pests=p.pests||[];
+  const idx=p.pests.indexOf(pest);
+  if(idx>=0)p.pests.splice(idx,1);
+  else p.pests.push(pest);
+  renderProducts();
+}
+function toggleProductPurpose(key,purp){
+  const p=state.products.find(x=>x._key===key);
+  if(!p)return;
+  p.nutrientPurposes=p.nutrientPurposes||[];
+  const idx=p.nutrientPurposes.indexOf(purp);
+  if(idx>=0)p.nutrientPurposes.splice(idx,1);
+  else p.nutrientPurposes.push(purp);
+  renderProducts();
+}
+
+function updateProductPestOther(key,value){
+  const p=state.products.find(x=>x._key===key);
+  if(!p)return;
+  p._pestOther=value;
+}
+
+// 계산 힌트 생성
+function buildCalcHint(p){
+  if(p.mode!=='volume')return '';
+  const bottles=calcBottles(p);
+  if(bottles<=0)return '';
+  const sub=calcSubtotal(p);
+  const bottlesStr=bottles%1===0?bottles.toString():bottles.toFixed(2).replace(/\.?0+$/,'');
+  return `💡 ${fmtN(p.usedAmount)}${p.usedUnit} ÷ ${fmtN(p.bottleCapacity)}${p.bottleUnit} = <strong>${bottlesStr}통 사용</strong> · ${fmtN(p.unitPrice)}원 × ${bottlesStr} = <strong>${fmtN(sub)}원</strong>`;
+}
+
+function renderProducts(){
+  const wrap=document.getElementById('products-list');
+  if(state.products.length===0){
+    wrap.innerHTML='<div style="text-align:center;padding:1.5rem;color:#aaa;font-size:13px;background:#f9fdf9;border:1px dashed #d8ead8;border-radius:10px">＋ 제품 추가 버튼을 눌러 사용한 제품을 입력하세요</div>';
+    renderProductsTotal();
+    return;
+  }
+  wrap.innerHTML=state.products.map((p,i)=>{
+    const typeInfo=PRODUCT_TYPE_MAP[p.type]||PRODUCT_TYPE_MAP.pesticide;
+    const subtotal=calcSubtotal(p);
+    const bottleLabel=(p.type==='pesticide'||p.type==='adjuvant')?'병':(p.type==='nutrient'?'병':'개');
+    const capacityLabel=isLiquidUnit(p.bottleUnit)?'병당 총 용량':'봉당 총 중량';
+    const usedLabel=isLiquidUnit(p.usedUnit)?'사용 용량':'사용 중량';
+    const priceLabel=isLiquidUnit(p.bottleUnit)?'병당 가격 (원)':'봉당 가격 (원)';
+    const allUnits=[...UNITS.liquid,...UNITS.solid];
+
+    // 병해충/영양 섹션
+    let extraSection='';
+    if(p.type==='pesticide'){
+      const pestChips=PEST_LIST.pest.map(pest=>{
+        const active=(p.pests||[]).includes(pest);
+        return `<button class="mini-chip ${active?'active pest-active':''}" onclick="toggleProductPest('${p._key}','${escHtml(pest)}')">${escHtml(pest)}</button>`;
+      }).join('');
+      const fungusChips=PEST_LIST.fungus.map(pest=>{
+        const active=(p.pests||[]).includes(pest);
+        return `<button class="mini-chip ${active?'active pest-active':''}" onclick="toggleProductPest('${p._key}','${escHtml(pest)}')">${escHtml(pest)}</button>`;
+      }).join('');
+      extraSection=`<div class="product-extra pest-box">
+        <div class="product-extra-title">🐛 대상 병해충</div>
+        <div class="pest-type-label-sm">🐜 해충류</div>
+        <div class="mini-chips">${pestChips}</div>
+        <div class="pest-type-label-sm">🍄 병균류</div>
+        <div class="mini-chips">${fungusChips}</div>
+        <input type="text" class="other-input" placeholder="기타 병해충 직접입력 (쉼표로 구분)" value="${escHtml(p._pestOther||'')}" oninput="updateProductPestOther('${p._key}',this.value)">
+        <div style="margin-top:8px">
+          <span style="font-size:10px;color:#5a7a5a;font-weight:600;margin-right:6px">발생 정도:</span>
+          <select onchange="updateProduct('${p._key}','severity',this.value)" style="border:1px solid #d8ead8;border-radius:5px;padding:2px 6px;font-size:11px;background:#fff;outline:none;font-family:inherit">
+            <option value="" ${!p.severity?'selected':''}>선택 안 함</option>
+            <option value="예방" ${p.severity==='예방'?'selected':''}>예방 차원</option>
+            <option value="경미" ${p.severity==='경미'?'selected':''}>경미</option>
+            <option value="보통" ${p.severity==='보통'?'selected':''}>보통</option>
+            <option value="심각" ${p.severity==='심각'?'selected':''}>심각</option>
+          </select>
+        </div>
+      </div>`;
+    }else if(p.type==='nutrient'){
+      const purposeChips=NUTRIENT_PURPOSES.map(purp=>{
+        const active=(p.nutrientPurposes||[]).includes(purp);
+        return `<button class="mini-chip ${active?'active nutrient-active':''}" onclick="toggleProductPurpose('${p._key}','${escHtml(purp)}')">${escHtml(purp)}</button>`;
+      }).join('');
+      extraSection=`<div class="product-extra nutrient-box">
+        <div class="product-extra-title">🌿 영양 목적</div>
+        <div class="mini-chips">${purposeChips}</div>
+      </div>`;
+    }
+
+    // 사용량 입력 영역 (모드별)
+    let usageSection='';
+    if(p.mode==='volume'){
+      usageSection=`<div class="product-fields" style="grid-template-columns:1.2fr 1.2fr 1fr">
+        <div>
+          <div class="product-mini-label">${capacityLabel} <span style="color:#aaa;font-weight:400;font-size:9px">(자동기억)</span></div>
+          <div class="input-with-unit">
+            <input type="text" class="money" placeholder="0" value="${p.bottleCapacity?fmtN(p.bottleCapacity):''}" oninput="moneyInput(this);updateProduct('${p._key}','bottleCapacity',this.value)">
+            <select class="unit-select" onchange="updateProduct('${p._key}','bottleUnit',this.value);renderProducts()">
+              ${allUnits.map(u=>`<option value="${u}" ${p.bottleUnit===u?'selected':''}>${u}</option>`).join('')}
+            </select>
+          </div>
+        </div>
+        <div class="usage-hi">
+          <div class="product-mini-label">${usedLabel} ✏️</div>
+          <div class="input-with-unit">
+            <input type="text" class="money" placeholder="0" value="${p.usedAmount?fmtN(p.usedAmount):''}" oninput="moneyInput(this);updateProduct('${p._key}','usedAmount',this.value)">
+            <select class="unit-select" onchange="updateProduct('${p._key}','usedUnit',this.value)">
+              ${allUnits.map(u=>`<option value="${u}" ${p.usedUnit===u?'selected':''}>${u}</option>`).join('')}
+            </select>
+          </div>
+        </div>
+        <div>
+          <div class="product-mini-label">소계 (자동)</div>
+          <div class="product-subtotal" id="subtotal-${p._key}">${fmtN(subtotal)}원</div>
+        </div>
+      </div>
+      <div class="calc-hint" id="hint-${p._key}" style="display:${calcBottles(p)>0?'block':'none'}">${buildCalcHint(p)}</div>`;
+    }else{
+      usageSection=`<div class="product-fields" style="grid-template-columns:0.8fr 1fr">
+        <div class="usage-hi">
+          <div class="product-mini-label">사용량 ✏️</div>
+          <div class="input-with-unit">
+            <input type="text" class="money" placeholder="1" value="${p.qty?(p.qty%1===0?p.qty:p.qty.toString()):''}" oninput="updateProductQty('${p._key}',this.value)" style="text-align:right">
+            <span class="unit-suffix">${bottleLabel}</span>
+          </div>
+        </div>
+        <div>
+          <div class="product-mini-label">소계 (자동)</div>
+          <div class="product-subtotal" id="subtotal-${p._key}">${fmtN(subtotal)}원</div>
+        </div>
+      </div>`;
+    }
+
+    return `<div class="product-card">
+      <div class="product-header">
+        <div class="product-num">${i+1}</div>
+        <select class="product-type-select ${typeInfo.cls}" onchange="setProductType('${p._key}',this.value)">
+          ${PRODUCT_TYPES.map(t=>`<option value="${t.value}" ${p.type===t.value?'selected':''}>${t.label}</option>`).join('')}
+        </select>
+        <input type="text" class="product-name-input" placeholder="제품명 입력" value="${escHtml(p.name)}" list="product-name-list" oninput="updateProduct('${p._key}','name',this.value)">
+        <div class="mode-toggle">
+          <button class="${p.mode==='volume'?'active':''}" onclick="setProductMode('${p._key}','volume')" title="정확한 ml/g 단위로 입력">📏 용량</button>
+          <button class="${p.mode==='bottle'?'active':''}" onclick="setProductMode('${p._key}','bottle')" title="통 단위로 간단히 입력">🧴 통</button>
+        </div>
+        <button class="product-remove" onclick="removeProduct('${p._key}')" title="제거">×</button>
+      </div>
+      <div class="product-fields" style="grid-template-columns:1fr 1fr;margin-bottom:8px">
+        <div>
+          <div class="product-mini-label">구입처</div>
+          <input type="text" placeholder="농협 등" value="${escHtml(p.vendor)}" list="vendor-list" oninput="updateProduct('${p._key}','vendor',this.value)">
+        </div>
+        <div>
+          <div class="product-mini-label">${priceLabel}</div>
+          <input type="text" class="money" placeholder="0" value="${p.unitPrice?fmtN(p.unitPrice):''}" oninput="moneyInput(this);updateProduct('${p._key}','unitPrice',this.value)">
+        </div>
+      </div>
+      ${usageSection}
+      ${extraSection}
+    </div>`;
+  }).join('');
+  renderProductsTotal();
+}
+
+// 통 모드 수량 입력 (소수점 허용)
+function updateProductQty(key,value){
+  const p=state.products.find(x=>x._key===key);
+  if(!p)return;
+  // 소수점 한 개만 허용
+  let raw=String(value).replace(/[^0-9.]/g,'');
+  const dot=raw.indexOf('.');
+  if(dot>=0){
+    raw=raw.slice(0,dot+1)+raw.slice(dot+1).replace(/\./g,'');
+  }
+  p.qty=raw?Number(raw):0;
+  renderProductsTotal();
+  const subtotalEl=document.getElementById('subtotal-'+key);
+  if(subtotalEl)subtotalEl.textContent=fmtN(calcSubtotal(p))+'원';
+}
+
+function renderProductsTotal(){
+  const total=state.products.reduce((s,p)=>s+calcSubtotal(p),0);
+  const totalBottles=state.products.reduce((s,p)=>s+calcBottles(p),0);
+  const productCount=state.products.length;
+  document.getElementById('products-total-val').textContent=fmtN(total)+'원';
+  const bottleStr=totalBottles%1===0?totalBottles+'통':totalBottles.toFixed(1)+'통';
+  document.getElementById('products-total-label').textContent=productCount>0?`총 합계 (${productCount}개 제품 · ${bottleStr})`:'총 합계';
+}
+
+// ===================== 저장 =====================
+async function saveRecord(){
+  const date=document.getElementById('inp-date').value;
+  if(!date){alert('방제 일자를 입력하세요');return;}
+
+  // 빈 제품 행 제거
+  const validProducts=state.products.filter(p=>p.name&&p.name.trim());
+  if(validProducts.length===0){alert('최소 1개 이상의 제품을 추가하고 제품명을 입력하세요');return;}
+
+  const products=validProducts.map(p=>{
+    const bottles=calcBottles(p);
+    const subtotal=calcSubtotal(p);
+    // 제품 카탈로그에 병당 용량/단위 자동 저장 (다음에 자동 채우기 위함)
+    if(p.bottleCapacity&&p.bottleUnit){
+      saveCatalog(p.name.trim(),{bottleCapacity:p.bottleCapacity,bottleUnit:p.bottleUnit});
+    }
+    // 기타 병해충 직접입력 → pests 배열에 병합
+    let pests=[...(p.pests||[])];
+    if(p._pestOther&&p._pestOther.trim()){
+      p._pestOther.split(/[,，、]/).map(s=>s.trim()).filter(s=>s).forEach(x=>{
+        if(!pests.includes(x))pests.push(x);
+      });
+    }
+    return {
+      type:p.type||'pesticide',
+      name:p.name.trim(),
+      vendor:(p.vendor||'').trim(),
+      unitPrice:Number(p.unitPrice)||0,
+      mode:p.mode||'bottle',
+      qty:Number(bottles.toFixed(4)),  // 통 환산값 (소수점 4자리)
+      bottleCapacity:Number(p.bottleCapacity)||0,
+      bottleUnit:p.bottleUnit||'ml',
+      usedAmount:Number(p.usedAmount)||0,
+      usedUnit:p.usedUnit||'ml',
+      pests,
+      nutrientPurposes:p.nutrientPurposes||[],
+      severity:p.severity||'',
+      subtotal
+    };
+  });
+  const totalPrice=products.reduce((s,p)=>s+p.subtotal,0);
+
+  // 전체 기록 차원의 병해충 = 모든 제품의 병해충 합집합 (병해충 추이 등에 사용)
+  const allPests=new Set();
+  products.forEach(p=>(p.pests||[]).forEach(x=>allPests.add(x)));
+
+  const rec={
+    id:'pr_'+Date.now(),
+    date,
+    worker:document.getElementById('inp-worker').value.trim(),
+    pests:[...allPests],
+    products,
+    totalPrice,
+    rating:state.rating,
+    memo:document.getElementById('inp-memo').value.trim(),
+    createdAt:new Date().toISOString()
+  };
+
+  if(!state.records[state.currentFarm])state.records[state.currentFarm]=[];
+  state.records[state.currentFarm].push(rec);
+  localStorage.setItem('sf_pest_records',JSON.stringify(state.records));
+
+  const st=document.getElementById('save-status');
+  st.innerHTML='✅ 저장되었습니다 · <a href="#" onclick="switchTab(\'records\');return false" style="color:#2d5a2d;text-decoration:underline;font-weight:600">📋 방제 기록에서 확인</a>';
+  setTimeout(()=>{st.innerHTML='';},5000);
+
+  await syncToCloud();
+  resetForm();
+  updateAutocomplete();
+}
+
+function resetForm(){
+  document.getElementById('inp-date').value=todayStr();
+  document.getElementById('inp-worker').value='';
+  state.products=[];
+  renderProducts();
+  state.rating=0;updateRatingUI();
+  document.getElementById('inp-memo').value='';
+}
+
+// ===================== 기록 정규화 (구버전 호환) =====================
+// 기존 단일 농약(pesticide,price,vendor) 구조를 새 products 배열로 자동 변환
+function normalizeRecord(r){
+  if(r.products&&Array.isArray(r.products)&&r.products.length>0){
+    // 새 필드 디폴트값 보강
+    r.products=r.products.map(p=>{
+      const np={...p};
+      if(typeof np.subtotal!=='number')np.subtotal=Math.round((np.unitPrice||0)*(np.qty||0));
+      if(!np.pests)np.pests=[];
+      if(!np.nutrientPurposes)np.nutrientPurposes=[];
+      return np;
+    });
+    if(typeof r.totalPrice!=='number'){
+      r.totalPrice=r.products.reduce((s,p)=>s+(p.subtotal||(p.unitPrice||0)*(p.qty||0)),0);
+    }
+    // 구버전 기록의 전체 pests를 첫 농약에 복사 (제품별 매칭이 없을 때)
+    if(r.pests&&r.pests.length>0){
+      const hasProductPests=r.products.some(p=>(p.pests||[]).length>0);
+      if(!hasProductPests){
+        const firstPesticide=r.products.find(p=>p.type==='pesticide');
+        if(firstPesticide)firstPesticide.pests=[...r.pests];
+      }
+    }
+    return r;
+  }
+  // 구버전 변환
+  if(r.pesticide){
+    r.products=[{
+      type:'pesticide',
+      name:r.pesticide,
+      vendor:r.vendor||'',
+      unitPrice:r.price||0,
+      mode:'bottle',
+      qty:r.price>0?1:0,
+      pests:r.pests||[],
+      nutrientPurposes:[],
+      severity:r.severity||'',
+      subtotal:r.price||0
+    }];
+    r.totalPrice=r.price||0;
+  }else{
+    r.products=[];r.totalPrice=0;
+  }
+  return r;
+}
+
+async function deleteRecord(farmId,recId){
+  if(!confirm('이 방제 기록을 삭제하시겠습니까?'))return;
+  if(!state.records[farmId])return;
+  state.records[farmId]=state.records[farmId].filter(r=>r.id!==recId);
+  localStorage.setItem('sf_pest_records',JSON.stringify(state.records));
+  await syncToCloud();
+  renderRecords();
+}
+
+// ===================== 데이터 조회 도우미 =====================
+function getRecordsForCurrentFarm(){
+  const farm=state.farms.find(f=>f.id===state.currentFarm);
+  const farmName=farm?(farm.greenhouse?`도하오이 (${farm.greenhouse})`:(farm.name||'농장')):'농장';
+  return (state.records[state.currentFarm]||[]).map(r=>{
+    const norm=normalizeRecord({...r});
+    return {...norm,_farmId:state.currentFarm,_farmName:farmName};
+  });
+}
+function getAllRecords(){
+  let all=[];
+  state.farms.forEach(f=>{
+    const recs=state.records[f.id]||[];
+    const fname=f.greenhouse?`도하오이 (${f.greenhouse})`:(f.name||'농장');
+    recs.forEach(r=>{
+      const norm=normalizeRecord({...r});
+      all.push({...norm,_farmId:f.id,_farmName:fname});
+    });
+  });
+  return all;
+}
+
+// ===================== 자동완성 =====================
+function updateAutocomplete(){
+  const all=getAllRecords();
+  const productNames=new Set(),vendors=new Set(),workers=new Set();
+  all.forEach(r=>{
+    (r.products||[]).forEach(p=>{
+      if(p.name)productNames.add(p.name);
+      if(p.vendor)vendors.add(p.vendor);
+    });
+    if(r.worker)workers.add(r.worker);
+  });
+  const pnEl=document.getElementById('product-name-list');
+  if(pnEl)pnEl.innerHTML=[...productNames].map(p=>`<option value="${escHtml(p)}">`).join('');
+  const vEl=document.getElementById('vendor-list');
+  if(vEl)vEl.innerHTML=[...vendors].map(v=>`<option value="${escHtml(v)}">`).join('');
+  const wEl=document.getElementById('worker-list');
+  if(wEl)wEl.innerHTML=[...workers].map(w=>`<option value="${escHtml(w)}">`).join('');
+}
+
+// ===================== 방제 기록 렌더 =====================
+function renderRecords(){
+  const recs=getRecordsForCurrentFarm().sort((a,b)=>b.date.localeCompare(a.date));
+  const today=todayStr();
+
+  // 요약 통계
+  const thisYear=new Date().getFullYear().toString();
+  const yearRecs=recs.filter(r=>r.date.startsWith(thisYear));
+  document.getElementById('r-year-count').textContent=yearRecs.length;
+
+  const ago30=new Date();ago30.setDate(ago30.getDate()-30);
+  const ago30Str=ago30.toISOString().slice(0,10);
+  const monthRecs=recs.filter(r=>r.date>=ago30Str);
+  document.getElementById('r-month-count').textContent=monthRecs.length;
+
+  if(recs.length>0){
+    const last=recs[0];
+    document.getElementById('r-last-date').textContent=last.date;
+    const d=daysBetween(last.date,today);
+    document.getElementById('r-last-days').textContent=d===0?'오늘':d+'일 경과';
+  }else{
+    document.getElementById('r-last-date').textContent='-';
+    document.getElementById('r-last-days').textContent='기록 없음';
+  }
+
+  // 연도 필터 옵션
+  const years=[...new Set(recs.map(r=>r.date.slice(0,4)))].sort().reverse();
+  const yearFilter=document.getElementById('r-year-filter');
+  const currentYearVal=yearFilter.value;
+  yearFilter.innerHTML='<option value="__all__">전체 연도</option>'+years.map(y=>`<option value="${y}">${y}년</option>`).join('');
+  if(years.includes(currentYearVal))yearFilter.value=currentYearVal;
+
+  // 필터링
+  const q=document.getElementById('r-search').value.toLowerCase().trim();
+  const yFilter=yearFilter.value;
+  const mFilter=document.getElementById('r-month-filter').value;
+  let filtered=recs;
+  if(yFilter!=='__all__')filtered=filtered.filter(r=>r.date.startsWith(yFilter));
+  if(mFilter!=='__all__')filtered=filtered.filter(r=>Number(r.date.slice(5,7))===Number(mFilter));
+  if(q){
+    filtered=filtered.filter(r=>{
+      const productHay=(r.products||[]).map(p=>[p.name,p.vendor].filter(Boolean).join(' ')).join(' ');
+      const hay=[productHay,r.worker,r.memo,...(r.pests||[])].join(' ').toLowerCase();
+      return hay.includes(q);
+    });
+  }
+
+  const wrap=document.getElementById('records-list');
+  if(filtered.length===0){
+    wrap.innerHTML='<div class="no-data">기록이 없습니다. <strong>✏️ 방제 입력</strong> 탭에서 추가하세요.</div>';
+    return;
+  }
+
+  wrap.innerHTML=filtered.map(r=>{
+    const stars=r.rating?`<span class="star-display">${'★'.repeat(r.rating)}${'☆'.repeat(5-r.rating)}</span>`:'<span style="color:#ccc;font-size:11px">미평가</span>';
+    const productsHtml=(r.products||[]).map(p=>{
+      const t=PRODUCT_TYPE_MAP[p.type]||PRODUCT_TYPE_MAP.pesticide;
+      const subtotal=p.subtotal||(p.unitPrice||0)*(p.qty||0);
+      const meta=[];
+      if(p.vendor)meta.push(escHtml(p.vendor));
+      // 사용량 표시 (모드별)
+      if(p.unitPrice){
+        if(p.mode==='volume'&&p.usedAmount&&p.bottleCapacity){
+          meta.push(`${fmtN(p.unitPrice)}원/통 · ${fmtN(p.usedAmount)}${p.usedUnit} 사용 = <strong>${fmtN(subtotal)}원</strong>`);
+        }else if(p.qty){
+          const qtyStr=p.qty%1===0?p.qty:p.qty.toFixed(2).replace(/\.?0+$/,'');
+          const unit=(p.type==='pesticide'||p.type==='nutrient'||p.type==='adjuvant')?'통':'개';
+          meta.push(`${fmtN(p.unitPrice)}원 × ${qtyStr}${unit} = <strong>${fmtN(subtotal)}원</strong>`);
+        }else{
+          meta.push(`${fmtN(p.unitPrice)}원`);
+        }
+      }
+      // 제품별 병해충/영양 목적 태그
+      let extraTags='';
+      if(p.type==='pesticide'&&p.pests&&p.pests.length>0){
+        extraTags='<div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:5px">'+p.pests.map(pest=>{
+          const isFungus=PEST_LIST.fungus.includes(pest);
+          return `<span class="pest-tag ${isFungus?'fungus':''}" style="font-size:10px">${escHtml(pest)}</span>`;
+        }).join('')+(p.severity?`<span style="background:#fff8e8;color:#8a5a00;padding:2px 7px;border-radius:5px;font-size:10px;font-weight:600">${escHtml(p.severity)}</span>`:'')+'</div>';
+      }else if(p.type==='nutrient'&&p.nutrientPurposes&&p.nutrientPurposes.length>0){
+        extraTags='<div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:5px">'+p.nutrientPurposes.map(purp=>
+          `<span style="background:#f0f5ff;color:#4b70c0;border:1px solid #c8d4f0;padding:2px 7px;border-radius:4px;font-size:10px;font-weight:600">${escHtml(purp)}</span>`
+        ).join('')+'</div>';
+      }
+      return `<div class="product-row">
+        <div class="product-row-content">
+          <span class="type-tag ${t.cls}">${escHtml(t.label.replace(/^\S+\s/,''))}</span>
+          <span class="product-row-name">${escHtml(p.name)}</span>
+          ${meta.length?`<span class="product-row-meta">· ${meta.join(' · ')}</span>`:''}
+        </div>
+        ${extraTags}
+      </div>`;
+    }).join('');
+    const totalBottles=(r.products||[]).reduce((s,p)=>s+(p.qty||0),0);
+    const productCount=(r.products||[]).length;
+    const bottleStr=totalBottles%1===0?totalBottles+'통':totalBottles.toFixed(1)+'통';
+    return `<div class="record-row">
+      <div class="record-row-header">
+        <span class="farm-badge">${escHtml(r._farmName)}</span>
+        <span class="date-info">📅 ${escHtml(r.date)}</span>
+        ${r.worker?`<span class="date-info">👤 ${escHtml(r.worker)}</span>`:''}
+      </div>
+      ${productsHtml||'<div style="color:#aaa;font-size:12px;padding:6px 0">제품 정보 없음</div>'}
+      ${r.memo?`<div style="font-size:12px;color:#8aaa8a;margin-top:4px">💬 ${escHtml(r.memo)}</div>`:''}
+      <div class="record-footer">
+        <span>💰 합계: <strong style="color:#2d5a2d;font-size:13px">${fmtN(r.totalPrice||0)}원</strong> ${productCount?`<span style="color:#aaa">(${productCount}개 제품 · ${bottleStr})</span>`:''}</span>
+        <span>효과: ${stars}</span>
+        <div class="record-actions">
+          <button class="btn btn-sm" onclick="editRating('${escHtml(r._farmId)}','${escHtml(r.id)}')">평점 수정</button>
+          <button class="btn btn-sm btn-danger" onclick="deleteRecord('${escHtml(r._farmId)}','${escHtml(r.id)}')">삭제</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+async function editRating(farmId,recId){
+  const rec=(state.records[farmId]||[]).find(r=>r.id===recId);
+  if(!rec)return;
+  const v=prompt('효과 평점 (0~5, 0=미평가):',String(rec.rating||0));
+  if(v===null)return;
+  const n=Number(v);
+  if(isNaN(n)||n<0||n>5){alert('0~5 사이 숫자를 입력하세요');return;}
+  rec.rating=n;
+  localStorage.setItem('sf_pest_records',JSON.stringify(state.records));
+  await syncToCloud();
+  renderRecords();
+}
+
+// ===================== 병해충 추이 =====================
+function renderPestTrend(){
+  const recs=getRecordsForCurrentFarm();
+  const years=[...new Set(recs.map(r=>r.date.slice(0,4)))].sort().reverse();
+  const thisYear=new Date().getFullYear().toString();
+  if(!years.includes(thisYear))years.unshift(thisYear);
+  const sel=document.getElementById('trend-year');
+  const curVal=sel.value;
+  sel.innerHTML=years.map(y=>`<option value="${y}">${y}년</option>`).join('');
+  if(years.includes(curVal))sel.value=curVal;
+  else sel.value=thisYear;
+
+  const targetYear=sel.value;
+  const yearRecs=recs.filter(r=>r.date.startsWith(targetYear));
+
+  // 병해충별 월별 집계
+  const pestMonthly={};
+  yearRecs.forEach(r=>{
+    const m=Number(r.date.slice(5,7))-1;
+    (r.pests||[]).forEach(p=>{
+      if(!pestMonthly[p])pestMonthly[p]=new Array(12).fill(0);
+      pestMonthly[p][m]++;
+    });
+  });
+
+  const entries=Object.entries(pestMonthly).sort((a,b)=>{
+    const sumA=a[1].reduce((x,y)=>x+y,0);
+    const sumB=b[1].reduce((x,y)=>x+y,0);
+    return sumB-sumA;
+  });
+
+  const wrap=document.getElementById('pest-trend-list');
+  if(entries.length===0){
+    wrap.innerHTML=`<div class="no-data">${targetYear}년 방제 기록이 없습니다.</div>`;
+    return;
+  }
+
+  const monthLabels=['1','2','3','4','5','6','7','8','9','10','11','12'];
+  wrap.innerHTML=entries.map(([pest,counts])=>{
+    const max=Math.max(...counts);
+    const total=counts.reduce((a,b)=>a+b,0);
+    const isFungus=PEST_LIST.fungus.includes(pest);
+    const peakMonth=counts.indexOf(max)+1;
+    return `<div class="trend-card">
+      <div class="trend-header">
+        <span class="trend-name">${isFungus?'🍄':'🐛'} ${escHtml(pest)}</span>
+        <span class="trend-count">총 ${total}회 · 최다 ${peakMonth}월(${max}회)</span>
+      </div>
+      <div class="trend-bars">
+        ${counts.map((c,i)=>{
+          const h=max>0?(c/max*100):0;
+          return `<div class="trend-bar ${c>0?'has-data':''}" style="height:${h}%"><span class="trend-tooltip">${i+1}월: ${c}회</span></div>`;
+        }).join('')}
+      </div>
+      <div class="trend-months">${monthLabels.map(m=>`<span>${m}</span>`).join('')}</div>
+    </div>`;
+  }).join('');
+}
+
+// ===================== 농약 사용 랭킹 =====================
+function renderPesticideRank(){
+  const recs=getRecordsForCurrentFarm();
+  const years=[...new Set(recs.map(r=>r.date.slice(0,4)))].sort().reverse();
+  const thisYear=new Date().getFullYear().toString();
+  if(!years.includes(thisYear))years.unshift(thisYear);
+  const sel=document.getElementById('rank-year');
+  const curVal=sel.value;
+  sel.innerHTML=years.map(y=>`<option value="${y}">${y}년</option>`).join('');
+  if(years.includes(curVal))sel.value=curVal;
+  else sel.value=thisYear;
+
+  const period=document.getElementById('rank-period').value;
+  sel.disabled=(period==='all');
+  let filtered=recs;
+  if(period==='year')filtered=recs.filter(r=>r.date.startsWith(sel.value));
+
+  // 제품별 집계 (모든 제품을 종류와 함께)
+  const agg={};
+  filtered.forEach(r=>{
+    (r.products||[]).forEach(p=>{
+      if(!p.name)return;
+      const key=p.name+'|'+(p.type||'pesticide');
+      if(!agg[key])agg[key]={name:p.name,type:p.type||'pesticide',count:0,totalCost:0,totalQty:0,ratings:[]};
+      agg[key].count++;
+      agg[key].totalCost+=p.subtotal||(p.unitPrice||0)*(p.qty||0);
+      agg[key].totalQty+=(p.qty||0);
+      if(r.rating>0)agg[key].ratings.push(r.rating);
+    });
+  });
+
+  const entries=Object.entries(agg).sort((a,b)=>b[1].count-a[1].count);
+
+  const wrap=document.getElementById('pesticide-rank-list');
+  if(entries.length===0){
+    wrap.innerHTML='<div class="no-data">해당 기간의 방제 기록이 없습니다.</div>';
+    return;
+  }
+
+  wrap.innerHTML=entries.map((ent,i)=>{
+    const [,d]=ent;
+    const t=PRODUCT_TYPE_MAP[d.type]||PRODUCT_TYPE_MAP.pesticide;
+    const avgRating=d.ratings.length?(d.ratings.reduce((a,b)=>a+b,0)/d.ratings.length):0;
+    const rankCls=i===0?'gold':i===1?'silver':i===2?'bronze':'';
+    return `<div class="rank-row">
+      <div class="rank-num ${rankCls}">${i+1}</div>
+      <div class="rank-info">
+        <div class="rank-name"><span class="type-tag ${t.cls}" style="margin-right:6px;font-size:10px;vertical-align:middle">${escHtml(t.label.replace(/^\S+\s/,''))}</span>${escHtml(d.name)}</div>
+        <div class="rank-meta">
+          ${d.count}회 사용 · 총 ${fmtN(d.totalQty)}병 · ${fmtN(d.totalCost)}원
+          ${avgRating?` · 평균 ★${avgRating.toFixed(1)}`:''}
+        </div>
+      </div>
+      <div class="rank-value">${d.count}회</div>
+    </div>`;
+  }).join('');
+}
+
+// ===================== 비용 분석 =====================
+function renderCost(){
+  const recs=getRecordsForCurrentFarm();
+  const years=[...new Set(recs.map(r=>r.date.slice(0,4)))].sort().reverse();
+  const thisYear=new Date().getFullYear().toString();
+  if(!years.includes(thisYear))years.unshift(thisYear);
+  const sel=document.getElementById('cost-year');
+  const curVal=sel.value;
+  sel.innerHTML=years.map(y=>`<option value="${y}">${y}년</option>`).join('');
+  if(years.includes(curVal))sel.value=curVal;
+  else sel.value=thisYear;
+
+  const targetYear=sel.value;
+  const yearRecs=recs.filter(r=>r.date.startsWith(targetYear));
+  const prevYearRecs=recs.filter(r=>r.date.startsWith(String(Number(targetYear)-1)));
+
+  const total=yearRecs.reduce((s,r)=>s+(r.totalPrice||0),0);
+  const prevTotal=prevYearRecs.reduce((s,r)=>s+(r.totalPrice||0),0);
+
+  document.getElementById('cost-year-label').textContent=targetYear+'년 총 농약·자재비';
+  document.getElementById('c-total').textContent=fmtN(total);
+  document.getElementById('c-count').textContent=yearRecs.length;
+
+  const yoyEl=document.getElementById('c-yoy');
+  const yoySubEl=document.getElementById('c-yoy-sub');
+  if(prevTotal>0){
+    const diff=total-prevTotal;
+    const pct=(diff/prevTotal*100).toFixed(1);
+    const up=diff>0;
+    yoyEl.innerHTML=(up?'▲ ':'▼ ')+Math.abs(pct)+'%';
+    yoyEl.style.color=up?'#c0392b':'#2d5a2d';
+    yoySubEl.textContent=`${(up?'+':'')}${fmtN(diff)}원`;
+  }else{
+    yoyEl.textContent='-';yoyEl.style.color='';
+    yoySubEl.textContent='전년 데이터 없음';
+  }
+
+  // 월별 비용
+  const monthly=new Array(12).fill(0);
+  const monthlyCount=new Array(12).fill(0);
+  yearRecs.forEach(r=>{
+    const m=Number(r.date.slice(5,7))-1;
+    monthly[m]+=(r.totalPrice||0);
+    monthlyCount[m]++;
+  });
+  const monthMax=Math.max(...monthly);
+  const mWrap=document.getElementById('cost-monthly');
+  mWrap.innerHTML=monthly.map((amt,i)=>{
+    const w=monthMax>0?(amt/monthMax*100):0;
+    return `<div style="display:grid;grid-template-columns:40px 1fr 140px;gap:10px;align-items:center;margin-bottom:6px">
+      <div style="font-size:12px;color:#5a7a5a;font-weight:600">${i+1}월</div>
+      <div style="background:#f0f4f0;border-radius:6px;height:20px;position:relative;overflow:hidden">
+        <div style="background:#2d5a2d;height:100%;width:${w}%;transition:width 0.3s"></div>
+      </div>
+      <div style="font-size:12px;text-align:right"><strong>${fmtN(amt)}원</strong> <span style="color:#8aaa8a">(${monthlyCount[i]}회)</span></div>
+    </div>`;
+  }).join('');
+
+  // 종류별 비용 비율
+  const byType={pesticide:0,nutrient:0,adjuvant:0,other:0};
+  yearRecs.forEach(r=>{
+    (r.products||[]).forEach(p=>{
+      const t=PRODUCT_TYPE_MAP[p.type]?p.type:'pesticide';
+      byType[t]+=p.subtotal||(p.unitPrice||0)*(p.qty||0);
+    });
+  });
+  const totalByType=Object.values(byType).reduce((a,b)=>a+b,0);
+
+  // 제품별 비용 순위
+  const agg={};
+  yearRecs.forEach(r=>{
+    (r.products||[]).forEach(p=>{
+      if(!p.name)return;
+      const key=p.name+'|'+(p.type||'pesticide');
+      if(!agg[key])agg[key]={name:p.name,type:p.type||'pesticide',cost:0,count:0,qty:0};
+      agg[key].cost+=p.subtotal||(p.unitPrice||0)*(p.qty||0);
+      agg[key].count++;
+      agg[key].qty+=(p.qty||0);
+    });
+  });
+  const entries=Object.entries(agg).sort((a,b)=>b[1].cost-a[1].cost);
+  const cbWrap=document.getElementById('cost-by-pesticide');
+
+  // 종류별 요약 추가
+  let typeBreakdown='';
+  if(totalByType>0){
+    typeBreakdown='<div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap">';
+    PRODUCT_TYPES.forEach(t=>{
+      const v=byType[t.value]||0;
+      if(v===0)return;
+      const pct=(v/totalByType*100).toFixed(1);
+      typeBreakdown+=`<div style="flex:1;min-width:120px;background:#f9fdf9;border:1px solid #e0edd0;border-radius:8px;padding:10px">
+        <div style="font-size:11px;color:#5a7a5a;font-weight:600;margin-bottom:4px"><span class="type-tag ${t.cls}" style="margin-right:4px">${escHtml(t.label.replace(/^\S+\s/,''))}</span></div>
+        <div style="font-size:14px;font-weight:700;color:#2d5a2d">${fmtN(v)}원</div>
+        <div style="font-size:10px;color:#8aaa8a">${pct}%</div>
+      </div>`;
+    });
+    typeBreakdown+='</div>';
+  }
+
+  if(entries.length===0){
+    cbWrap.innerHTML=typeBreakdown+`<div class="no-data">${targetYear}년 비용 데이터가 없습니다.</div>`;
+  }else{
+    const maxCost=entries[0][1].cost;
+    cbWrap.innerHTML=typeBreakdown+entries.map(([key,d])=>{
+      const t=PRODUCT_TYPE_MAP[d.type]||PRODUCT_TYPE_MAP.pesticide;
+      const w=maxCost>0?(d.cost/maxCost*100):0;
+      const avg=d.qty>0?Math.round(d.cost/d.qty):0;
+      return `<div style="display:grid;grid-template-columns:1fr 140px 130px;gap:10px;align-items:center;padding:8px 10px;background:#f9fdf9;border:1px solid #e0edd0;border-radius:8px;margin-bottom:5px">
+        <div>
+          <div style="font-size:13px;font-weight:700;color:#2d5a2d"><span class="type-tag ${t.cls}" style="margin-right:6px;font-size:10px;vertical-align:middle">${escHtml(t.label.replace(/^\S+\s/,''))}</span>${escHtml(d.name)}</div>
+          <div style="background:#e0edd0;border-radius:4px;height:6px;margin-top:4px;overflow:hidden"><div style="background:#2d5a2d;height:100%;width:${w}%"></div></div>
+        </div>
+        <div style="font-size:12px;text-align:right"><strong>${fmtN(d.cost)}원</strong></div>
+        <div style="font-size:11px;text-align:right;color:#8aaa8a">${d.count}회 · ${d.qty}병<br>병당 평균 ${fmtN(avg)}원</div>
+      </div>`;
+    }).join('');
+  }
+}
+
+// ===================== 농약 비교 =====================
+function renderCompare(){
+  const recs=getRecordsForCurrentFarm();
+
+  // 병해충 필터 옵션 (제품별 병해충에서 수집)
+  const allPests=new Set();
+  recs.forEach(r=>{
+    (r.products||[]).forEach(p=>(p.pests||[]).forEach(x=>allPests.add(x)));
+  });
+  const sel=document.getElementById('compare-pest');
+  const curVal=sel.value;
+  sel.innerHTML='<option value="__all__">전체 병해충</option>'+[...allPests].sort().map(p=>`<option value="${escHtml(p)}">${escHtml(p)}</option>`).join('');
+  if([...allPests,'__all__'].includes(curVal))sel.value=curVal;
+
+  const pestFilter=sel.value;
+
+  // 제품별 집계 - 핵심: 제품의 pests에 직접 매칭되는지 확인
+  const agg={};
+  recs.forEach(r=>{
+    (r.products||[]).forEach(p=>{
+      if(!p.name)return;
+      // 병해충 필터: 이 제품이 해당 병해충 대상으로 사용된 경우만 포함
+      if(pestFilter!=='__all__'){
+        if(!(p.pests||[]).includes(pestFilter))return;
+      }
+      const key=p.name+'|'+(p.type||'pesticide');
+      if(!agg[key])agg[key]={name:p.name,type:p.type||'pesticide',count:0,totalCost:0,totalQty:0,ratings:[],dates:[],pests:new Set(),unitPrices:[]};
+      agg[key].count++;
+      const subtotal=p.subtotal||(p.unitPrice||0)*(p.qty||0);
+      agg[key].totalCost+=subtotal;
+      agg[key].totalQty+=(p.qty||0);
+      if(p.unitPrice>0)agg[key].unitPrices.push(p.unitPrice);
+      if(r.rating>0)agg[key].ratings.push(r.rating);
+      agg[key].dates.push(r.date);
+      // 이 제품이 다룬 모든 병해충 (단순 합집합)
+      (p.pests||[]).forEach(pp=>agg[key].pests.add(pp));
+    });
+  });
+
+  // 재사용 주기 계산
+  Object.values(agg).forEach(d=>{
+    const sorted=[...d.dates].sort();
+    const gaps=[];
+    for(let i=1;i<sorted.length;i++){
+      const g=daysBetween(sorted[i-1],sorted[i]);
+      if(g!=null&&g>0)gaps.push(g);
+    }
+    d.avgGap=gaps.length?Math.round(gaps.reduce((a,b)=>a+b,0)/gaps.length):null;
+  });
+
+  const entries=Object.entries(agg);
+  // 정렬: 평점 → 사용횟수
+  entries.sort((a,b)=>{
+    const rA=a[1].ratings.length?a[1].ratings.reduce((x,y)=>x+y,0)/a[1].ratings.length:0;
+    const rB=b[1].ratings.length?b[1].ratings.reduce((x,y)=>x+y,0)/b[1].ratings.length:0;
+    if(rB!==rA)return rB-rA;
+    return b[1].count-a[1].count;
+  });
+
+  const wrap=document.getElementById('compare-table-wrap');
+  if(entries.length===0){
+    wrap.innerHTML='<div class="no-data">비교할 데이터가 없습니다.</div>';
+    return;
+  }
+
+  let html='<table class="compare-table"><thead><tr>';
+  html+='<th style="text-align:left">제품명</th>';
+  html+='<th>효과 평점</th>';
+  html+='<th>사용 횟수</th>';
+  html+='<th>평균 병당가</th>';
+  html+='<th>총 비용</th>';
+  html+='<th>재사용 주기</th>';
+  html+='<th>주요 대상</th>';
+  html+='</tr></thead><tbody>';
+
+  entries.forEach(([key,d])=>{
+    const t=PRODUCT_TYPE_MAP[d.type]||PRODUCT_TYPE_MAP.pesticide;
+    const avgRating=d.ratings.length?(d.ratings.reduce((a,b)=>a+b,0)/d.ratings.length):0;
+    const avgUnitPrice=d.unitPrices.length?Math.round(d.unitPrices.reduce((a,b)=>a+b,0)/d.unitPrices.length):0;
+    const gapStr=d.avgGap!=null?d.avgGap+'일':'-';
+    const pestsStr=[...d.pests].slice(0,3).join(', ')+(d.pests.size>3?` 외 ${d.pests.size-3}`:'');
+    const ratingHtml=avgRating?`<span class="star-display">${'★'.repeat(Math.round(avgRating))}${'☆'.repeat(5-Math.round(avgRating))}</span><br><span style="font-size:10px;color:#8aaa8a">${avgRating.toFixed(1)}/5.0</span>`:'<span style="color:#ccc;font-size:11px">미평가</span>';
+    html+=`<tr>
+      <td style="text-align:left"><span class="type-tag ${t.cls}" style="margin-right:4px;font-size:10px">${escHtml(t.label.replace(/^\S+\s/,''))}</span><strong>${escHtml(d.name)}</strong></td>
+      <td>${ratingHtml}</td>
+      <td>${d.count}회<br><span style="font-size:10px;color:#8aaa8a">${d.totalQty}병</span></td>
+      <td>${avgUnitPrice?fmtN(avgUnitPrice)+'원':'-'}</td>
+      <td>${d.totalCost?fmtN(d.totalCost)+'원':'-'}</td>
+      <td>${gapStr}</td>
+      <td style="text-align:left;font-size:11px;color:#5a7a5a">${escHtml(pestsStr)||'-'}</td>
+    </tr>`;
+  });
+  html+='</tbody></table>';
+  html+='<div class="hint" style="margin-top:10px">※ 평균 병당가: 같은 제품을 여러 번 구입했을 때의 평균 단가. 가격 변동을 추적할 수 있습니다.<br>※ 재사용 주기: 같은 제품을 다시 쓰기까지 걸린 평균 일수.</div>';
+  wrap.innerHTML=html;
+}
+
+// ===================== 전체 렌더 =====================
+function renderAll(){
+  renderRecords();
+}
+
+// ===================== 초기화 =====================
+async function init(){
+  // 로컬 먼저
+  renderFarmTabs();
+  renderProducts();
+  updateRatingUI();
+  document.getElementById('inp-date').value=todayStr();
+  updateAutocomplete();
+
+  // 클라우드 동기화
+  await loadFromCloud();
+  renderFarmTabs();
+  updateAutocomplete();
+  renderAll();
+
+  // 주기적으로 농장 목록 체크 (판매관리 앱에서 농장 추가 시 반영)
+  setInterval(async()=>{
+    try{
+      const rFarm=await fetch(SUPABASE_URL+'/rest/v1/sales_data?id=eq.main&select=farm_id',{headers:SB_HEADERS});
+      if(rFarm.ok){
+        const data=await rFarm.json();
+        if(data&&data[0]&&data[0].farm_id){
+          const f=JSON.parse(data[0].farm_id);
+          if(Array.isArray(f)&&JSON.stringify(f)!==JSON.stringify(state.farms)){
+            state.farms=f;
+            localStorage.setItem('sf_farms',JSON.stringify(state.farms));
+            renderFarmTabs();
+          }
+        }
+      }
+    }catch(e){/* 무시 */}
+  },60000);
+}
+
+init();
+</script>
+
+
+</body></html>
