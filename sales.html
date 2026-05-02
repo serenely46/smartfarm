@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0113)file:///C:/Users/User/Downloads/%EC%8A%A4%EB%A7%88%ED%8A%B8%ED%8C%9C_%ED%8C%90%EB%A7%A4_%EA%B4%80%EB%A6%AC_5.html -->
+<!-- saved from url=(0113)file:///C:/Users/User/Downloads/%EC%8A%A4%EB%A7%88%ED%8A%B8%ED%8C%9C_%ED%8C%90%EB%A7%A4_%EA%B4%80%EB%A6%AC_6.html -->
 <html lang="ko"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -28,6 +28,25 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans KR',sans
 .farm-tab{background:#fff;border:1px solid #c8dfc8;border-radius:8px;padding:8px 18px;font-size:13px;cursor:pointer;color:#5a7a5a;transition:all 0.15s;font-weight:500}
 .farm-tab.active{background:#2d5a2d;border-color:#2d5a2d;color:#fff;font-weight:700}
 .farm-tab:hover:not(.active){background:#e8f4e8}
+/* 통합 보기 탭 (다른 농장 탭과 시각적으로 구분) */
+.farm-tab-all{background:linear-gradient(135deg,#fff8e8 0%,#f0f7e8 100%);border-color:#d8c890;color:#7a5a1a;font-weight:700;position:relative}
+.farm-tab-all:not(.active):hover{background:linear-gradient(135deg,#fff3d8 0%,#e8f0d8 100%);border-color:#c0a070}
+.farm-tab-all.active{background:linear-gradient(135deg,#7a5a2d 0%,#2d5a2d 100%);border-color:#2d5a2d;color:#fff}
+/* 통합 모드에서 기록에 농장 라벨 표시 */
+.farm-label-badge{display:inline-block;background:#fff3d8;color:#7a5a1a;border:1px solid #d8c890;padding:2px 8px;border-radius:5px;font-size:10px;font-weight:700;margin-right:4px}
+.aggregate-banner{background:linear-gradient(135deg,#fff8e8 0%,#f0f7e8 100%);border:1px solid #d8c890;border-radius:10px;padding:12px 16px;margin-bottom:14px;display:flex;align-items:center;gap:10px;font-size:13px;color:#5a4a1a}
+.aggregate-banner .agg-icon{font-size:20px}
+.aggregate-banner .agg-info{flex:1}
+.aggregate-banner .agg-title{font-weight:700;color:#7a5a1a;margin-bottom:2px}
+.aggregate-banner .agg-sub{font-size:11px;color:#a08a4a}
+/* 농장별 분해 카드 */
+.farm-breakdown{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:10px;margin-bottom:14px}
+.farm-breakdown-card{background:#f9fdf9;border:1px solid #d8ead8;border-radius:10px;padding:12px 14px}
+.farm-breakdown-card .fb-name{font-size:13px;font-weight:700;color:#2d5a2d;margin-bottom:7px;padding-bottom:5px;border-bottom:1px solid #eaf4ea;display:flex;align-items:center;justify-content:space-between}
+.farm-breakdown-card .fb-row{display:flex;justify-content:space-between;font-size:12px;padding:3px 0;color:#5a7a5a}
+.farm-breakdown-card .fb-val{font-weight:600;color:#1a1a1a}
+.farm-breakdown-card .fb-val.pending{color:#c0392b}
+.farm-breakdown-card .fb-val.net{color:#2d5a2d}
 
 /* 섹션 탭 */
 .section-tabs{display:flex;gap:0;margin-bottom:1.5rem;border:1px solid #c8dfc8;border-radius:8px;overflow:hidden;width:fit-content;background:#fff}
@@ -63,6 +82,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans KR',sans
 /* 요약 카드 */
 .summary-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:1.2rem}
 .summary-grid-5{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:1.2rem}
+.summary-grid-6{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-bottom:1.2rem}
+@media (max-width:900px){.summary-grid-6{grid-template-columns:repeat(3,1fr)}}
+@media (max-width:600px){.summary-grid-6{grid-template-columns:repeat(2,1fr)}}
+.metric.warning{background:#fff8e8;border-color:#f0d8a0}
+.metric.warning .metric-val{color:#8a5a00}
+.metric.warning .metric-label{color:#a88030}
 .metric{background:#f4faf4;border-radius:8px;padding:13px;border:1px solid #e0edd0}
 .metric-label{font-size:11px;color:#5a7a5a;margin-bottom:5px;font-weight:600}
 .metric-val{font-size:18px;font-weight:700;color:#1a1a1a}
@@ -161,7 +186,7 @@ input.money{text-align:right}
   <div class="header">
     <h1>🥒 스마트팜 판매 관리</h1>
     <div class="header-right">
-      <span id="sync-status" class="sync-status sync-ok" title="마지막 저장 성공: 오후 8:27:01">● 동기화됨</span>
+      <span id="sync-status" class="sync-status sync-ok" title="마지막 저장 성공: 오전 6:59:04">● 동기화됨</span>
       <button class="btn" onclick="exportBackup()" style="background:#f0f7f0;border:1px solid #c8dfc8;color:#2d5a2d" title="현재 모든 데이터를 JSON 파일로 다운로드">💾 백업</button>
       <button class="btn" onclick="document.getElementById(&#39;restore-file&#39;).click()" style="background:#fff8f0;border:1px solid #e8d0b0;color:#8a5a1a" title="백업 파일로 데이터 복원">📥 복원</button>
       <input type="file" id="restore-file" accept=".json,application/json" style="display:none" onchange="importBackup(event)">
@@ -169,7 +194,7 @@ input.money{text-align:right}
     </div>
   </div>
 
-  <div id="farm-tabs" class="farm-tabs"><button class="farm-tab active">도하오이 (신흥온실)</button><button class="farm-tab">도하오이 (창평온실)</button></div>
+  <div id="farm-tabs" class="farm-tabs"><button class="farm-tab farm-tab-all" title="모든 농장의 데이터를 합쳐서 봅니다">🌐 통합 보기</button><button class="farm-tab active">도하오이 (신흥온실)</button><button class="farm-tab">도하오이 (창평온실)</button></div>
   <div id="no-farm" class="no-farm hidden">
     <p style="margin-bottom:8px;font-size:16px">등록된 농장이 없습니다.</p>
     <p style="font-size:13px">농장 추가 버튼을 눌러 시작하세요.</p>
@@ -339,36 +364,135 @@ input.money{text-align:right}
         <div class="card-title">최근 출하 기록</div>
         <div id="recent-records"><div class="record-row">
     <div class="record-row-header">
+      
       <span class="market-badge">서울가락시장 (한국청과)</span>
-      <span class="date-info">출하: 2026-04-24(금)</span>
+      <span class="date-info">출하: 2026-05-01(금)</span>
       <span style="background:#fff5f5;color:#c0392b;padding:2px 8px;border-radius:5px;font-size:11px;font-weight:600">미입금</span>
       
+      <button class="btn btn-sm btn-danger" style="margin-left:auto" onclick="deleteRecordById(&#39;r_1777730072970&#39;)">삭제</button>
+    </div>
+    <div class="record-grades"><span class="record-grade-item"><span class="grade-badge badge-특">특</span> 51개 × 16,000원 = <strong>816,000원</strong></span></div>
+    <div class="record-totals">
+      총수량 <span>51개</span> 낙찰총액 <span>816,000원</span> 입금액 <span>0원</span> 수수료 <span style="color:#c0392b">-0원</span>
+      실수익(입금액) <span style="color:#2d5a2d">0원</span>
+      
+      
+    </div>
+  </div><div class="record-row">
+    <div class="record-row-header">
+      
+      <span class="market-badge">서울가락시장 (한국청과)</span>
+      <span class="date-info">출하: 2026-04-30(목)</span>
+      <span style="background:#fff5f5;color:#c0392b;padding:2px 8px;border-radius:5px;font-size:11px;font-weight:600">미입금</span>
+      
+      <button class="btn btn-sm btn-danger" style="margin-left:auto" onclick="deleteRecordById(&#39;r_1777730060570&#39;)">삭제</button>
+    </div>
+    <div class="record-grades"><span class="record-grade-item"><span class="grade-badge badge-특">특</span> 53개 × 23,500원 = <strong>1,245,500원</strong></span></div>
+    <div class="record-totals">
+      총수량 <span>53개</span> 낙찰총액 <span>1,245,500원</span> 입금액 <span>0원</span> 수수료 <span style="color:#c0392b">-0원</span>
+      실수익(입금액) <span style="color:#2d5a2d">0원</span>
+      
+      
+    </div>
+  </div><div class="record-row">
+    <div class="record-row-header">
+      
+      <span class="market-badge">서울가락시장 (한국청과)</span>
+      <span class="date-info">출하: 2026-04-29(수)</span>
+      <span style="background:#fff5f5;color:#c0392b;padding:2px 8px;border-radius:5px;font-size:11px;font-weight:600">미입금</span>
+      
+      <button class="btn btn-sm btn-danger" style="margin-left:auto" onclick="deleteRecordById(&#39;r_1777730048250&#39;)">삭제</button>
+    </div>
+    <div class="record-grades"><span class="record-grade-item"><span class="grade-badge badge-특">특</span> 52개 × 21,000원 = <strong>1,092,000원</strong></span></div>
+    <div class="record-totals">
+      총수량 <span>52개</span> 낙찰총액 <span>1,092,000원</span> 입금액 <span>0원</span> 수수료 <span style="color:#c0392b">-0원</span>
+      실수익(입금액) <span style="color:#2d5a2d">0원</span>
+      
+      
+    </div>
+  </div><div class="record-row">
+    <div class="record-row-header">
+      
+      <span class="market-badge">서울가락시장 (한국청과)</span>
+      <span class="date-info">출하: 2026-04-28(화)</span>
+      <span style="background:#fff5f5;color:#c0392b;padding:2px 8px;border-radius:5px;font-size:11px;font-weight:600">미입금</span>
+      
+      <button class="btn btn-sm btn-danger" style="margin-left:auto" onclick="deleteRecordById(&#39;r_1777730033690&#39;)">삭제</button>
+    </div>
+    <div class="record-grades"><span class="record-grade-item"><span class="grade-badge badge-특">특</span> 40개 × 26,500원 = <strong>1,060,000원</strong></span></div>
+    <div class="record-totals">
+      총수량 <span>40개</span> 낙찰총액 <span>1,060,000원</span> 입금액 <span>0원</span> 수수료 <span style="color:#c0392b">-0원</span>
+      실수익(입금액) <span style="color:#2d5a2d">0원</span>
+      
+      
+    </div>
+  </div><div class="record-row">
+    <div class="record-row-header">
+      
+      <span class="market-badge">서울가락시장 (한국청과)</span>
+      <span class="date-info">출하: 2026-04-27(월)</span>
+      <span style="background:#fff5f5;color:#c0392b;padding:2px 8px;border-radius:5px;font-size:11px;font-weight:600">미입금</span>
+      
+      <button class="btn btn-sm btn-danger" style="margin-left:auto" onclick="deleteRecordById(&#39;r_1777730016618&#39;)">삭제</button>
+    </div>
+    <div class="record-grades"><span class="record-grade-item"><span class="grade-badge badge-특">특</span> 38개 × 32,000원 = <strong>1,216,000원</strong></span></div>
+    <div class="record-totals">
+      총수량 <span>38개</span> 낙찰총액 <span>1,216,000원</span> 입금액 <span>0원</span> 수수료 <span style="color:#c0392b">-0원</span>
+      실수익(입금액) <span style="color:#2d5a2d">0원</span>
+      
+      
+    </div>
+  </div><div class="record-row">
+    <div class="record-row-header">
+      
+      <span class="market-badge">서울가락시장 (한국청과)</span>
+      <span class="date-info">출하: 2026-04-26(일)</span>
+      <span style="background:#fff5f5;color:#c0392b;padding:2px 8px;border-radius:5px;font-size:11px;font-weight:600">미입금</span>
+      
+      <button class="btn btn-sm btn-danger" style="margin-left:auto" onclick="deleteRecordById(&#39;r_1777290399234&#39;)">삭제</button>
+    </div>
+    <div class="record-grades"><span class="record-grade-item"><span class="grade-badge badge-특">특</span> 30개 × 30,500원 = <strong>915,000원</strong></span></div>
+    <div class="record-totals">
+      총수량 <span>30개</span> 낙찰총액 <span>915,000원</span> 입금액 <span>0원</span> 수수료 <span style="color:#c0392b">-0원</span>
+      실수익(입금액) <span style="color:#2d5a2d">0원</span>
+      
+      
+    </div>
+  </div><div class="record-row">
+    <div class="record-row-header">
+      
+      <span class="market-badge">서울가락시장 (한국청과)</span>
+      <span class="date-info">출하: 2026-04-24(금)</span>
+      <span style="background:#e8f8f0;color:#1B7A4A;padding:2px 8px;border-radius:5px;font-size:11px;font-weight:600">입금완료</span>
+      <span style="background:#fff8e8;color:#8a5a00;padding:2px 8px;border-radius:5px;font-size:11px;font-weight:600">수수료율 8.2%</span>
       <button class="btn btn-sm btn-danger" style="margin-left:auto" onclick="deleteRecordById(&#39;r_1777125452100&#39;)">삭제</button>
     </div>
     <div class="record-grades"><span class="record-grade-item"><span class="grade-badge badge-특">특</span> 72개 × 28,500원 = <strong>2,052,000원</strong></span></div>
     <div class="record-totals">
-      총수량 <span>72개</span> 낙찰총액 <span>2,052,000원</span> 입금액 <span>0원</span> 수수료 <span style="color:#c0392b">-0원</span>
-      실수익(입금액) <span style="color:#2d5a2d">0원</span>
-      
+      총수량 <span>72개</span> 낙찰총액 <span>2,052,000원</span> 입금액 <span>1,883,920원</span> 수수료 <span style="color:#c0392b">-168,080원</span>
+      실수익(입금액) <span style="color:#2d5a2d">1,883,920원</span>
+      <span style="color:#1B7A4A">입금일: 2026-04-27(월)</span>
       
     </div>
   </div><div class="record-row">
     <div class="record-row-header">
+      
       <span class="market-badge">서울가락시장 (한국청과)</span>
       <span class="date-info">출하: 2026-04-23(목)</span>
-      <span style="background:#fff5f5;color:#c0392b;padding:2px 8px;border-radius:5px;font-size:11px;font-weight:600">미입금</span>
-      
+      <span style="background:#e8f8f0;color:#1B7A4A;padding:2px 8px;border-radius:5px;font-size:11px;font-weight:600">입금완료</span>
+      <span style="background:#fff8e8;color:#8a5a00;padding:2px 8px;border-radius:5px;font-size:11px;font-weight:600">수수료율 8%</span>
       <button class="btn btn-sm btn-danger" style="margin-left:auto" onclick="deleteRecordById(&#39;r_1777037252686&#39;)">삭제</button>
     </div>
     <div class="record-grades"><span class="record-grade-item"><span class="grade-badge badge-특">특</span> 48개 × 30,500원 = <strong>1,464,000원</strong></span></div>
     <div class="record-totals">
-      총수량 <span>48개</span> 낙찰총액 <span>1,464,000원</span> 입금액 <span>0원</span> 수수료 <span style="color:#c0392b">-0원</span>
-      실수익(입금액) <span style="color:#2d5a2d">0원</span>
-      
+      총수량 <span>48개</span> 낙찰총액 <span>1,464,000원</span> 입금액 <span>1,346,688원</span> 수수료 <span style="color:#c0392b">-117,312원</span>
+      실수익(입금액) <span style="color:#2d5a2d">1,346,688원</span>
+      <span style="color:#1B7A4A">입금일: 2026-04-27(월)</span>
       
     </div>
   </div><div class="record-row">
     <div class="record-row-header">
+      
       <span class="market-badge">서울가락시장 (한국청과)</span>
       <span class="date-info">출하: 2026-04-22(수)</span>
       <span style="background:#e8f8f0;color:#1B7A4A;padding:2px 8px;border-radius:5px;font-size:11px;font-weight:600">입금완료</span>
@@ -384,6 +508,7 @@ input.money{text-align:right}
     </div>
   </div><div class="record-row">
     <div class="record-row-header">
+      
       <span class="market-badge">서울가락시장 (한국청과)</span>
       <span class="date-info">출하: 2026-04-21(화)</span>
       <span style="background:#e8f8f0;color:#1B7A4A;padding:2px 8px;border-radius:5px;font-size:11px;font-weight:600">입금완료</span>
@@ -395,51 +520,6 @@ input.money{text-align:right}
       총수량 <span>64개</span> 낙찰총액 <span>1,568,000원</span> 입금액 <span>1,434,280원</span> 수수료 <span style="color:#c0392b">-133,720원</span>
       실수익(입금액) <span style="color:#2d5a2d">1,434,280원</span>
       <span style="color:#1B7A4A">입금일: 2026-04-23(목)</span>
-      
-    </div>
-  </div><div class="record-row">
-    <div class="record-row-header">
-      <span class="market-badge">서울가락시장 (한국청과)</span>
-      <span class="date-info">출하: 2026-04-20(월)</span>
-      <span style="background:#e8f8f0;color:#1B7A4A;padding:2px 8px;border-radius:5px;font-size:11px;font-weight:600">입금완료</span>
-      <span style="background:#fff8e8;color:#8a5a00;padding:2px 8px;border-radius:5px;font-size:11px;font-weight:600">수수료율 9.4%</span>
-      <button class="btn btn-sm btn-danger" style="margin-left:auto" onclick="deleteRecordById(&#39;r_1776857269029&#39;)">삭제</button>
-    </div>
-    <div class="record-grades"><span class="record-grade-item"><span class="grade-badge badge-특">특</span> 52개 × 22,500원 = <strong>1,170,000원</strong></span></div>
-    <div class="record-totals">
-      총수량 <span>52개</span> 낙찰총액 <span>1,170,000원</span> 입금액 <span>1,059,552원</span> 수수료 <span style="color:#c0392b">-110,448원</span>
-      실수익(입금액) <span style="color:#2d5a2d">1,059,552원</span>
-      <span style="color:#1B7A4A">입금일: 2026-04-22(수)</span>
-      
-    </div>
-  </div><div class="record-row">
-    <div class="record-row-header">
-      <span class="market-badge">서울가락시장 (한국청과)</span>
-      <span class="date-info">출하: 2026-04-19(일)</span>
-      <span style="background:#e8f8f0;color:#1B7A4A;padding:2px 8px;border-radius:5px;font-size:11px;font-weight:600">입금완료</span>
-      <span style="background:#fff8e8;color:#8a5a00;padding:2px 8px;border-radius:5px;font-size:11px;font-weight:600">수수료율 9.4%</span>
-      <button class="btn btn-sm btn-danger" style="margin-left:auto" onclick="deleteRecordById(&#39;r_1776857222757&#39;)">삭제</button>
-    </div>
-    <div class="record-grades"><span class="record-grade-item"><span class="grade-badge badge-특">특</span> 40개 × 22,500원 = <strong>900,000원</strong></span></div>
-    <div class="record-totals">
-      총수량 <span>40개</span> 낙찰총액 <span>900,000원</span> 입금액 <span>815,040원</span> 수수료 <span style="color:#c0392b">-84,960원</span>
-      실수익(입금액) <span style="color:#2d5a2d">815,040원</span>
-      <span style="color:#1B7A4A">입금일: 2026-04-21(화)</span>
-      
-    </div>
-  </div><div class="record-row">
-    <div class="record-row-header">
-      <span class="market-badge">서울가락시장 (한국청과)</span>
-      <span class="date-info">출하: 2026-04-17(금)</span>
-      <span style="background:#e8f8f0;color:#1B7A4A;padding:2px 8px;border-radius:5px;font-size:11px;font-weight:600">입금완료</span>
-      <span style="background:#fff8e8;color:#8a5a00;padding:2px 8px;border-radius:5px;font-size:11px;font-weight:600">수수료율 9.3%</span>
-      <button class="btn btn-sm btn-danger" style="margin-left:auto" onclick="deleteRecordById(&#39;r_1776779232363&#39;)">삭제</button>
-    </div>
-    <div class="record-grades"><span class="record-grade-item"><span class="grade-badge badge-특">특</span> 51개 × 21,500원 = <strong>1,096,500원</strong></span></div>
-    <div class="record-totals">
-      총수량 <span>51개</span> 낙찰총액 <span>1,096,500원</span> 입금액 <span>994,640원</span> 수수료 <span style="color:#c0392b">-101,860원</span>
-      실수익(입금액) <span style="color:#2d5a2d">994,640원</span>
-      <span style="color:#1B7A4A">입금일: 2026-04-20(월)</span>
       
     </div>
   </div></div>
@@ -454,12 +534,14 @@ input.money{text-align:right}
           <span id="week-label" style="font-weight:600"></span>          <button onclick="changeWeek(1)">▶</button>
           <button class="btn btn-sm" style="margin-left:8px" onclick="goThisWeek()">이번 주</button>
         </div>
+        <div id="w-agg-banner"></div>
         <div style="font-size:12px;font-weight:600;color:#2d5a2d;margin-bottom:6px">📦 공판장</div>
-        <div class="summary-grid-5" style="margin-bottom:10px">
+        <div class="summary-grid-6" style="margin-bottom:10px">
           <div class="metric"><div class="metric-label">출하 횟수</div><div class="metric-val" id="w-count">-</div><div class="metric-sub">회</div></div>
           <div class="metric"><div class="metric-label">총 수량</div><div class="metric-val" id="w-qty">-</div><div class="metric-sub">개</div></div>
           <div class="metric"><div class="metric-label">낙찰 총액</div><div class="metric-val" id="w-total">-</div><div class="metric-sub">원</div></div>
           <div class="metric danger"><div class="metric-label">총 수수료</div><div class="metric-val" id="w-fee">-</div><div class="metric-sub">원</div></div>
+          <div class="metric warning"><div class="metric-label">⏳ 미입금</div><div class="metric-val" id="w-pending">-</div><div class="metric-sub" id="w-pending-sub">원</div></div>
           <div class="metric highlight"><div class="metric-label">공판장 실수익</div><div class="metric-val" id="w-net">-</div><div class="metric-sub">원</div></div>
         </div>
         <div style="font-size:12px;font-weight:600;color:#7a5a2d;margin-bottom:6px">🏪 로컬푸드</div>
@@ -471,6 +553,7 @@ input.money{text-align:right}
           <span style="color:#a8d4a8;font-size:12px;font-weight:600">주간 총 수익</span>
           <span style="color:#fff;font-size:16px;font-weight:700" id="w-grand-total">-</span>
         </div>
+        <div id="w-farm-breakdown"></div>
         <div id="weekly-records"></div>
         <div id="weekly-lf-records"></div>
       </div>
@@ -485,12 +568,14 @@ input.money{text-align:right}
           <button onclick="changeMonth(1)">▶</button>
           <button class="btn btn-sm" style="margin-left:8px" onclick="goThisMonth()">이번 달</button>
         </div>
+        <div id="m-agg-banner"></div>
         <div style="font-size:12px;font-weight:600;color:#2d5a2d;margin-bottom:6px">📦 공판장</div>
-        <div class="summary-grid-5" style="margin-bottom:10px">
+        <div class="summary-grid-6" style="margin-bottom:10px">
           <div class="metric"><div class="metric-label">출하 횟수</div><div class="metric-val" id="m-count">-</div><div class="metric-sub">회</div></div>
           <div class="metric"><div class="metric-label">총 수량</div><div class="metric-val" id="m-qty">-</div><div class="metric-sub">개</div></div>
           <div class="metric"><div class="metric-label">낙찰 총액</div><div class="metric-val" id="m-total">-</div><div class="metric-sub">원</div></div>
           <div class="metric danger"><div class="metric-label">총 수수료</div><div class="metric-val" id="m-fee">-</div><div class="metric-sub">원</div></div>
+          <div class="metric warning"><div class="metric-label">⏳ 미입금</div><div class="metric-val" id="m-pending">-</div><div class="metric-sub" id="m-pending-sub">원</div></div>
           <div class="metric highlight"><div class="metric-label">공판장 실수익</div><div class="metric-val" id="m-net">-</div><div class="metric-sub">원</div></div>
         </div>
         <div style="font-size:12px;font-weight:600;color:#7a5a2d;margin-bottom:6px">🏪 로컬푸드</div>
@@ -521,6 +606,7 @@ input.money{text-align:right}
         </div>
         <div class="month-header-row"><div>일</div><div>월</div><div>화</div><div>수</div><div>목</div><div>금</div><div>토</div></div>
         <div class="month-grid" id="monthly-grid"></div>
+        <div id="m-farm-breakdown"></div>
         <div id="monthly-records"></div>
         <div id="monthly-lf-records"></div>
       </div>
@@ -536,15 +622,18 @@ input.money{text-align:right}
           <button class="btn btn-sm" style="margin-left:8px" onclick="goThisYear()">올해</button>
           <button class="btn btn-sm btn-primary" style="margin-left:auto" onclick="downloadPdf()">📄 PDF 다운로드</button>
         </div>
+        <div id="y-agg-banner"></div>
         <!-- 공판장 연간 요약 -->
         <div class="card-title" style="margin-bottom:8px">📦 공판장 출하 요약</div>
-        <div class="summary-grid-5">
+        <div class="summary-grid-6">
           <div class="metric"><div class="metric-label">연간 출하</div><div class="metric-val" id="y-count">-</div><div class="metric-sub">회</div></div>
           <div class="metric"><div class="metric-label">연간 수량</div><div class="metric-val" id="y-qty">-</div><div class="metric-sub">개</div></div>
           <div class="metric"><div class="metric-label">연간 낙찰액</div><div class="metric-val" id="y-total">-</div><div class="metric-sub">원</div></div>
           <div class="metric danger"><div class="metric-label">연간 수수료</div><div class="metric-val" id="y-fee">-</div><div class="metric-sub">원</div></div>
+          <div class="metric warning"><div class="metric-label">⏳ 미입금</div><div class="metric-val" id="y-pending">-</div><div class="metric-sub" id="y-pending-sub">원</div></div>
           <div class="metric highlight"><div class="metric-label">공판장 실수익</div><div class="metric-val" id="y-net">-</div><div class="metric-sub">원</div></div>
         </div>
+        <div id="y-farm-breakdown"></div>
         <!-- 시장별 합계 -->
         <div style="margin-bottom:12px">
           <div style="font-size:13px;font-weight:600;color:#2d5a2d;margin-bottom:8px">시장별 합계</div>
@@ -922,7 +1011,19 @@ async function importBackup(event){
 }
 
 function getFarm(){return state.farms.find(f=>f.id===state.currentFarm);}
-function getRecords(farmId){return state.records[farmId]||[];}
+function getRecords(farmId){
+  if(farmId==='__all__'){
+    // 모든 농장의 출하 기록 합치기 (각 기록에 _farmId, _farmName 메타 추가)
+    const all=[];
+    state.farms.forEach(f=>{
+      (state.records[f.id]||[]).forEach(r=>{
+        all.push({...r,_farmId:f.id,_farmName:f.name});
+      });
+    });
+    return all;
+  }
+  return state.records[farmId]||[];
+}
 
 // 콤마 포맷 + 즉시 계산
 function moneyInput(el){let v=el.value.replace(/[^0-9]/g,'');if(v===''){el.value='';el.dataset.raw='';return;}el.value=Number(v).toLocaleString('ko-KR');el.dataset.raw=v;}
@@ -1022,10 +1123,12 @@ async function deleteRecord(){
   }
 }
 
-async function deleteRecordById(id){
+async function deleteRecordById(id,farmId){
   if(!confirm('이 기록을 삭제할까요?'))return;
-  if(state.records[state.currentFarm]){
-    state.records[state.currentFarm]=state.records[state.currentFarm].filter(r=>r.id!==id);
+  const targetFarm=farmId||state.currentFarm;
+  if(targetFarm==='__all__'){alert('통합 보기에서는 삭제할 수 없습니다. 해당 농장 탭으로 이동해 삭제하세요.');return;}
+  if(state.records[targetFarm]){
+    state.records[targetFarm]=state.records[targetFarm].filter(r=>r.id!==id);
     await save();renderCurrentTab();
   }
 }
@@ -1038,7 +1141,20 @@ function renderApp(){
   tabs.innerHTML='';
   if(!state.farms.length){noFarm.classList.remove('hidden');main.classList.add('hidden');return;}
   noFarm.classList.add('hidden');main.classList.remove('hidden');
-  if(!state.currentFarm||!state.farms.find(f=>f.id===state.currentFarm))state.currentFarm=state.farms[0].id;
+  // 통합 탭 (2개 이상의 농장이 있을 때만 표시)
+  if(state.farms.length>=2){
+    const allBtn=document.createElement('button');
+    allBtn.className='farm-tab farm-tab-all'+(state.currentFarm==='__all__'?' active':'');
+    allBtn.innerHTML='🌐 통합 보기';
+    allBtn.title='모든 농장의 데이터를 합쳐서 봅니다';
+    allBtn.onclick=()=>{state.currentFarm='__all__';renderApp();};
+    tabs.appendChild(allBtn);
+  }
+  // 통합 탭이 활성화되어 있는데 농장이 1개 이하로 줄면 첫 농장으로
+  if(state.currentFarm==='__all__'&&state.farms.length<2){
+    state.currentFarm=state.farms[0].id;
+  }
+  if(state.currentFarm!=='__all__'&&(!state.currentFarm||!state.farms.find(f=>f.id===state.currentFarm)))state.currentFarm=state.farms[0].id;
   state.farms.forEach(farm=>{
     const btn=document.createElement('button');
     btn.className='farm-tab'+(farm.id===state.currentFarm?' active':'');
@@ -1046,7 +1162,36 @@ function renderApp(){
     btn.onclick=()=>{state.currentFarm=farm.id;renderApp();};
     tabs.appendChild(btn);
   });
+  // 통합 보기일 때는 출하 입력/입금관리/로컬푸드/프로필 탭을 숨기고, 자동으로 주간으로 이동
+  applyAggregateUiMode();
   renderCurrentTab();
+}
+
+// 통합 보기에서는 데이터 추가/수정 탭들을 숨겨서 혼동 방지
+function applyAggregateUiMode(){
+  const isAgg=state.currentFarm==='__all__';
+  // 통합 보기에서 비활성화할 섹션 탭들
+  const hideTabs=['daily','deposit','localfood','profile'];
+  document.querySelectorAll('.section-tab').forEach((el,i)=>{
+    const id=['daily','deposit','localfood','weekly','monthly','yearly','profile'][i];
+    if(isAgg&&hideTabs.includes(id)){
+      el.style.display='none';
+    }else{
+      el.style.display='';
+    }
+  });
+  // 통합 모드에서 현재 탭이 숨겨진 탭이면 weekly로 전환
+  if(isAgg&&hideTabs.includes(state.currentTab)){
+    state.currentTab='weekly';
+    document.querySelectorAll('.section-tab').forEach((el,i)=>{
+      const id=['daily','deposit','localfood','weekly','monthly','yearly','profile'][i];
+      el.classList.toggle('active',id==='weekly');
+    });
+    ['daily','deposit','localfood','weekly','monthly','yearly','profile'].forEach(id=>{
+      const el=document.getElementById('tab-'+id);
+      if(el)el.classList.toggle('hidden',id!=='weekly');
+    });
+  }
 }
 
 function switchTab(t){
@@ -1100,11 +1245,12 @@ function renderRecordHtml(r){
       :`<span style="background:#fff5f5;color:#c0392b;padding:2px 8px;border-radius:5px;font-size:11px;font-weight:600">미입금</span>`);
   return `<div class="record-row">
     <div class="record-row-header">
+      ${state.currentFarm==='__all__'&&r._farmName?`<span class="farm-label-badge">🌱 ${escHtml(r._farmName)}</span>`:''}
       <span class="market-badge">${escHtml(r.market)}</span>
       <span class="date-info">출하: ${escHtml(dateWithDay(r.shipDate))}</span>
       ${statusBadge}
       ${r.feeRate?`<span style="background:#fff8e8;color:#8a5a00;padding:2px 8px;border-radius:5px;font-size:11px;font-weight:600">수수료율 ${r.feeRate}%</span>`:''}
-      <button class="btn btn-sm btn-danger" style="margin-left:auto" onclick="deleteRecordById('${escHtml(r.id)}')">삭제</button>
+      <button class="btn btn-sm btn-danger" style="margin-left:auto" onclick="deleteRecordById('${escHtml(r.id)}'${r._farmId?`,'${escHtml(r._farmId)}'`:''})">삭제</button>
     </div>
     <div class="record-grades">${gradeHtml||'<span style="color:#aaa">수량 없음</span>'}</div>
     <div class="record-totals">
@@ -1124,6 +1270,9 @@ function getWeekDates(offset){
 function renderWeekly(){
   const dates=getWeekDates(state.weekOffset);
   document.getElementById('week-label').textContent=dateWithDay(dates[0])+' ~ '+dateWithDay(dates[6]);
+  // 통합 배너
+  const bnEl=document.getElementById('w-agg-banner');
+  if(bnEl)bnEl.innerHTML=aggBannerHtml(dates[0]+' ~ '+dates[6]);
   const recs=getRecords(state.currentFarm).filter(r=>dates.includes(r.shipDate));
   const stats=calcStats(recs);
   document.getElementById('w-count').textContent=stats.count;
@@ -1131,6 +1280,8 @@ function renderWeekly(){
   document.getElementById('w-total').textContent=fmtN(stats.total);
   document.getElementById('w-fee').textContent=fmtN(stats.fee);
   document.getElementById('w-net').textContent=fmtN(stats.net);
+  document.getElementById('w-pending').textContent=stats.pending?fmtN(stats.pending):'-';
+  document.getElementById('w-pending-sub').textContent=stats.pendingCount?stats.pendingCount+'건 미정산':'원';
   // 로컬푸드
   const lfRecs=getLfRecords(state.currentFarm).filter(r=>dates.includes(r.date));
   const lfTotal=lfRecs.reduce((s,r)=>s+r.amount,0);
@@ -1143,15 +1294,63 @@ function renderWeekly(){
   // 로컬푸드 기록
   const lfEl=document.getElementById('weekly-lf-records');
   const lfSorted=[...lfRecs].sort((a,b)=>b.date.localeCompare(a.date));
-  lfEl.innerHTML=lfSorted.length?'<div style="font-size:12px;font-weight:600;color:#7a5a2d;margin:10px 0 6px">🏪 로컬푸드 입금 기록</div>'+lfSorted.map(r=>`<div style="display:flex;align-items:center;gap:10px;padding:8px 12px;background:#f9fdf9;border:1px solid #e0edd0;border-radius:8px;margin-bottom:5px;font-size:13px;flex-wrap:wrap"><span style="color:#5a7a5a;min-width:100px">${escHtml(dateWithDay(r.date))}</span><span style="background:#7a5a2d;color:#fff;padding:2px 9px;border-radius:5px;font-size:11px;font-weight:700">${escHtml(r.store)}</span><span style="font-weight:700;flex:1">${fmtN(r.amount)}원</span>${r.memo?`<span style="color:#8aaa8a;font-size:12px">${escHtml(r.memo)}</span>`:''}</div>`).join(''):'<div style="color:#aaa;font-size:13px;padding:4px 0">이번 주 로컬푸드 기록이 없습니다.</div>';
+  lfEl.innerHTML=lfSorted.length?'<div style="font-size:12px;font-weight:600;color:#7a5a2d;margin:10px 0 6px">🏪 로컬푸드 입금 기록</div>'+lfSorted.map(r=>`<div style="display:flex;align-items:center;gap:10px;padding:8px 12px;background:#f9fdf9;border:1px solid #e0edd0;border-radius:8px;margin-bottom:5px;font-size:13px;flex-wrap:wrap">${state.currentFarm==='__all__'&&r._farmName?`<span class="farm-label-badge">🌱 ${escHtml(r._farmName)}</span>`:''}<span style="color:#5a7a5a;min-width:100px">${escHtml(dateWithDay(r.date))}</span><span style="background:#7a5a2d;color:#fff;padding:2px 9px;border-radius:5px;font-size:11px;font-weight:700">${escHtml(r.store)}</span><span style="font-weight:700;flex:1">${fmtN(r.amount)}원</span>${r.memo?`<span style="color:#8aaa8a;font-size:12px">${escHtml(r.memo)}</span>`:''}</div>`).join(''):'<div style="color:#aaa;font-size:13px;padding:4px 0">이번 주 로컬푸드 기록이 없습니다.</div>';
+  // 통합 보기: 농장별 분해
+  renderFarmBreakdown('w-farm-breakdown',r=>dates.includes(r.shipDate),r=>dates.includes(r.date));
 }
 function changeWeek(d){state.weekOffset+=d;renderWeekly();}
 function goThisWeek(){state.weekOffset=0;renderWeekly();}
 
 function calcStats(recs){
-  let count=0,qty=0,total=0,fee=0,net=0;
-  recs.forEach(r=>{count++;qty+=(r.totalQty||0);total+=(r.totalPrice||r.localAmount||0);fee+=(r.fee||0);net+=(r.net||0);});
-  return{count,qty,total,fee,net};
+  let count=0,qty=0,total=0,fee=0,net=0,pending=0,pendingCount=0;
+  recs.forEach(r=>{
+    count++;
+    qty+=(r.totalQty||0);
+    total+=(r.totalPrice||r.localAmount||0);
+    fee+=(r.fee||0);
+    net+=(r.net||0);
+    // 미입금: 공판장 기록 중 입금이 없는 것의 낙찰총액
+    const recTotal=(r.totalPrice||0);
+    if(recTotal>0&&(!r.deposit||r.deposit===0)){
+      pending+=recTotal;
+      pendingCount++;
+    }
+  });
+  return{count,qty,total,fee,net,pending,pendingCount};
+}
+
+// 통합 보기 헬퍼: 배너 HTML
+function aggBannerHtml(periodLabel){
+  if(state.currentFarm!=='__all__')return'';
+  const farmCount=state.farms.length;
+  const farmNames=state.farms.map(f=>escHtml(f.name||'농장')).join(' + ');
+  return `<div class="aggregate-banner"><span class="agg-icon">🌐</span><div class="agg-info"><div class="agg-title">통합 보기 · ${periodLabel}</div><div class="agg-sub">${farmCount}개 농장 합산: ${farmNames}</div></div></div>`;
+}
+
+// 통합 보기 헬퍼: 기간 필터를 받아 농장별 분해 카드 렌더
+// filterFn: 기록 → boolean (해당 기간에 포함되는지)
+// lfFilterFn: 로컬푸드 기록 → boolean
+function renderFarmBreakdown(targetId,filterFn,lfFilterFn){
+  const el=document.getElementById(targetId);
+  if(!el)return;
+  if(state.currentFarm!=='__all__'){el.innerHTML='';return;}
+  const cards=state.farms.map(f=>{
+    const recs=(state.records[f.id]||[]).filter(filterFn);
+    const lfRecs=lfFilterFn?((state.lfRecords||{})[f.id]||[]).filter(lfFilterFn):[];
+    const s=calcStats(recs);
+    const lfTotal=lfRecs.reduce((a,r)=>a+(r.amount||0),0);
+    const grand=s.net+lfTotal;
+    return `<div class="farm-breakdown-card">
+      <div class="fb-name"><span>🌱 ${escHtml(f.name||'농장')}</span><span style="font-size:11px;color:#888;font-weight:500">${s.count}회</span></div>
+      <div class="fb-row"><span>낙찰 총액</span><span class="fb-val">${fmtN(s.total)}원</span></div>
+      ${s.pending>0?`<div class="fb-row"><span>⏳ 미입금</span><span class="fb-val pending">${fmtN(s.pending)}원 (${s.pendingCount}건)</span></div>`:''}
+      <div class="fb-row"><span>수수료</span><span class="fb-val" style="color:#c0392b">-${fmtN(s.fee)}원</span></div>
+      <div class="fb-row"><span>공판장 실수익</span><span class="fb-val net">${fmtN(s.net)}원</span></div>
+      ${lfRecs.length?`<div class="fb-row"><span>🏪 로컬푸드</span><span class="fb-val">${fmtN(lfTotal)}원 (${lfRecs.length}건)</span></div>`:''}
+      <div class="fb-row" style="border-top:1px dashed #d8ead8;padding-top:5px;margin-top:3px"><span style="font-weight:700">총 수익</span><span class="fb-val net" style="font-size:13px">${fmtN(grand)}원</span></div>
+    </div>`;
+  }).join('');
+  el.innerHTML=`<div style="font-size:13px;font-weight:600;color:#2d5a2d;margin:10px 0 8px">🌐 농장별 상세</div><div class="farm-breakdown">${cards}</div>`;
 }
 
 // ===================== 전년도 비교 =====================
@@ -1694,6 +1893,9 @@ function renderMonthly(){
   const{y,m}=state.currentMonth;
   const ym=y+'-'+pad(m+1);
   document.getElementById('month-label').textContent=y+'년 '+(m+1)+'월';
+  // 통합 배너
+  const bnEl=document.getElementById('m-agg-banner');
+  if(bnEl)bnEl.innerHTML=aggBannerHtml(y+'년 '+(m+1)+'월');
   const recs=getRecords(state.currentFarm).filter(r=>r.shipDate&&r.shipDate.startsWith(ym));
   const stats=calcStats(recs);
   document.getElementById('m-count').textContent=stats.count;
@@ -1701,6 +1903,8 @@ function renderMonthly(){
   document.getElementById('m-total').textContent=fmtN(stats.total);
   document.getElementById('m-fee').textContent=fmtN(stats.fee);
   document.getElementById('m-net').textContent=fmtN(stats.net);
+  document.getElementById('m-pending').textContent=stats.pending?fmtN(stats.pending):'-';
+  document.getElementById('m-pending-sub').textContent=stats.pendingCount?stats.pendingCount+'건 미정산':'원';
   // 로컬푸드
   const lfRecs=getLfRecords(state.currentFarm).filter(r=>r.date&&r.date.startsWith(ym));
   const lfTotal=lfRecs.reduce((s,r)=>s+r.amount,0);
@@ -1745,7 +1949,9 @@ function renderMonthly(){
   // 로컬푸드 기록
   const lfEl=document.getElementById('monthly-lf-records');
   const lfSorted=[...lfRecs].sort((a,b)=>b.date.localeCompare(a.date));
-  lfEl.innerHTML=lfSorted.length?'<div style="font-size:12px;font-weight:600;color:#7a5a2d;margin:10px 0 6px">🏪 로컬푸드 입금 기록</div>'+lfSorted.map(r=>`<div style="display:flex;align-items:center;gap:10px;padding:8px 12px;background:#f9fdf9;border:1px solid #e0edd0;border-radius:8px;margin-bottom:5px;font-size:13px;flex-wrap:wrap"><span style="color:#5a7a5a;min-width:100px">${escHtml(dateWithDay(r.date))}</span><span style="background:#7a5a2d;color:#fff;padding:2px 9px;border-radius:5px;font-size:11px;font-weight:700">${escHtml(r.store)}</span><span style="font-weight:700;flex:1">${fmtN(r.amount)}원</span>${r.memo?`<span style="color:#8aaa8a;font-size:12px">${escHtml(r.memo)}</span>`:''}<button class="btn btn-sm btn-danger" onclick="deleteLfRecord('${escHtml(r.id)}')">삭제</button></div>`).join(''):'<div style="color:#aaa;font-size:13px;padding:4px 0">이번 달 로컬푸드 기록이 없습니다.</div>';
+  lfEl.innerHTML=lfSorted.length?'<div style="font-size:12px;font-weight:600;color:#7a5a2d;margin:10px 0 6px">🏪 로컬푸드 입금 기록</div>'+lfSorted.map(r=>`<div style="display:flex;align-items:center;gap:10px;padding:8px 12px;background:#f9fdf9;border:1px solid #e0edd0;border-radius:8px;margin-bottom:5px;font-size:13px;flex-wrap:wrap">${state.currentFarm==='__all__'&&r._farmName?`<span class="farm-label-badge">🌱 ${escHtml(r._farmName)}</span>`:''}<span style="color:#5a7a5a;min-width:100px">${escHtml(dateWithDay(r.date))}</span><span style="background:#7a5a2d;color:#fff;padding:2px 9px;border-radius:5px;font-size:11px;font-weight:700">${escHtml(r.store)}</span><span style="font-weight:700;flex:1">${fmtN(r.amount)}원</span>${r.memo?`<span style="color:#8aaa8a;font-size:12px">${escHtml(r.memo)}</span>`:''}<button class="btn btn-sm btn-danger" onclick="deleteLfRecord('${escHtml(r.id)}'${r._farmId?`,'${escHtml(r._farmId)}'`:''})">삭제</button></div>`).join(''):'<div style="color:#aaa;font-size:13px;padding:4px 0">이번 달 로컬푸드 기록이 없습니다.</div>';
+  // 통합 보기: 농장별 분해
+  renderFarmBreakdown('m-farm-breakdown',r=>r.shipDate&&r.shipDate.startsWith(ym),r=>r.date&&r.date.startsWith(ym));
 }
 function changeMonth(d){
   if(!state.currentMonth)state.currentMonth={y:today.getFullYear(),m:today.getMonth()};
@@ -1760,6 +1966,9 @@ function renderYearly(){
   if(!state.currentYear)state.currentYear=today.getFullYear();
   const yr=state.currentYear;
   document.getElementById('year-label').textContent=yr+'년';
+  // 통합 배너
+  const bnEl=document.getElementById('y-agg-banner');
+  if(bnEl)bnEl.innerHTML=aggBannerHtml(yr+'년 연간');
   const allRecs=getRecords(state.currentFarm).filter(r=>r.shipDate&&r.shipDate.startsWith(yr+''));
   const ys=calcStats(allRecs);
   document.getElementById('y-count').textContent=ys.count;
@@ -1767,6 +1976,8 @@ function renderYearly(){
   document.getElementById('y-total').textContent=fmtN(ys.total);
   document.getElementById('y-fee').textContent=fmtN(ys.fee);
   document.getElementById('y-net').textContent=fmtN(ys.net);
+  document.getElementById('y-pending').textContent=ys.pending?fmtN(ys.pending):'-';
+  document.getElementById('y-pending-sub').textContent=ys.pendingCount?ys.pendingCount+'건 미정산':'원';
 
   // 시장별 합계
   const marketMap={};
@@ -1858,6 +2069,8 @@ function renderYearly(){
     card.onclick=()=>{state.currentMonth={y:yr,m:mo};switchTab('monthly');};
     grid.appendChild(card);
   }
+  // 통합 보기: 농장별 분해
+  renderFarmBreakdown('y-farm-breakdown',r=>r.shipDate&&r.shipDate.startsWith(yr+''),r=>r.date&&r.date.startsWith(yr+''));
 }
 function changeYear(d){state.currentYear+=d;renderYearly();}
 function goThisYear(){state.currentYear=today.getFullYear();renderYearly();}
@@ -2027,7 +2240,19 @@ async function addFarm(){
 const LF_STORES=['어양점','영등점','모현로컬','원협하나로','모현이편한하나로','평화점','이마트앞하나로','파마스마켓','삼례점','동산점','기타'];
 let lfState={month:{y:today.getFullYear(),m:today.getMonth()},view:'month'};
 
-function getLfRecords(farmId){return(state.lfRecords||{})[farmId]||[];}
+function getLfRecords(farmId){
+  if(farmId==='__all__'){
+    const all=[];
+    const lf=state.lfRecords||{};
+    state.farms.forEach(f=>{
+      (lf[f.id]||[]).forEach(r=>{
+        all.push({...r,_farmId:f.id,_farmName:f.name});
+      });
+    });
+    return all;
+  }
+  return(state.lfRecords||{})[farmId]||[];
+}
 function saveLfRecords(farmId,recs){if(!state.lfRecords)state.lfRecords={};state.lfRecords[farmId]=recs;}
 
 async function saveLocalFood(){
@@ -2047,10 +2272,14 @@ async function saveLocalFood(){
   renderLocalFood();
 }
 
-async function deleteLfRecord(id){
+async function deleteLfRecord(id,farmId){
   if(!confirm('이 기록을 삭제할까요?'))return;
-  const recs=getLfRecords(state.currentFarm).filter(r=>r.id!==id);
-  saveLfRecords(state.currentFarm,recs);
+  const targetFarm=farmId||state.currentFarm;
+  if(targetFarm==='__all__'){alert('통합 보기에서는 삭제할 수 없습니다. 해당 농장 탭으로 이동해 삭제하세요.');return;}
+  const lf=state.lfRecords||{};
+  const recs=(lf[targetFarm]||[]).filter(r=>r.id!==id);
+  if(!state.lfRecords)state.lfRecords={};
+  state.lfRecords[targetFarm]=recs;
   await save();
   renderLocalFood();
   renderCurrentTab();
