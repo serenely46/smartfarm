@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0113)file:///C:/Users/User/Downloads/%EC%8A%A4%EB%A7%88%ED%8A%B8%ED%8C%9C_%EA%B7%BC%EB%AC%B4_%EA%B4%80%EB%A6%AC_1.html -->
+<!-- saved from url=(0113)file:///C:/Users/User/Downloads/%EC%8A%A4%EB%A7%88%ED%8A%B8%ED%8C%9C_%EA%B7%BC%EB%AC%B4_%EA%B4%80%EB%A6%AC_2.html -->
 <html lang="ko"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -179,6 +179,40 @@ input.money-input{text-align:right;letter-spacing:0.5px}
 .account-suggest button{background:#f0efe8;border:1px solid #d0cfc8;border-radius:5px;padding:3px 8px;font-size:11px;cursor:pointer;color:#666;font-family:inherit}
 .account-suggest button:hover{background:#e8f4ff;border-color:#b8d8f8;color:#1565c0}
 .pay-actions{display:flex;gap:6px;justify-content:flex-end;margin-top:6px}
+/* 실시간 미리보기 박스 */
+.pay-preview{background:#fff;border:1px solid #d8e8f5;border-radius:8px;padding:11px 14px;margin:10px 0;font-size:12px}
+.pay-preview.empty{background:#f8f8f6;border-color:#e0dfd8;color:#aaa;text-align:center;padding:14px}
+.pay-preview-row{display:flex;align-items:center;gap:8px;margin-bottom:5px;flex-wrap:wrap}
+.pay-preview-row:last-child{margin-bottom:0}
+.pay-preview-label{color:#888;font-weight:500;min-width:90px}
+.pay-preview-val{font-weight:700;color:#1a1a1a}
+.pay-preview-val.green{color:#1B7A4A}
+.pay-preview-val.red{color:#c0392b}
+.pay-preview-val.orange{color:#8a5a00}
+.pay-preview-arrow{color:#999;margin:0 3px}
+.pay-preview-divider{height:1px;background:#f0efe8;margin:7px 0}
+/* 월별 진행률 바 */
+.settle-progress{flex-basis:100%;display:flex;align-items:center;gap:8px;margin-top:8px}
+.settle-progress-bar{flex:1;height:8px;background:#f0efe8;border-radius:4px;overflow:hidden;position:relative}
+.settle-progress-fill{height:100%;background:linear-gradient(90deg,#7fcfa8,#1B7A4A);border-radius:4px;transition:width 0.3s}
+.settle-progress-fill.partial{background:linear-gradient(90deg,#f0d8a0,#e09f30)}
+.settle-progress-fill.none{background:#e0dfd8}
+.settle-progress-pct{font-size:11px;font-weight:700;color:#666;min-width:38px;text-align:right}
+/* 월간 달력 입금일 표시 */
+.month-cell.has-pay{background:linear-gradient(135deg,#e8f8f0 0%,#d8f0e0 100%)}
+.month-cell .pay-icon{position:absolute;top:2px;right:3px;font-size:11px;line-height:1}
+.month-cell{position:relative}
+.pay-tooltip{position:absolute;bottom:calc(100% + 4px);left:50%;transform:translateX(-50%);background:#1a1a1a;color:#fff;padding:7px 10px;border-radius:6px;font-size:11px;white-space:nowrap;z-index:50;pointer-events:none;opacity:0;transition:opacity 0.15s;box-shadow:0 4px 12px rgba(0,0,0,0.2);max-width:240px;white-space:normal;line-height:1.4}
+.pay-tooltip::after{content:'';position:absolute;top:100%;left:50%;margin-left:-4px;border:4px solid transparent;border-top-color:#1a1a1a}
+.month-cell:hover .pay-tooltip{opacity:1}
+.pay-tooltip .tt-amount{font-weight:700;color:#7fcfa8;display:block;margin-bottom:2px}
+.pay-tooltip .tt-memo{color:#ddd;font-size:10px;margin-top:3px;font-style:italic}
+/* 연간 카드 입금 정보 */
+.year-pay-info{margin-top:6px;padding-top:6px;border-top:1px dashed #e0dfd8;font-size:11px;color:#1B7A4A;font-weight:600;display:flex;flex-direction:column;gap:2px}
+.year-pay-info .yp-line{display:flex;align-items:center;gap:5px}
+.year-pay-info .yp-date{background:#e8f8f0;padding:1px 6px;border-radius:4px;font-size:10px;border:1px solid #b8dfc8}
+.year-pay-info .yp-memo{color:#888;font-size:10px;font-weight:500;font-style:italic;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.year-pay-info .yp-none{color:#aaa;font-weight:500}
 .pay-empty{text-align:center;padding:2rem 1rem;color:#aaa;background:#f8f8f6;border-radius:10px;border:1px dashed #d0cfc8}
 .pay-empty .ico{font-size:32px;margin-bottom:8px;display:block}
 .settled-badge{display:inline-block;background:#e8f8f0;color:#1B7A4A;padding:2px 8px;border-radius:5px;font-size:11px;font-weight:600;margin-left:6px;border:1px solid #b8dfc8}
@@ -251,9 +285,9 @@ input.money-input{text-align:right;letter-spacing:0.5px}
         <div class="card-title">오늘 근무 요약</div>
         <div class="summary-grid">
           <div class="metric"><div class="metric-label">총 시간</div><div class="metric-val" id="sum-total">10.0</div><div class="metric-sub">시간</div></div>
-          <div class="metric"><div class="metric-label">실 근무</div><div class="metric-val" id="sum-work">8.7</div><div class="metric-sub">시간</div></div>
-          <div class="metric"><div class="metric-label">총 휴게</div><div class="metric-val" id="sum-rest">80</div><div class="metric-sub">분</div></div>
-          <div class="metric"><div class="metric-label">일급 (예상)</div><div class="metric-val" id="sum-pay">89,440</div><div class="metric-sub">원</div></div>
+          <div class="metric"><div class="metric-label">실 근무</div><div class="metric-val" id="sum-work">8.3</div><div class="metric-sub">시간</div></div>
+          <div class="metric"><div class="metric-label">총 휴게</div><div class="metric-val" id="sum-rest">105</div><div class="metric-sub">분</div></div>
+          <div class="metric"><div class="metric-label">일급 (예상)</div><div class="metric-val" id="sum-pay">85,140</div><div class="metric-sub">원</div></div>
         </div>
       </div>
     </div>
@@ -268,13 +302,13 @@ input.money-input{text-align:right;letter-spacing:0.5px}
           <div class="pay-form-title">➕ 새 입금 기록</div>
           <div class="form-row3">
             <div class="form-group"><label>입금일</label><input type="date" id="pay-date"></div>
-            <div class="form-group"><label>정산 시작일</label><input type="date" id="pay-period-start"></div>
-            <div class="form-group"><label>정산 종료일</label><input type="date" id="pay-period-end"></div>
+            <div class="form-group"><label>정산 시작일</label><input type="date" id="pay-period-start" oninput="updatePayPreview()"></div>
+            <div class="form-group"><label>정산 종료일</label><input type="date" id="pay-period-end" oninput="updatePayPreview()"></div>
           </div>
           <div class="period-suggest" id="period-suggest"></div>
           <div class="form-row">
             <div class="form-group"><label>입금액 (원)</label>
-              <input type="text" id="pay-amount" placeholder="2,000,000" class="money-input" oninput="moneyInput(this)" onblur="moneyBlur(this)">
+              <input type="text" id="pay-amount" placeholder="2,000,000" class="money-input" oninput="moneyInput(this);updatePayPreview()" onblur="moneyBlur(this);updatePayPreview()">
             </div>
             <div class="form-group"><label>지급 방법</label>
               <div class="pay-method-btns" style="margin-top:0">
@@ -283,6 +317,7 @@ input.money-input{text-align:right;letter-spacing:0.5px}
               </div>
             </div>
           </div>
+          <div id="pay-preview-box"></div>
           <div class="account-input-grid" id="account-input-grid">
             <div class="account-input-section from">
               <div class="section-title">📤 보낸 곳 (농장)</div>
@@ -371,6 +406,8 @@ input.money-input{text-align:right;letter-spacing:0.5px}
           <div class="metric"><div class="metric-label">(공제 전) 연간 총 급여</div><div class="metric-val" id="y-pay">-</div><div class="metric-sub">원</div></div>
           <div class="metric"><div class="metric-label">연간 공제 합계</div><div class="metric-val" id="y-deduct" style="color:#c0392b">-</div><div class="metric-sub">원</div></div>
           <div class="metric" style="background:#e8f8f0;border:1px solid #b8dfc8"><div class="metric-label">연간 실수령액</div><div class="metric-val" id="y-net" style="color:#1B7A4A">-</div><div class="metric-sub">원</div></div>
+          <div class="metric" style="background:#f0f7ff;border:1px solid #cfe0f5"><div class="metric-label">💰 연간 총 입금</div><div class="metric-val" id="y-paid" style="color:#1565c0">-</div><div class="metric-sub">원</div></div>
+          <div class="metric" style="background:#fff8e8;border:1px solid #f0d8a0"><div class="metric-label">⏳ 연간 미정산</div><div class="metric-val" id="y-pending" style="color:#8a5a00">-</div><div class="metric-sub">원</div></div>
         </div>
         <div class="year-months" id="year-grid"></div>
       </div>
@@ -859,30 +896,55 @@ function renderMonthly(){
     if(tP===0){
       settleEl.innerHTML='';
     }else{
-      const ratio=monthPaid/mNet;
-      let bg='#fff8e8',border='#f0d8a0',color='#8a5a00',ico='⏳',label='미정산';
-      if(monthPaid>=mNet&&mNet>0){bg='#e8f8f0';border='#b8dfc8';color='#1B7A4A';ico='✅';label='정산 완료';}
-      else if(monthPaid>0){bg='#fff8e8';border='#f0d8a0';color='#8a5a00';ico='🔸';label='부분 정산';}
+      const ratio=mNet>0?Math.min(1,monthPaid/mNet):0;
+      const pct=Math.round(ratio*100);
+      let bg='#fff8e8',border='#f0d8a0',color='#8a5a00',ico='⏳',label='미정산',fillCls='none';
+      if(monthPaid>=mNet&&mNet>0){bg='#e8f8f0';border='#b8dfc8';color='#1B7A4A';ico='✅';label='정산 완료';fillCls='';}
+      else if(monthPaid>0){bg='#fff8e8';border='#f0d8a0';color='#8a5a00';ico='🔸';label='부분 정산';fillCls='partial';}
       const remain=Math.max(0,mNet-monthPaid);
-      settleEl.innerHTML=`<div style="background:${bg};border:1px solid ${border};border-radius:8px;padding:10px 14px;font-size:13px;display:flex;align-items:center;gap:10px;flex-wrap:wrap"><span style="font-weight:700;color:${color}">${ico} ${label}</span><span style="color:#666">실수령 예상 ${fmt(mNet)}원 중</span><span style="font-weight:700;color:${color}">${fmt(monthPaid)}원 입금</span>${remain>0?`<span style="color:#c0392b">잔여 ${fmt(remain)}원</span>`:''}</div>`;
+      settleEl.innerHTML=`<div style="background:${bg};border:1px solid ${border};border-radius:8px;padding:11px 14px;font-size:13px;display:flex;align-items:center;gap:10px;flex-wrap:wrap"><span style="font-weight:700;color:${color}">${ico} ${label}</span><span style="color:#666">실수령 예상 ${fmt(mNet)}원 중</span><span style="font-weight:700;color:${color}">${fmt(monthPaid)}원 입금</span>${remain>0?`<span style="color:#c0392b">잔여 ${fmt(remain)}원</span>`:''}<div class="settle-progress"><div class="settle-progress-bar"><div class="settle-progress-fill ${fillCls}" style="width:${pct}%"></div></div><span class="settle-progress-pct">${pct}%</span></div></div>`;
     }
   }
   const fd=new Date(y,m,1).getDay();
   const grid=document.getElementById('monthly-grid');
   grid.innerHTML='';
+  // 이 달의 입금일 매핑 (payDate 기준)
+  const payByDate={};
+  (emp&&emp.payments?emp.payments:[]).forEach(p=>{
+    if(p.payDate&&p.payDate>=ym+'-01'&&p.payDate<=lastDayOfMonth(ym)){
+      if(!payByDate[p.payDate])payByDate[p.payDate]=[];
+      payByDate[p.payDate].push(p);
+    }
+  });
   for(let i=0;i<fd;i++){const c=document.createElement('div');c.className='month-cell other-month';grid.appendChild(c);}
   for(let d=1;d<=dim;d++){
     const dds=y+'-'+pad(m+1)+'-'+pad(d);
     const rec=allRecs[dds];
     const isHoliday=!!(rec&&rec.holiday);
     const{workMin}=calcWork(rec);
+    const dayPays=payByDate[dds]||[];
+    const hasPay=dayPays.length>0;
     const c=document.createElement('div');
-    c.className='month-cell'+(rec&&!isHoliday?' has-work':'')+(isHoliday?' is-holiday':'')+(dds===todayStr?' today':'');
+    c.className='month-cell'+(rec&&!isHoliday?' has-work':'')+(isHoliday?' is-holiday':'')+(hasPay?' has-pay':'')+(dds===todayStr?' today':'');
+    let inner='';
     if(isHoliday){
-      c.innerHTML=`<span>${d}</span><span class="hours">🏖️ 휴일</span>`;
+      inner=`<span>${d}</span><span class="hours">🏖️ 휴일</span>`;
     }else{
-      c.innerHTML=`<span>${d}</span>${rec?'<span class="hours">'+(workMin/60).toFixed(1)+'h</span>':''}`;
+      inner=`<span>${d}</span>${rec?'<span class="hours">'+(workMin/60).toFixed(1)+'h</span>':''}`;
     }
+    if(hasPay){
+      inner+='<span class="pay-icon">💰</span>';
+      // 툴팁 (입금 정보)
+      const totalAmt=dayPays.reduce((s,p)=>s+(p.amount||0),0);
+      const tipLines=dayPays.map(p=>{
+        const periodTxt=p.periodStart&&p.periodEnd?`${p.periodStart.slice(5)}~${p.periodEnd.slice(5)}`:'';
+        const memoTxt=p.memo?`<div class="tt-memo">📝 ${p.memo}</div>`:'';
+        const methodTxt=p.method==='cash'?'💵':'🏦';
+        return `<span class="tt-amount">${methodTxt} ${fmt(p.amount)}원</span>${periodTxt?`<span style="color:#aaa;font-size:10px">${periodTxt} 정산</span>`:''}${memoTxt}`;
+      }).join('<div style="height:5px"></div>');
+      inner+=`<div class="pay-tooltip">${tipLines}</div>`;
+    }
+    c.innerHTML=inner;
     c.onclick=()=>{switchTab('daily');document.getElementById('input-date').value=dds;onDateChange();};
     grid.appendChild(c);
   }
@@ -899,6 +961,15 @@ function renderYearly(){
   const grid=document.getElementById('year-grid');
   grid.innerHTML='';
   const mn=['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'];
+  // 이 해의 입금들을 월별로 그룹핑 (payDate 기준)
+  const paysByMonth={};
+  (emp&&emp.payments?emp.payments:[]).forEach(p=>{
+    if(p.payDate&&p.payDate.startsWith(state.currentYear+'-')){
+      const moIdx=parseInt(p.payDate.substring(5,7))-1;
+      if(!paysByMonth[moIdx])paysByMonth[moIdx]=[];
+      paysByMonth[moIdx].push(p);
+    }
+  });
   for(let mo=0;mo<12;mo++){
     const dim=new Date(state.currentYear,mo+1,0).getDate();
     const ym=state.currentYear+'-'+pad(mo+1);
@@ -917,11 +988,29 @@ function renderYearly(){
     const card=document.createElement('div');
     card.className='year-month-card';
     const holidayTxt=mH>0?` · <span style="color:#d35400;font-weight:600">🏖️${mH}</span>`:'';
-    card.innerHTML=`<div class="month-name">${mn[mo]}</div><div class="month-stat">${mD}일 · ${(mW/60).toFixed(1)}h · 휴게${mR}분${holidayTxt}</div><div class="month-pay">${mD?fmt(mP)+'원':'-'}${dt?`<span style="color:#c0392b;font-size:11px;margin-left:4px">공제 -${fmt(dt)}</span>`:''}</div>${mD&&dt?`<div style="font-size:12px;font-weight:700;color:#1B7A4A;margin-top:2px">실수령 ${fmt(mNet)}원</div>`:''}`;
+    // 이 달 입금 정보
+    const monthPays=paysByMonth[mo]||[];
+    let payInfoHtml='';
+    if(monthPays.length){
+      const sorted=[...monthPays].sort((a,b)=>(a.payDate||'').localeCompare(b.payDate||''));
+      const lines=sorted.slice(0,2).map(p=>{
+        const dayOnly=p.payDate.slice(8);
+        const memoTxt=p.memo?`<span class="yp-memo">· ${p.memo.length>14?p.memo.slice(0,14)+'…':p.memo}</span>`:'';
+        return `<div class="yp-line"><span class="yp-date">${dayOnly}일</span><span>${fmt(p.amount)}원</span>${memoTxt}</div>`;
+      }).join('');
+      const more=sorted.length>2?`<div class="yp-line" style="color:#888;font-size:10px">외 ${sorted.length-2}건</div>`:'';
+      payInfoHtml=`<div class="year-pay-info">${lines}${more}</div>`;
+    }else if(mD>0){
+      payInfoHtml=`<div class="year-pay-info"><span class="yp-none">💸 입금 기록 없음</span></div>`;
+    }
+    card.innerHTML=`<div class="month-name">${mn[mo]}</div><div class="month-stat">${mD}일 · ${(mW/60).toFixed(1)}h · 휴게${mR}분${holidayTxt}</div><div class="month-pay">${mD?fmt(mP)+'원':'-'}${dt?`<span style="color:#c0392b;font-size:11px;margin-left:4px">공제 -${fmt(dt)}</span>`:''}</div>${mD&&dt?`<div style="font-size:12px;font-weight:700;color:#1B7A4A;margin-top:2px">실수령 ${fmt(mNet)}원</div>`:''}${payInfoHtml}`;
     card.onclick=()=>{state.currentMonth={y:state.currentYear,m:mo};switchTab('monthly');};
     grid.appendChild(card);
   }
   const yNet=Math.max(0,yP-yDeduct);
+  // 연간 입금/미정산
+  const yPaid=(emp&&emp.payments?emp.payments:[]).filter(p=>p.payDate&&p.payDate.startsWith(state.currentYear+'-')).reduce((s,p)=>s+(p.amount||0),0);
+  const yPending=Math.max(0,yNet-yPaid);
   document.getElementById('y-days').textContent=yD;
   const yh=document.getElementById('y-holidays');if(yh)yh.textContent=yH;
   document.getElementById('y-hours').textContent=(yW/60).toFixed(1);
@@ -929,6 +1018,8 @@ function renderYearly(){
   document.getElementById('y-pay').textContent=fmt(yP);
   document.getElementById('y-deduct').textContent=yDeduct?'-'+fmt(yDeduct):'-';
   document.getElementById('y-net').textContent=yP?fmt(yNet):'-';
+  const ypEl=document.getElementById('y-paid');if(ypEl)ypEl.textContent=yPaid?fmt(yPaid):'-';
+  const ypdEl=document.getElementById('y-pending');if(ypdEl)ypdEl.textContent=yPending?fmt(yPending):'-';
 }
 function changeYear(d){state.currentYear+=d;renderYearly();}function goThisYear(){state.currentYear=today.getFullYear();renderYearly();}
 
@@ -1056,6 +1147,80 @@ function fillPeriod(s,e,emp){
   const deduct=calcDeductForPeriod(emp,s,e);
   const net=Math.max(0,gross-deduct);
   setMoneyVal(document.getElementById('pay-amount'),net);
+  updatePayPreview();
+}
+// 실시간 미리보기: 정산 기간/금액에 따라 잔액 변동을 보여줌
+function updatePayPreview(){
+  const box=document.getElementById('pay-preview-box');
+  if(!box)return;
+  const emp=getEmp();if(!emp){box.innerHTML='';return;}
+  const ps=document.getElementById('pay-period-start').value;
+  const pe=document.getElementById('pay-period-end').value;
+  const amt=getMoneyVal(document.getElementById('pay-amount'));
+  if(!ps||!pe){
+    box.innerHTML='<div class="pay-preview empty">📍 정산 시작일/종료일을 입력하면 이 기간의 발생 급여와 정산 후 미정산 잔액이 미리 계산됩니다.</div>';
+    return;
+  }
+  if(ps>pe){
+    box.innerHTML='<div class="pay-preview empty" style="color:#c0392b">⚠️ 정산 시작일이 종료일보다 늦습니다.</div>';
+    return;
+  }
+  // 이 기간 발생 급여/공제
+  const periodGross=calcPayForPeriod(emp,ps,pe);
+  const periodDeduct=calcDeductForPeriod(emp,ps,pe);
+  const periodNet=Math.max(0,periodGross-periodDeduct);
+  const days=Math.round((new Date(pe+'T00:00:00')-new Date(ps+'T00:00:00'))/864e5)+1;
+  // 현재 미정산 잔액 (전체 발생 - 이미 입금)
+  const firstDate=getFirstWorkDate(emp);
+  const yest=prevDayStr(todayStr);
+  let totalEarned=0,totalDeduct=0;
+  if(firstDate&&yest&&firstDate<=yest){
+    totalEarned=calcPayForPeriod(emp,firstDate,yest);
+    totalDeduct=calcDeductForPeriod(emp,firstDate,yest);
+  }
+  const totalNet=Math.max(0,totalEarned-totalDeduct);
+  const totalPaid=(emp.payments||[]).reduce((s,p)=>s+(parseInt(p.amount)||0),0);
+  const currentPending=Math.max(0,totalNet-totalPaid);
+  // 입금 후 잔액
+  const afterPending=Math.max(0,currentPending-amt);
+  // 차이/오버 계산
+  const diffFromExpected=amt-periodNet;
+  let diffHtml='';
+  if(amt>0){
+    if(Math.abs(diffFromExpected)<1){
+      diffHtml=`<span class="pay-preview-val green">✓ 정확히 일치</span>`;
+    }else if(diffFromExpected>0){
+      diffHtml=`<span class="pay-preview-val orange">+${fmt(diffFromExpected)}원 더 입금</span>`;
+    }else{
+      diffHtml=`<span class="pay-preview-val red">${fmt(diffFromExpected)}원 부족</span>`;
+    }
+  }
+  box.innerHTML=`
+    <div class="pay-preview">
+      <div class="pay-preview-row">
+        <span class="pay-preview-label">📆 정산 기간</span>
+        <span class="pay-preview-val">${ps} ~ ${pe}</span>
+        <span style="color:#888">(${days}일분)</span>
+      </div>
+      <div class="pay-preview-row">
+        <span class="pay-preview-label">📊 발생 급여</span>
+        <span class="pay-preview-val">${fmt(periodGross)}원</span>
+        ${periodDeduct>0?`<span class="pay-preview-arrow">−</span><span class="pay-preview-val red">공제 ${fmt(periodDeduct)}원</span><span class="pay-preview-arrow">=</span><span class="pay-preview-val green">${fmt(periodNet)}원</span>`:''}
+      </div>
+      ${amt>0?`
+      <div class="pay-preview-row">
+        <span class="pay-preview-label">💰 입금 예정</span>
+        <span class="pay-preview-val">${fmt(amt)}원</span>
+        ${diffHtml?'<span class="pay-preview-arrow">·</span>':''}${diffHtml}
+      </div>`:''}
+      <div class="pay-preview-divider"></div>
+      <div class="pay-preview-row">
+        <span class="pay-preview-label">⏳ 현재 미정산</span>
+        <span class="pay-preview-val orange">${fmt(currentPending)}원</span>
+        ${amt>0?`<span class="pay-preview-arrow">→</span><span class="pay-preview-label" style="min-width:auto">입금 후</span><span class="pay-preview-val ${afterPending===0?'green':'orange'}">${fmt(afterPending)}원</span>`:''}
+      </div>
+    </div>
+  `;
 }
 function selectPayMethod(m){
   state.selectedPayMethod=m;
@@ -1077,8 +1242,7 @@ function selectPayMethod(m){
     }
   }
 }
-function clearPayForm(){
-  document.getElementById('pay-date').value=todayStr;
+function clearPayForm(){  document.getElementById('pay-date').value=todayStr;
   document.getElementById('pay-period-start').value='';
   document.getElementById('pay-period-end').value='';
   setMoneyVal(document.getElementById('pay-amount'),0);
@@ -1091,6 +1255,7 @@ function clearPayForm(){
   // 직원 기본값 다시 채우기
   const emp=getEmp();
   if(emp)autofillAccountFields(emp);
+  updatePayPreview();
 }
 // 자주 쓴 송금자/수취 정보 (전체 직원 기준) 수집
 function collectSenderHistory(){
@@ -1262,6 +1427,8 @@ function renderPayments(emp){
   selectPayMethod(state.selectedPayMethod);
   // 송금/수취 정보 자동완성
   autofillAccountFields(emp);
+  // 미리보기 갱신
+  updatePayPreview();
   // 입금 이력
   const list=document.getElementById('pay-list');
   const countEl=document.getElementById('pay-list-count');
