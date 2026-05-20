@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0131)file:///C:/Users/User/Downloads/%EC%8A%A4%EB%A7%88%ED%8A%B8%ED%8C%9C_%ED%99%98%EA%B2%BD%EC%88%98%EB%B6%84%EA%B4%80%EB%A6%AC_v3.html -->
+<!-- saved from url=(0044)file:///C:/Users/User/Downloads/climate.html -->
 <html lang="ko"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -234,11 +234,14 @@ td.label:hover .row-copy-btn{opacity:1}
       </div>
     </div>
 
-    <div id="envStatusBox"><div class="status error">✗ 조회 실패: Could not find the table 'public.env_daily' in the schema cache</div></div>
+    <div id="envStatusBox"></div>
 
-    <div id="envSummaryStats" class="summary-grid" style="display:none"></div>
+    <div id="envSummaryStats" class="summary-grid" style="display: grid;">
+      <div class="metric highlight"><div class="metric-label">선택 온실</div><div class="metric-val">신흥</div><div class="metric-sub">2025-11-19 ~ 2026-05-20</div></div>
+      <div class="metric"><div class="metric-label">📦 DB 저장된 일수</div><div class="metric-val">1</div><div class="metric-sub">기존 데이터</div></div>
+    <div class="metric"><div class="metric-label">📅 표시 주차</div><div class="metric-val">1</div><div class="metric-sub">일요일 기준</div></div></div>
 
-    <div class="toolbar" id="envToolbar" style="display:none">
+    <div class="toolbar" id="envToolbar" style="display: flex;">
       <button class="btn btn-primary" id="saveEnvBtn">💾 저장</button>
       <label class="overwrite-toggle" title="체크하면 같은 날짜의 기존 데이터를 새 값으로 덮어씁니다. 끄면 새 날짜만 추가됩니다.">
         <input type="checkbox" id="envOverwriteChk">
@@ -258,11 +261,11 @@ td.label:hover .row-copy-btn{opacity:1}
 
     <div id="envSavePreview" class="save-preview" style="display:none"></div>
 
-    <div class="table-wrap" id="envTableWrap" style="display:none">
-      <table id="envTable"></table>
+    <div class="table-wrap" id="envTableWrap" style="display: block;">
+      <table id="envTable"><thead><tr><th class="label-header">항목</th><th>5/19<br>(화)</th><th class="weekly-header">주평균</th></tr></thead><tbody><tr data-field="extCumRad"><td class="label">외부누적 광량(J/cm²)<button class="row-copy-btn" data-action="copy-row" data-field="extCumRad">📋</button></td><td class="value existing-data" data-field="extCumRad" data-date="2026-05-19" data-val="1234.5">1234.50</td><td class="value weekly" data-field="extCumRad" data-val="1234.5">1234.50</td></tr><tr data-field="extDayMaxTemp"><td class="label">외부주간 최고 온도<button class="row-copy-btn" data-action="copy-row" data-field="extDayMaxTemp">📋</button></td><td class="value existing-data" data-field="extDayMaxTemp" data-date="2026-05-19" data-val=""></td><td class="value weekly" data-field="extDayMaxTemp" data-val=""></td></tr><tr data-field="extNightMinTemp"><td class="label">외부야간 최저 온도<button class="row-copy-btn" data-action="copy-row" data-field="extNightMinTemp">📋</button></td><td class="value existing-data" data-field="extNightMinTemp" data-date="2026-05-19" data-val=""></td><td class="value weekly" data-field="extNightMinTemp" data-val=""></td></tr><tr data-field="ext24AvgTemp"><td class="label">외부 24시간 평균 온도<button class="row-copy-btn" data-action="copy-row" data-field="ext24AvgTemp">📋</button></td><td class="value existing-data" data-field="ext24AvgTemp" data-date="2026-05-19" data-val=""></td><td class="value weekly" data-field="ext24AvgTemp" data-val=""></td></tr><tr data-field="intDayAvgTemp"><td class="label">내부주간 평균 온도<button class="row-copy-btn" data-action="copy-row" data-field="intDayAvgTemp">📋</button></td><td class="value existing-data" data-field="intDayAvgTemp" data-date="2026-05-19" data-val=""></td><td class="value weekly" data-field="intDayAvgTemp" data-val=""></td></tr><tr data-field="intNightAvgTemp"><td class="label">내부야간 평균 온도<button class="row-copy-btn" data-action="copy-row" data-field="intNightAvgTemp">📋</button></td><td class="value existing-data" data-field="intNightAvgTemp" data-date="2026-05-19" data-val=""></td><td class="value weekly" data-field="intNightAvgTemp" data-val=""></td></tr><tr data-field="int24AvgTemp"><td class="label">내부24시간 평균 온도<button class="row-copy-btn" data-action="copy-row" data-field="int24AvgTemp">📋</button></td><td class="value existing-data" data-field="int24AvgTemp" data-date="2026-05-19" data-val=""></td><td class="value weekly" data-field="int24AvgTemp" data-val=""></td></tr><tr data-field="intDayAvgHum"><td class="label">내부 주간 평균 습도<button class="row-copy-btn" data-action="copy-row" data-field="intDayAvgHum">📋</button></td><td class="value existing-data" data-field="intDayAvgHum" data-date="2026-05-19" data-val=""></td><td class="value weekly" data-field="intDayAvgHum" data-val=""></td></tr><tr data-field="intNightAvgHum"><td class="label">내부 야간 평균 습도<button class="row-copy-btn" data-action="copy-row" data-field="intNightAvgHum">📋</button></td><td class="value existing-data" data-field="intNightAvgHum" data-date="2026-05-19" data-val=""></td><td class="value weekly" data-field="intNightAvgHum" data-val=""></td></tr><tr data-field="int24AvgHum"><td class="label">내부 24시간 평균 습도<button class="row-copy-btn" data-action="copy-row" data-field="int24AvgHum">📋</button></td><td class="value existing-data" data-field="int24AvgHum" data-date="2026-05-19" data-val=""></td><td class="value weekly" data-field="int24AvgHum" data-val=""></td></tr><tr data-field="int24AvgCO2"><td class="label">내부 24시간 CO2 ppm<button class="row-copy-btn" data-action="copy-row" data-field="int24AvgCO2">📋</button></td><td class="value existing-data" data-field="int24AvgCO2" data-date="2026-05-19" data-val=""></td><td class="value weekly" data-field="int24AvgCO2" data-val=""></td></tr><tr data-field="intMaxTemp"><td class="label">온실 내부 최고 온도<button class="row-copy-btn" data-action="copy-row" data-field="intMaxTemp">📋</button></td><td class="value existing-data" data-field="intMaxTemp" data-date="2026-05-19" data-val=""></td><td class="value weekly" data-field="intMaxTemp" data-val=""></td></tr><tr data-field="intMinTemp"><td class="label">온실 내부 최저 온도<button class="row-copy-btn" data-action="copy-row" data-field="intMinTemp">📋</button></td><td class="value existing-data" data-field="intMinTemp" data-date="2026-05-19" data-val=""></td><td class="value weekly" data-field="intMinTemp" data-val=""></td></tr></tbody></table>
     </div>
 
-    <div class="empty-state" id="envEmpty">
+    <div class="empty-state" id="envEmpty" style="display: none;">
       <div class="icon">📂</div>
       <div class="msg">위에서 매그마 파일을 선택하면 자동 변환되고, 우측 상단 기간 필터로 저장된 과거 데이터를 한눈에 볼 수 있어요</div>
     </div>
@@ -328,12 +331,19 @@ const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZ
 
 let supa = null;
 function initSupabase() {
+  // 라이브러리 자체가 로드 안 됐을 때 명확한 진단
+  if (typeof window.supabase === 'undefined') {
+    setSyncStatus('err', 'Supabase 라이브러리 로드 실패');
+    console.error('[Climate] supabase-js 라이브러리가 로드되지 않았습니다. 네트워크 연결 또는 CDN 차단 여부를 확인하세요.');
+    return null;
+  }
   try {
     supa = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
     setSyncStatus('ok', '동기화됨');
     return supa;
   } catch (err) {
-    setSyncStatus('err', '연결 실패');
+    setSyncStatus('err', '연결 실패: ' + (err.message || err));
+    console.error('[Climate] Supabase 초기화 실패', err);
     return null;
   }
 }
@@ -664,6 +674,7 @@ document.getElementById('magmaFile').addEventListener('change', async (e) => {
     setStatus('envStatusBox', `⏳ ${records.length.toLocaleString()}건 → 일별 집계 중...`, 'info');
     await new Promise(r => setTimeout(r, 30));
     const daily = aggregate(records);
+    if (daily.length === 0) throw new Error('집계된 일별 데이터가 없습니다');
 
     // 매그마 결과를 envFromMagma에 저장
     envFromMagma.clear();
@@ -831,15 +842,38 @@ function computeDateRange() {
   return { start: '1970-01-01', end: '2099-12-31' };
 }
 
-// 범위 변경 시 처리
+// 현재 활성 탭 확인 헬퍼
+function getActiveTab() {
+  const activeTab = document.querySelector('.section-tab.active');
+  return activeTab ? activeTab.dataset.tab : 'env';
+}
+
+// 범위 변경 시 처리 - 활성 탭에 따라 적절한 데이터 다시 로드
 document.getElementById('rangeSelect').addEventListener('change', () => {
   const sel = document.getElementById('rangeSelect').value;
   const isCustom = sel === 'custom';
   document.getElementById('customRangeWrap').style.display = isCustom ? 'flex' : 'none';
-  if (!isCustom) loadEnvFromDb();
+  if (isCustom) return;
+  if (getActiveTab() === 'water') {
+    if (Object.keys(waterData).length > 0) loadWaterForRange();
+  } else {
+    loadEnvFromDb();
+  }
 });
-document.getElementById('rangeStart').addEventListener('change', () => loadEnvFromDb());
-document.getElementById('rangeEnd').addEventListener('change', () => loadEnvFromDb());
+document.getElementById('rangeStart').addEventListener('change', () => {
+  if (getActiveTab() === 'water') {
+    if (Object.keys(waterData).length > 0) loadWaterForRange();
+  } else {
+    loadEnvFromDb();
+  }
+});
+document.getElementById('rangeEnd').addEventListener('change', () => {
+  if (getActiveTab() === 'water') {
+    if (Object.keys(waterData).length > 0) loadWaterForRange();
+  } else {
+    loadEnvFromDb();
+  }
+});
 
 // DB에서 환경 데이터 로드 (매그마 데이터와 합쳐서 표시)
 async function loadEnvFromDb(opts = {}) {
@@ -1035,6 +1069,7 @@ function sumOf(arr) { const v = arr.filter(x => x !== null && !isNaN(x)); return
 let waterData = {};
 let waterDirty = new Set(); // dirty key set: 'date|column'
 let waterEnvLookup = {}; // dateKey -> ext_cum_rad
+let waterDbDates = new Set(); // DB에 이미 있는 날짜들
 
 function getWaterDates() {
   // 화면에 표시된 날짜들 (오름차순)
@@ -1319,9 +1354,6 @@ async function loadWaterForRange() {
     setStatus('waterStatusBox', '✗ 조회 실패: ' + err.message, 'error');
   }
 }
-
-// 수분관리: 저장 시 기존 DB 데이터 확인
-let waterDbDates = new Set(); // DB에 이미 있는 날짜들
 
 // 수분관리 저장
 document.getElementById('saveWaterBtn').addEventListener('click', async () => {
