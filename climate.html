@@ -1,11 +1,10 @@
 <!DOCTYPE html>
-<!-- saved from url=(0044)file:///C:/Users/User/Downloads/climate.html -->
+<!-- saved from url=(0046)file:///C:/Users/User/Downloads/climate_1.html -->
 <html lang="ko"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>스마트팜 환경·수분 관리</title>
 <script src="./스마트팜 환경·수분 관리_files/xlsx.full.min.js.다운로드"></script>
-<script src="./스마트팜 환경·수분 관리_files/supabase-js@2"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif;background:#f0f4f0;color:#1a1a1a;font-size:14px}
@@ -330,19 +329,54 @@ const SUPABASE_URL = 'https://ljirwirzbgqmfxwmeiad.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxqaXJ3aXJ6YmdxbWZ4d21laWFkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU2NDk2OTQsImV4cCI6MjA5MTIyNTY5NH0.07hlyBkL4Y2smVJL7e4rDu4aBdAQ75c-vvARU-XR0Tk';
 
 let supa = null;
-function initSupabase() {
-  // 라이브러리 자체가 로드 안 됐을 때 명확한 진단
-  if (typeof window.supabase === 'undefined') {
-    setSyncStatus('err', 'Supabase 라이브러리 로드 실패');
-    console.error('[Climate] supabase-js 라이브러리가 로드되지 않았습니다. 네트워크 연결 또는 CDN 차단 여부를 확인하세요.');
-    return null;
+let supaReady = false;
+
+// fetch 기반 Supabase REST API 헬퍼 (외부 라이브러리 불필요)
+const SUPA_HEADERS = {
+  'Content-Type': 'application/json',
+  'apikey': SUPABASE_KEY,
+  'Authorization': 'Bearer ' + SUPABASE_KEY
+};
+
+const supaApi = {
+  // SELECT: supaApi.select('env_daily', 'greenhouse=eq.신흥&date=gte.2026-01-01', 'date,ext_avg_temp')
+  async select(table, filter = '', columns = '*') {
+    const url = `${SUPABASE_URL}/rest/v1/${table}?select=${encodeURIComponent(columns)}${filter ? '&' + filter : ''}`;
+    const r = await fetch(url, { headers: SUPA_HEADERS });
+    if (!r.ok) {
+      const txt = await r.text();
+      throw new Error(`[${r.status}] ${txt}`);
+    }
+    return await r.json();
+  },
+  // UPSERT: supaApi.upsert('env_daily', rows, 'greenhouse,date')
+  async upsert(table, rows, onConflict) {
+    const url = `${SUPABASE_URL}/rest/v1/${table}?on_conflict=${encodeURIComponent(onConflict)}`;
+    const r = await fetch(url, {
+      method: 'POST',
+      headers: {
+        ...SUPA_HEADERS,
+        'Prefer': 'resolution=merge-duplicates,return=minimal'
+      },
+      body: JSON.stringify(rows)
+    });
+    if (!r.ok) {
+      const txt = await r.text();
+      throw new Error(`[${r.status}] ${txt}`);
+    }
+    return true;
   }
+};
+
+function initSupabase() {
   try {
-    supa = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    // 연결 확인용 ping (헤더만 제대로 들어가면 OK)
+    supa = supaApi;  // 기존 코드 호환용 별칭
+    supaReady = true;
     setSyncStatus('ok', '동기화됨');
     return supa;
   } catch (err) {
-    setSyncStatus('err', '연결 실패: ' + (err.message || err));
+    setSyncStatus('err', '초기화 실패: ' + (err.message || err));
     console.error('[Climate] Supabase 초기화 실패', err);
     return null;
   }
@@ -792,8 +826,7 @@ document.getElementById('saveEnvBtn').addEventListener('click', async () => {
 
   setStatus('envStatusBox', `⏳ ${toSave.length}일치 저장 중...`, 'info');
   try {
-    const { error } = await supa.from('env_daily').upsert(toSave, { onConflict: 'greenhouse,date' });
-    if (error) throw error;
+    await supaApi.upsert('env_daily', toSave, 'greenhouse,date');
     let msg = `✅ ${greenhouse}온실: 새로 저장 ${toSave.length}일`;
     if (skipped.length > 0) msg += ` · 기존 보존(스킵) ${skipped.length}일`;
     setStatus('envStatusBox', msg, 'success');
@@ -886,12 +919,11 @@ async function loadEnvFromDb(opts = {}) {
 
   setStatus('envStatusBox', `⏳ ${greenhouse}온실 ${start} ~ ${end} 조회 중...`, 'info');
   try {
-    const { data, error } = await supa.from('env_daily')
-      .select('*')
-      .eq('greenhouse', greenhouse)
-      .gte('date', start).lte('date', end)
-      .order('date');
-    if (error) throw error;
+    const data = await supaApi.select(
+      'env_daily',
+      `greenhouse=eq.${encodeURIComponent(greenhouse)}&date=gte.${start}&date=lte.${end}&order=date`,
+      '*'
+    );
     envFromDb.clear();
     (data || []).forEach(r => {
       const d = {};
@@ -1317,17 +1349,17 @@ async function loadWaterForRange() {
 
   try {
     // 수분 데이터
-    const { data: wd, error: e1 } = await supa.from('water_daily')
-      .select('*')
-      .eq('greenhouse', greenhouse)
-      .gte('date', start).lte('date', end);
-    if (e1) throw e1;
+    const wd = await supaApi.select(
+      'water_daily',
+      `greenhouse=eq.${encodeURIComponent(greenhouse)}&date=gte.${start}&date=lte.${end}`,
+      '*'
+    );
     // 환경관리에서 ext_cum_rad만 같이 조회 (외부누적 광량 자동 참조)
-    const { data: ed, error: e2 } = await supa.from('env_daily')
-      .select('date, ext_cum_rad')
-      .eq('greenhouse', greenhouse)
-      .gte('date', start).lte('date', end);
-    if (e2) throw e2;
+    const ed = await supaApi.select(
+      'env_daily',
+      `greenhouse=eq.${encodeURIComponent(greenhouse)}&date=gte.${start}&date=lte.${end}`,
+      'date,ext_cum_rad'
+    );
 
     waterData = {};
     waterDirty.clear();
@@ -1404,8 +1436,7 @@ document.getElementById('saveWaterBtn').addEventListener('click', async () => {
 
   setStatus('waterStatusBox', `⏳ ${rows.length}일치 저장 중...`, 'info');
   try {
-    const { error } = await supa.from('water_daily').upsert(rows, { onConflict: 'greenhouse,date' });
-    if (error) throw error;
+    await supaApi.upsert('water_daily', rows, 'greenhouse,date');
 
     // 저장 안 한 dirty 날짜는 dirty 유지 (사용자에게 명확히 보이도록)
     if (!overwrite && existingDates.length > 0) {
