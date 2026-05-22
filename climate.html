@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<!-- saved from url=(0046)file:///C:/Users/User/Downloads/climate_2.html -->
+<!-- saved from url=(0130)file:///C:/Users/User/Downloads/%EC%8A%A4%EB%A7%88%ED%8A%B8%ED%8C%9C_%ED%99%98%EA%B2%BD_%EC%88%98%EB%B6%84_%EA%B4%80%EB%A6%AC.html -->
 <html lang="ko"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>스마트팜 환경·수분 관리</title>
-<script src="./스마트팜 환경·수분 관리_files/xlsx.full.min.js.다운로드"></script>
+<script src="file:///C:/Users/User/Downloads/%EC%8A%A4%EB%A7%88%ED%8A%B8%ED%8C%9C%20%ED%99%98%EA%B2%BD%C2%B7%EC%88%98%EB%B6%84%20%EA%B4%80%EB%A6%AC_files/xlsx.full.min.js.%EB%8B%A4%EC%9A%B4%EB%A1%9C%EB%93%9C"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif;background:#f0f4f0;color:#1a1a1a;font-size:14px}
@@ -236,7 +236,7 @@ td.label:hover .row-copy-btn{opacity:1}
     <div id="envStatusBox"></div>
 
     <div id="envSummaryStats" class="summary-grid" style="display: grid;">
-      <div class="metric highlight"><div class="metric-label">선택 온실</div><div class="metric-val">신흥</div><div class="metric-sub">2025-11-19 ~ 2026-05-20</div></div>
+      <div class="metric highlight"><div class="metric-label">선택 온실</div><div class="metric-val">신흥</div><div class="metric-sub">2025-11-21 ~ 2026-05-22</div></div>
       <div class="metric"><div class="metric-label">📦 DB 저장된 일수</div><div class="metric-val">1</div><div class="metric-sub">기존 데이터</div></div>
     <div class="metric"><div class="metric-label">📅 표시 주차</div><div class="metric-val">1</div><div class="metric-sub">일요일 기준</div></div></div>
 
@@ -313,6 +313,9 @@ td.label:hover .row-copy-btn{opacity:1}
         <li><b>입력 항목 (노란 셀):</b> 시간 4개, 1회공급량, 총공급횟수, 배액량, 공급EC, 슬라브 EC, 슬라브 평균/최고/최저 함량</li>
         <li><b>자동 계산 (회색 셀):</b> 실제 총 공급량 = 1회공급량 × 공급횟수, 배액량%, 슬라브 수분 편차 등</li>
         <li><b>외부누적 광량:</b> 환경관리 탭에서 저장된 데이터를 자동으로 끌어옵니다</li>
+        <li><b>🆕 100J 도달 시간:</b> 매그마 파일 업로드 시 자동 계산 — 분 단위 누적 광량이 처음 100J/cm²에 도달하는 시간</li>
+        <li><b>🆕 잔광 200J 남는 시간:</b> 매그마 파일 업로드 시 자동 계산 — (그날 총 누적 광량 − 200J)에 도달하는 시간 (즉 일사 종료 200J 전 시점)</li>
+        <li><b>매그마 → 수분일지 자동 입력:</b> 환경관리 탭에서 매그마 파일을 업로드하면 두 시간 값이 자동 계산되며, 환경관리 저장 시 수분일지에도 함께 저장됩니다. 비어있는 셀에만 채워지므로 직접 입력한 값은 보존됩니다.</li>
         <li><b>저장:</b> 입력 후 💾 버튼 또는 입력칸 밖 클릭 시 자동으로 변경 표시되며, 저장 버튼으로 일괄 Supabase 반영</li>
       </ul>
     </details>
@@ -412,6 +415,10 @@ function fmtRaw(v) {
 }
 function dateKey(d) {
   return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+}
+function fmtTimeHM(d) {
+  // Date 객체 → "HH:MM" 문자열
+  return String(d.getHours()).padStart(2,'0') + ':' + String(d.getMinutes()).padStart(2,'0');
 }
 async function copyText(text, msg) {
   try {
@@ -583,11 +590,47 @@ function aggregate(records) {
     const radSum = sm(rs, r => r.extRad);
     const cumRad = radSum !== null ? radSum * 60 / 10000 : null;
 
+    // ===== 100J 도달 시간 / 잔광 200J 남는 시간 계산 =====
+    // 분 단위 누적 광량(J/cm²)을 시간순으로 추적
+    // 100J 도달: 누적 광량이 처음으로 100J/cm²을 넘는 시점
+    // 잔광 200J 남는 시간: (최종 누적 - 200J)을 누적 광량이 처음 넘는 시점
+    let time100j = null;
+    let time200jRemain = null;
+    if (cumRad !== null && rs.length > 0) {
+      // 시간순 정렬된 분 단위 데이터로 누적 추적
+      let cum = 0;
+      const cumSeries = []; // {dt, cum} 배열
+      for (const r of rs) {
+        const inc = (r.extRad !== null && r.extRad > 0) ? r.extRad * 60 / 10000 : 0;
+        cum += inc;
+        cumSeries.push({ dt: r.dt, cum });
+      }
+      // 100J 도달 시간
+      for (const p of cumSeries) {
+        if (p.cum >= 100) {
+          time100j = fmtTimeHM(p.dt);
+          break;
+        }
+      }
+      // 잔광 200J 남는 시간: cum이 (총량-200)을 넘어가는 첫 시점
+      if (cumRad > 200) {
+        const threshold = cumRad - 200;
+        for (const p of cumSeries) {
+          if (p.cum >= threshold) {
+            time200jRemain = fmtTimeHM(p.dt);
+            break;
+          }
+        }
+      }
+    }
+
     const [y,m,d] = key.split('-').map(Number);
     result.push({
       date: new Date(y, m-1, d), dateKey: key,
       data: {
         extCumRad: cumRad,
+        time100j: time100j,
+        time200jRemain: time200jRemain,
         extDayMaxTemp: mx(day, r => r.extTemp),
         extNightMinTemp: mn(night, r => r.extTemp),
         ext24AvgTemp: avg(rs, r => r.extTemp),
@@ -721,6 +764,39 @@ document.getElementById('magmaFile').addEventListener('change', async (e) => {
 
     renderMergedEnv();
 
+    // ===== 수분관리 탭 화면에 있는 날짜에 매그마 시간/광량 즉시 반영 =====
+    // waterData에 이미 표시 중인 날짜 중 매그마 범위 내 날짜는 시간 자동 채움
+    // 환경 광량 lookup도 갱신해서 외부누적 광량 셀이 비어있지 않게 표시
+    let waterAutoFilled = 0;
+    daily.forEach(d => {
+      const dk = d.dateKey;
+      // 외부누적 광량 lookup 갱신 (수분관리 탭에서 환경 참조 셀에 사용)
+      if (d.data.extCumRad !== null && d.data.extCumRad !== undefined) {
+        waterEnvLookup[dk] = d.data.extCumRad;
+      }
+      // 수분관리 화면에 해당 날짜 행이 있으면 시간도 자동으로 채움
+      if (waterData[dk]) {
+        const t100 = d.data.time100j;
+        const t200 = d.data.time200jRemain;
+        let changed = false;
+        // 비어있는 셀에만 채워줌 (이미 사용자가 입력한 값은 보존)
+        if (t100 && !waterData[dk].time_100j) {
+          waterData[dk].time_100j = t100;
+          waterDirty.add(`${dk}|time_100j`);
+          changed = true;
+        }
+        if (t200 && !waterData[dk].time_200j_remain) {
+          waterData[dk].time_200j_remain = t200;
+          waterDirty.add(`${dk}|time_200j_remain`);
+          changed = true;
+        }
+        if (changed) waterAutoFilled++;
+      }
+    });
+    if (waterAutoFilled > 0 || Object.keys(waterData).length > 0) {
+      renderWater();
+    }
+
     // 미리보기 - 신규/기존 개수
     let newCount = 0, existingCount = 0;
     daily.forEach(d => {
@@ -730,7 +806,9 @@ document.getElementById('magmaFile').addEventListener('change', async (e) => {
     document.getElementById('envSavePreview').style.display = 'block';
     updateSavePreview(newCount, existingCount);
 
-    setStatus('envStatusBox', `✅ 변환 완료! ${daily.length}일 (${firstDate} ~ ${lastDate}) — 신규 ${newCount}일, 기존 ${existingCount}일`, 'success');
+    let successMsg = `✅ 변환 완료! ${daily.length}일 (${firstDate} ~ ${lastDate}) — 신규 ${newCount}일, 기존 ${existingCount}일`;
+    if (waterAutoFilled > 0) successMsg += ` · 수분일지 시간 ${waterAutoFilled}일 자동 입력 (저장 필요)`;
+    setStatus('envStatusBox', successMsg, 'success');
   } catch (err) {
     console.error(err);
     setStatus('envStatusBox', '✗ 오류: ' + err.message, 'error');
@@ -827,8 +905,76 @@ document.getElementById('saveEnvBtn').addEventListener('click', async () => {
   setStatus('envStatusBox', `⏳ ${toSave.length}일치 저장 중...`, 'info');
   try {
     await supaApi.upsert('env_daily', toSave, 'greenhouse,date');
+
+    // ===== water_daily에 100J/200J 시간도 함께 저장 =====
+    // 매그마에서 계산된 두 시간이 있는 날짜만 대상
+    // 덮어쓰기 옵션이 OFF이면 기존 water_daily 행의 시간 컬럼이 비어있을 때만 저장
+    let waterTimeSaved = 0;
+    let waterTimeSkipped = 0;
+    try {
+      // 저장 대상 날짜 모음
+      const targetDates = toSave.map(r => r.date);
+      if (targetDates.length > 0) {
+        // 기존 water_daily에 해당 날짜가 있는지, 시간 컬럼이 채워져 있는지 확인
+        const dateFilter = targetDates.map(d => `"${d}"`).join(',');
+        const existingWater = await supaApi.select(
+          'water_daily',
+          `greenhouse=eq.${encodeURIComponent(greenhouse)}&date=in.(${dateFilter})`,
+          'date,time_100j,time_200j_remain'
+        );
+        const existingMap = new Map();
+        (existingWater || []).forEach(r => existingMap.set(r.date, r));
+
+        const waterRows = [];
+        for (const dk of targetDates) {
+          const mdata = envFromMagma.get(dk);
+          if (!mdata) continue;
+          const t100 = mdata.time100j || null;
+          const t200 = mdata.time200jRemain || null;
+          if (!t100 && !t200) continue; // 둘 다 없으면 스킵
+
+          const exRow = existingMap.get(dk);
+          if (exRow && !overwrite) {
+            // 덮어쓰기 OFF: 기존 행이 있고, 둘 다 이미 채워져 있으면 스킵
+            const has100 = !!exRow.time_100j;
+            const has200 = !!exRow.time_200j_remain;
+            if (has100 && has200) {
+              waterTimeSkipped++;
+              continue;
+            }
+            // 일부만 채워져 있으면 비어있는 컬럼만 채움
+            waterRows.push({
+              greenhouse,
+              date: dk,
+              time_100j: has100 ? exRow.time_100j : t100,
+              time_200j_remain: has200 ? exRow.time_200j_remain : t200,
+            });
+            waterTimeSaved++;
+          } else {
+            // 덮어쓰기 ON 또는 신규 행
+            waterRows.push({
+              greenhouse,
+              date: dk,
+              time_100j: t100,
+              time_200j_remain: t200,
+            });
+            waterTimeSaved++;
+          }
+        }
+
+        if (waterRows.length > 0) {
+          await supaApi.upsert('water_daily', waterRows, 'greenhouse,date');
+        }
+      }
+    } catch (werr) {
+      console.warn('water_daily 시간 저장 중 오류:', werr);
+      // 환경 저장은 성공했으므로 경고만 표시
+    }
+
     let msg = `✅ ${greenhouse}온실: 새로 저장 ${toSave.length}일`;
     if (skipped.length > 0) msg += ` · 기존 보존(스킵) ${skipped.length}일`;
+    if (waterTimeSaved > 0) msg += ` · 수분일지 시간 ${waterTimeSaved}일 반영`;
+    if (waterTimeSkipped > 0) msg += ` · 수분일지 시간 ${waterTimeSkipped}일 보존`;
     setStatus('envStatusBox', msg, 'success');
     showToast(`${toSave.length}일치 저장 완료`);
     // 매그마 캐시 비우고 DB 다시 로드
@@ -1318,13 +1464,35 @@ document.getElementById('addWeekBtn').addEventListener('click', () => {
     const [y,m,d] = last.split('-').map(Number);
     startDate = new Date(y, m-1, d+1);
   }
+  let magmaFilled = 0;
   for (let i = 0; i < 7; i++) {
     const d = new Date(startDate);
     d.setDate(startDate.getDate() + i);
     const dk = dateKey(d);
     if (!waterData[dk]) waterData[dk] = {};
+    // 매그마 캐시에 해당 날짜 데이터가 있으면 시간 셀 자동 채움
+    if (envFromMagma && envFromMagma.has(dk)) {
+      const mdata = envFromMagma.get(dk);
+      if (mdata.time100j && !waterData[dk].time_100j) {
+        waterData[dk].time_100j = mdata.time100j;
+        waterDirty.add(`${dk}|time_100j`);
+        magmaFilled++;
+      }
+      if (mdata.time200jRemain && !waterData[dk].time_200j_remain) {
+        waterData[dk].time_200j_remain = mdata.time200jRemain;
+        waterDirty.add(`${dk}|time_200j_remain`);
+        magmaFilled++;
+      }
+      // 광량 lookup도 보강
+      if (waterEnvLookup[dk] === undefined && mdata.extCumRad !== null && mdata.extCumRad !== undefined) {
+        waterEnvLookup[dk] = mdata.extCumRad;
+      }
+    }
   }
   renderWater();
+  if (magmaFilled > 0) {
+    showToast(`매그마 시간 ${magmaFilled}건 자동 입력됨`);
+  }
 });
 
 // 화면 비우기
@@ -1367,6 +1535,20 @@ async function loadWaterForRange() {
     waterDbDates = new Set();
     (ed || []).forEach(r => { waterEnvLookup[r.date] = r.ext_cum_rad; });
 
+    // ===== 매그마 캐시(envFromMagma) 결과도 lookup에 반영 =====
+    // 환경관리 탭에 아직 저장 안 된 날짜의 매그마 결과도 수분관리에서 활용 가능하도록
+    let magmaTimePreFill = 0;
+    if (envFromMagma && envFromMagma.size > 0) {
+      envFromMagma.forEach((mdata, dk) => {
+        // 조회 기간 안의 매그마 데이터만 처리
+        if (dk < start || dk > end) return;
+        // 광량: 환경 lookup에 없으면 매그마 값 사용
+        if (waterEnvLookup[dk] === undefined && mdata.extCumRad !== null && mdata.extCumRad !== undefined) {
+          waterEnvLookup[dk] = mdata.extCumRad;
+        }
+      });
+    }
+
     if (wd && wd.length > 0) {
       wd.forEach(r => {
         waterData[r.date] = { ...r };
@@ -1377,7 +1559,28 @@ async function loadWaterForRange() {
         delete waterData[r.date].updated_at;
         waterDbDates.add(r.date);
       });
-      setStatus('waterStatusBox', `✅ ${wd.length}일 수분 데이터 로딩, 환경 데이터 ${(ed||[]).length}일 참조 가능`, 'success');
+
+      // 매그마 결과로 비어있는 시간 셀 자동 채움 (덮어쓰기 X, 빈 값에만)
+      if (envFromMagma && envFromMagma.size > 0) {
+        Object.keys(waterData).forEach(dk => {
+          const mdata = envFromMagma.get(dk);
+          if (!mdata) return;
+          if (mdata.time100j && !waterData[dk].time_100j) {
+            waterData[dk].time_100j = mdata.time100j;
+            waterDirty.add(`${dk}|time_100j`);
+            magmaTimePreFill++;
+          }
+          if (mdata.time200jRemain && !waterData[dk].time_200j_remain) {
+            waterData[dk].time_200j_remain = mdata.time200jRemain;
+            waterDirty.add(`${dk}|time_200j_remain`);
+            magmaTimePreFill++;
+          }
+        });
+      }
+
+      let okMsg = `✅ ${wd.length}일 수분 데이터 로딩, 환경 데이터 ${(ed||[]).length}일 참조 가능`;
+      if (magmaTimePreFill > 0) okMsg += ` · 매그마 시간 ${magmaTimePreFill}건 자동 입력 (저장 필요)`;
+      setStatus('waterStatusBox', okMsg, 'success');
     } else {
       setStatus('waterStatusBox', `${greenhouse}온실 ${start} ~ ${end}: 저장된 수분 데이터 없음. "한 주 추가"로 시작하세요.`, 'warn');
     }
