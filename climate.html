@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0130)file:///C:/Users/User/Downloads/%EC%8A%A4%EB%A7%88%ED%8A%B8%ED%8C%9C_%ED%99%98%EA%B2%BD_%EC%88%98%EB%B6%84_%EA%B4%80%EB%A6%AC.html -->
+<!-- saved from url=(0132)file:///C:/Users/User/Downloads/%EC%8A%A4%EB%A7%88%ED%8A%B8%ED%8C%9C_%ED%99%98%EA%B2%BD_%EC%88%98%EB%B6%84_%EA%B4%80%EB%A6%AC_1.html -->
 <html lang="ko"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -916,14 +916,20 @@ document.getElementById('saveEnvBtn').addEventListener('click', async () => {
       const targetDates = toSave.map(r => r.date);
       if (targetDates.length > 0) {
         // 기존 water_daily에 해당 날짜가 있는지, 시간 컬럼이 채워져 있는지 확인
-        const dateFilter = targetDates.map(d => `"${d}"`).join(',');
-        const existingWater = await supaApi.select(
+        // (날짜 범위로 조회 후 클라이언트에서 Set으로 필터링 — in.() 의 인코딩 문제 회피)
+        const sortedDates = targetDates.slice().sort();
+        const minDate = sortedDates[0];
+        const maxDate = sortedDates[sortedDates.length - 1];
+        const targetDateSet = new Set(targetDates);
+        const existingWaterAll = await supaApi.select(
           'water_daily',
-          `greenhouse=eq.${encodeURIComponent(greenhouse)}&date=in.(${dateFilter})`,
+          `greenhouse=eq.${encodeURIComponent(greenhouse)}&date=gte.${minDate}&date=lte.${maxDate}`,
           'date,time_100j,time_200j_remain'
         );
         const existingMap = new Map();
-        (existingWater || []).forEach(r => existingMap.set(r.date, r));
+        (existingWaterAll || []).forEach(r => {
+          if (targetDateSet.has(r.date)) existingMap.set(r.date, r);
+        });
 
         const waterRows = [];
         for (const dk of targetDates) {
