@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0046)file:///C:/Users/User/Downloads/climate_4.html -->
+<!-- saved from url=(0046)file:///C:/Users/User/Downloads/climate_5.html -->
 <html lang="ko"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -1793,49 +1793,63 @@ async function copySelectionAsImage() {
   const rows = Array.from(tbody.querySelectorAll('tr'));
   const r1 = Math.min(dragState.startRow, dragState.endRow);
   const r2 = Math.max(dragState.startRow, dragState.endRow);
-  const c1 = Math.min(dragState.startCol, dragState.endCol);
+  // 항목(라벨) 열(0번)은 항상 포함, 선택 열은 1번 이상
+  const c1 = Math.max(1, Math.min(dragState.startCol, dragState.endCol)); // 라벨 제외한 시작
   const c2 = Math.max(dragState.startCol, dragState.endCol);
 
-  // 선택 범위만 담은 임시 테이블 생성
   const wrapper = document.createElement('div');
   wrapper.style.cssText = 'position:fixed;left:-9999px;top:0;background:#fff;padding:8px;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Noto Sans KR,sans-serif;font-size:13px;';
 
   const table = document.createElement('table');
   table.style.cssText = 'border-collapse:collapse;';
 
-  // 헤더 행 (해당 열만)
-  const headRow = document.createElement('tr');
+  // 헤더 행: 항목 헤더(col 0) + 선택 날짜 열
   const thCells = Array.from(thead.querySelectorAll('th'));
+  const headRow = document.createElement('tr');
+
+  // 항목 헤더 (col 0)
+  const thLabel = document.createElement('th');
+  thLabel.textContent = '항목';
+  thLabel.style.cssText = 'background:#2d5a2d;color:#fff;padding:6px 12px;border:1px solid #c8dfc8;font-size:12px;white-space:nowrap;text-align:left;min-width:160px;';
+  headRow.appendChild(thLabel);
+
+  // 선택된 날짜/주평균 헤더
   for (let ci = c1; ci <= c2; ci++) {
     const origTh = thCells[ci];
     if (!origTh) continue;
     const th = document.createElement('th');
-    th.innerHTML = origTh.innerHTML;
-    th.style.cssText = 'background:#2d5a2d;color:#fff;padding:6px 10px;border:1px solid #c8dfc8;font-size:12px;white-space:nowrap;text-align:center;';
+    th.innerHTML = origTh.innerHTML.replace(/<button[^>]*>.*?<\/button>/g, '');
+    const isWeekly = origTh.classList.contains('weekly-header');
+    th.style.cssText = `background:${isWeekly ? '#1e3d1e' : '#2d5a2d'};color:#fff;padding:6px 10px;border:1px solid #c8dfc8;font-size:12px;white-space:nowrap;text-align:center;`;
     headRow.appendChild(th);
   }
   const thead2 = document.createElement('thead');
   thead2.appendChild(headRow);
   table.appendChild(thead2);
 
-  // 데이터 행
+  // 데이터 행: 항목명(col 0) + 선택 열
   const tbody2 = document.createElement('tbody');
   for (let ri = r1; ri <= r2; ri++) {
     const tr = rows[ri];
     if (!tr) continue;
     const newTr = document.createElement('tr');
     const cells = Array.from(tr.children);
+
+    // 항목명 셀 (col 0 라벨)
+    const labelTd = cells[0];
+    const tdLabel = document.createElement('td');
+    tdLabel.textContent = labelTd ? labelTd.textContent.replace('📋', '').trim() : '';
+    tdLabel.style.cssText = 'padding:6px 12px;border:1px solid #e8ede8;text-align:left;white-space:nowrap;background:#f4faf4;color:#2d5a2d;font-weight:600;min-width:160px;';
+    newTr.appendChild(tdLabel);
+
+    // 선택된 값 셀들
     for (let ci = c1; ci <= c2; ci++) {
       const origTd = cells[ci];
       if (!origTd) continue;
       const td = document.createElement('td');
       td.textContent = origTd.dataset.val !== undefined ? (origTd.dataset.val || '') : origTd.textContent.trim();
-      const isLabel = origTd.classList.contains('label');
       const isWeekly = origTd.classList.contains('weekly');
-      let bg = '#fff';
-      if (isLabel) bg = '#f4faf4';
-      else if (isWeekly) bg = '#fff8e8';
-      else if (ri % 2 === 1) bg = '#fafdfa';
+      const bg = isWeekly ? '#fff8e8' : (ri % 2 === 1 ? '#fafdfa' : '#fff');
       td.style.cssText = `padding:6px 10px;border:1px solid #e8ede8;text-align:center;white-space:nowrap;background:${bg};color:${isWeekly ? '#8a5a00' : '#1a1a1a'};font-weight:${isWeekly ? '700' : 'normal'};`;
       newTr.appendChild(td);
     }
