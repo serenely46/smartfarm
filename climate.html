@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<!-- saved from url=(0046)file:///C:/Users/User/Downloads/climate_3.html -->
+<!-- saved from url=(0046)file:///C:/Users/User/Downloads/climate_4.html -->
 <html lang="ko"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>스마트팜 환경·수분 관리</title>
 <script src="./스마트팜 환경·수분 관리_files/xlsx.full.min.js.다운로드"></script>
+<script src="./스마트팜 환경·수분 관리_files/html2canvas.min.js.다운로드"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif;background:#f0f4f0;color:#1a1a1a;font-size:14px}
@@ -257,6 +258,7 @@ td.label:hover .row-copy-btn{opacity:1}
         <label><input type="radio" name="clickMode" value="col">열</label>
       </div>
       <button class="btn btn-sm" id="copySelectionBtn" style="display:none">📋 선택 영역 복사</button>
+      <button class="btn btn-sm" id="copySelectionImgBtn" style="display:none">🖼️ 이미지로 복사</button>
       <div class="info-text">드래그로 영역 선택 후 Ctrl+C</div>
     </div>
 
@@ -1711,18 +1713,24 @@ function updateDragSelection() {
   });
   const count = document.querySelectorAll('#envTable td.drag-selected').length;
   const btn = document.getElementById('copySelectionBtn');
+  const imgBtn = document.getElementById('copySelectionImgBtn');
   if (count > 0) {
     btn.style.display = '';
     btn.textContent = `📋 선택 복사 (${count}셀)`;
+    imgBtn.style.display = '';
+    imgBtn.textContent = `🖼️ 이미지 복사 (${count}셀)`;
   } else {
     btn.style.display = 'none';
+    imgBtn.style.display = 'none';
   }
 }
 
 function clearDragSelection() {
   document.querySelectorAll('#envTable td.drag-selected').forEach(td => td.classList.remove('drag-selected'));
   const btn = document.getElementById('copySelectionBtn');
+  const imgBtn = document.getElementById('copySelectionImgBtn');
   if (btn) btn.style.display = 'none';
+  if (imgBtn) imgBtn.style.display = 'none';
 }
 
 async function copyDragSelection() {
@@ -1775,6 +1783,96 @@ document.addEventListener('mouseup', () => {
 
 document.getElementById('copySelectionBtn').addEventListener('click', async () => {
   await copyDragSelection();
+});
+
+async function copySelectionAsImage() {
+  const tbody = document.querySelector('#envTable tbody');
+  const thead = document.querySelector('#envTable thead');
+  if (!tbody) return;
+
+  const rows = Array.from(tbody.querySelectorAll('tr'));
+  const r1 = Math.min(dragState.startRow, dragState.endRow);
+  const r2 = Math.max(dragState.startRow, dragState.endRow);
+  const c1 = Math.min(dragState.startCol, dragState.endCol);
+  const c2 = Math.max(dragState.startCol, dragState.endCol);
+
+  // 선택 범위만 담은 임시 테이블 생성
+  const wrapper = document.createElement('div');
+  wrapper.style.cssText = 'position:fixed;left:-9999px;top:0;background:#fff;padding:8px;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Noto Sans KR,sans-serif;font-size:13px;';
+
+  const table = document.createElement('table');
+  table.style.cssText = 'border-collapse:collapse;';
+
+  // 헤더 행 (해당 열만)
+  const headRow = document.createElement('tr');
+  const thCells = Array.from(thead.querySelectorAll('th'));
+  for (let ci = c1; ci <= c2; ci++) {
+    const origTh = thCells[ci];
+    if (!origTh) continue;
+    const th = document.createElement('th');
+    th.innerHTML = origTh.innerHTML;
+    th.style.cssText = 'background:#2d5a2d;color:#fff;padding:6px 10px;border:1px solid #c8dfc8;font-size:12px;white-space:nowrap;text-align:center;';
+    headRow.appendChild(th);
+  }
+  const thead2 = document.createElement('thead');
+  thead2.appendChild(headRow);
+  table.appendChild(thead2);
+
+  // 데이터 행
+  const tbody2 = document.createElement('tbody');
+  for (let ri = r1; ri <= r2; ri++) {
+    const tr = rows[ri];
+    if (!tr) continue;
+    const newTr = document.createElement('tr');
+    const cells = Array.from(tr.children);
+    for (let ci = c1; ci <= c2; ci++) {
+      const origTd = cells[ci];
+      if (!origTd) continue;
+      const td = document.createElement('td');
+      td.textContent = origTd.dataset.val !== undefined ? (origTd.dataset.val || '') : origTd.textContent.trim();
+      const isLabel = origTd.classList.contains('label');
+      const isWeekly = origTd.classList.contains('weekly');
+      let bg = '#fff';
+      if (isLabel) bg = '#f4faf4';
+      else if (isWeekly) bg = '#fff8e8';
+      else if (ri % 2 === 1) bg = '#fafdfa';
+      td.style.cssText = `padding:6px 10px;border:1px solid #e8ede8;text-align:center;white-space:nowrap;background:${bg};color:${isWeekly ? '#8a5a00' : '#1a1a1a'};font-weight:${isWeekly ? '700' : 'normal'};`;
+      newTr.appendChild(td);
+    }
+    tbody2.appendChild(newTr);
+  }
+  table.appendChild(tbody2);
+  wrapper.appendChild(table);
+  document.body.appendChild(wrapper);
+
+  try {
+    showToast('이미지 생성 중...', false);
+    const canvas = await html2canvas(wrapper, { backgroundColor: '#ffffff', scale: 2 });
+    document.body.removeChild(wrapper);
+
+    canvas.toBlob(async (blob) => {
+      try {
+        await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
+        showToast('이미지가 클립보드에 복사됐어요! 카톡에 바로 붙여넣기 하세요 📸');
+      } catch (err) {
+        // 클립보드 API 실패 시 다운로드로 대체
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = '환경관리표_' + new Date().toISOString().slice(0,10) + '.png';
+        a.click();
+        URL.revokeObjectURL(url);
+        showToast('이미지 다운로드 완료 (클립보드 복사 불가 브라우저)');
+      }
+    }, 'image/png');
+  } catch (err) {
+    if (wrapper.parentNode) document.body.removeChild(wrapper);
+    showToast('이미지 생성 실패: ' + err.message, true);
+  }
+}
+
+document.getElementById('copySelectionImgBtn').addEventListener('click', async () => {
+  await copySelectionAsImage();
 });
 
 document.addEventListener('keydown', async (e) => {
