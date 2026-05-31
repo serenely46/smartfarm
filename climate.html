@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<!-- saved from url=(0132)file:///C:/Users/User/Downloads/%EC%8A%A4%EB%A7%88%ED%8A%B8%ED%8C%9C_%ED%99%98%EA%B2%BD_%EC%88%98%EB%B6%84_%EA%B4%80%EB%A6%AC_2.html -->
+<!-- saved from url=(0046)file:///C:/Users/User/Downloads/climate_3.html -->
 <html lang="ko"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>스마트팜 환경·수분 관리</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="./스마트팜 환경·수분 관리_files/xlsx.full.min.js.다운로드"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif;background:#f0f4f0;color:#1a1a1a;font-size:14px}
@@ -115,6 +115,7 @@ tbody td.weekly{background:#fff8e8;font-weight:700;color:#8a5a00}
 tbody td.value{cursor:pointer;transition:background 0.1s}
 tbody td.value:hover{background:#e8f4e8}
 tbody td.value.selected{background:#a8d4a8 !important}
+tbody td.value.drag-selected{background:#b8e4b8 !important;outline:2px solid #2d5a2d;}
 tbody tr:nth-child(even) td.value:not(.selected):not(.weekly){background:#fafdfa}
 
 /* 새/기존 데이터 시각 표시 */
@@ -255,7 +256,8 @@ td.label:hover .row-copy-btn{opacity:1}
         <label><input type="radio" name="clickMode" value="row">행</label>
         <label><input type="radio" name="clickMode" value="col">열</label>
       </div>
-      <div class="info-text">셀 클릭 → 자동 복사</div>
+      <button class="btn btn-sm" id="copySelectionBtn" style="display:none">📋 선택 영역 복사</button>
+      <div class="info-text">드래그로 영역 선택 후 Ctrl+C</div>
     </div>
 
     <div id="envSavePreview" class="save-preview" style="display:none"></div>
@@ -1671,6 +1673,121 @@ document.getElementById('saveWaterBtn').addEventListener('click', async () => {
   } catch (err) {
     setStatus('waterStatusBox', '✗ 저장 실패: ' + err.message, 'error');
     showToast('저장 실패', true);
+  }
+});
+
+// ========================================
+// 드래그 범위 선택 복사
+// ========================================
+let dragState = { active: false, startRow: -1, startCol: -1, endRow: -1, endCol: -1 };
+
+function getEnvCellIndex(td) {
+  const tr = td.closest('tr');
+  const tbody = document.querySelector('#envTable tbody');
+  const rows = Array.from(tbody.querySelectorAll('tr'));
+  const rowIdx = rows.indexOf(tr);
+  const colIdx = Array.from(tr.children).indexOf(td);
+  return { rowIdx, colIdx };
+}
+
+function updateDragSelection() {
+  const tbody = document.querySelector('#envTable tbody');
+  if (!tbody) return;
+  const rows = Array.from(tbody.querySelectorAll('tr'));
+  const r1 = Math.min(dragState.startRow, dragState.endRow);
+  const r2 = Math.max(dragState.startRow, dragState.endRow);
+  const c1 = Math.min(dragState.startCol, dragState.endCol);
+  const c2 = Math.max(dragState.startCol, dragState.endCol);
+  rows.forEach((tr, ri) => {
+    Array.from(tr.children).forEach((td, ci) => {
+      if (td.classList.contains('value')) {
+        if (ri >= r1 && ri <= r2 && ci >= c1 && ci <= c2) {
+          td.classList.add('drag-selected');
+        } else {
+          td.classList.remove('drag-selected');
+        }
+      }
+    });
+  });
+  const count = document.querySelectorAll('#envTable td.drag-selected').length;
+  const btn = document.getElementById('copySelectionBtn');
+  if (count > 0) {
+    btn.style.display = '';
+    btn.textContent = `📋 선택 복사 (${count}셀)`;
+  } else {
+    btn.style.display = 'none';
+  }
+}
+
+function clearDragSelection() {
+  document.querySelectorAll('#envTable td.drag-selected').forEach(td => td.classList.remove('drag-selected'));
+  const btn = document.getElementById('copySelectionBtn');
+  if (btn) btn.style.display = 'none';
+}
+
+async function copyDragSelection() {
+  const tbody = document.querySelector('#envTable tbody');
+  if (!tbody) return;
+  const rows = Array.from(tbody.querySelectorAll('tr'));
+  const r1 = Math.min(dragState.startRow, dragState.endRow);
+  const r2 = Math.max(dragState.startRow, dragState.endRow);
+  const c1 = Math.min(dragState.startCol, dragState.endCol);
+  const c2 = Math.max(dragState.startCol, dragState.endCol);
+  const lines = [];
+  for (let ri = r1; ri <= r2; ri++) {
+    const tr = rows[ri];
+    if (!tr) continue;
+    const cells = Array.from(tr.children);
+    const rowVals = [];
+    for (let ci = c1; ci <= c2; ci++) {
+      const td = cells[ci];
+      rowVals.push(td ? (td.dataset.val || td.textContent.trim()) : '');
+    }
+    lines.push(rowVals.join('\t'));
+  }
+  await copyText(lines.join('\n'), `선택 영역 복사됨 (${r2-r1+1}행 × ${c2-c1+1}열)`);
+}
+
+document.getElementById('envTable').addEventListener('mousedown', (e) => {
+  const td = e.target.closest('td.value');
+  if (!td) return;
+  if (e.button !== 0) return;
+  clearDragSelection();
+  const { rowIdx, colIdx } = getEnvCellIndex(td);
+  dragState = { active: true, startRow: rowIdx, startCol: colIdx, endRow: rowIdx, endCol: colIdx };
+  updateDragSelection();
+  e.preventDefault();
+});
+
+document.getElementById('envTable').addEventListener('mouseover', (e) => {
+  if (!dragState.active) return;
+  const td = e.target.closest('td.value');
+  if (!td) return;
+  const { rowIdx, colIdx } = getEnvCellIndex(td);
+  dragState.endRow = rowIdx;
+  dragState.endCol = colIdx;
+  updateDragSelection();
+});
+
+document.addEventListener('mouseup', () => {
+  if (dragState.active) dragState.active = false;
+});
+
+document.getElementById('copySelectionBtn').addEventListener('click', async () => {
+  await copyDragSelection();
+});
+
+document.addEventListener('keydown', async (e) => {
+  if ((e.ctrlKey || e.metaKey) && e.key === 'c') {
+    const selected = document.querySelectorAll('#envTable td.drag-selected');
+    if (selected.length > 0) {
+      e.preventDefault();
+      await copyDragSelection();
+    }
+  }
+  if (e.key === 'Escape') {
+    clearDragSelection();
+    dragState = { active: false, startRow: -1, startCol: -1, endRow: -1, endCol: -1 };
   }
 });
 
