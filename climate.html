@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0046)file:///C:/Users/User/Downloads/climate_5.html -->
+<!-- saved from url=(0046)file:///C:/Users/User/Downloads/climate_6.html -->
 <html lang="ko"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -235,10 +235,10 @@ td.label:hover .row-copy-btn{opacity:1}
       </div>
     </div>
 
-    <div id="envStatusBox"></div>
+    <div id="envStatusBox"><div class="status error">✗ 조회 실패: Failed to fetch</div></div>
 
     <div id="envSummaryStats" class="summary-grid" style="display: grid;">
-      <div class="metric highlight"><div class="metric-label">선택 온실</div><div class="metric-val">신흥</div><div class="metric-sub">2025-11-30 ~ 2026-05-31</div></div>
+      <div class="metric highlight"><div class="metric-label">선택 온실</div><div class="metric-val">신흥</div><div class="metric-sub">2025-11-21 ~ 2026-05-22</div></div>
       <div class="metric"><div class="metric-label">📦 DB 저장된 일수</div><div class="metric-val">1</div><div class="metric-sub">기존 데이터</div></div>
     <div class="metric"><div class="metric-label">📅 표시 주차</div><div class="metric-val">1</div><div class="metric-sub">일요일 기준</div></div></div>
 
@@ -1788,69 +1788,107 @@ document.getElementById('copySelectionBtn').addEventListener('click', async () =
 async function copySelectionAsImage() {
   const tbody = document.querySelector('#envTable tbody');
   const thead = document.querySelector('#envTable thead');
-  if (!tbody) return;
+  if (!tbody || !thead) { showToast('테이블을 찾을 수 없습니다', true); return; }
 
   const rows = Array.from(tbody.querySelectorAll('tr'));
   const r1 = Math.min(dragState.startRow, dragState.endRow);
   const r2 = Math.max(dragState.startRow, dragState.endRow);
-  // 항목(라벨) 열(0번)은 항상 포함, 선택 열은 1번 이상
-  const c1 = Math.max(1, Math.min(dragState.startCol, dragState.endCol)); // 라벨 제외한 시작
+  const c1 = Math.max(1, Math.min(dragState.startCol, dragState.endCol));
   const c2 = Math.max(dragState.startCol, dragState.endCol);
 
+  if (r1 < 0 || c1 > c2) { showToast('선택 영역이 없습니다', true); return; }
+
+  // html2canvas는 position:absolute + 화면 밖 배치가 더 안정적
   const wrapper = document.createElement('div');
-  wrapper.style.cssText = 'position:fixed;left:-9999px;top:0;background:#fff;padding:8px;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Noto Sans KR,sans-serif;font-size:13px;';
+  wrapper.style.cssText = [
+    'position:absolute',
+    'left:-9999px',
+    'top:' + (window.scrollY + 10) + 'px',
+    'background:#ffffff',
+    'padding:12px',
+    'font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans KR",sans-serif',
+    'font-size:13px',
+    'line-height:1.4',
+    'color:#1a1a1a',
+    'z-index:-1'
+  ].join(';');
+
+  // 표 제목
+  const title = document.createElement('div');
+  title.textContent = '🌿 스마트팜 환경관리 (' + new Date().toLocaleDateString('ko-KR') + ')';
+  title.style.cssText = 'font-size:13px;font-weight:700;color:#2d5a2d;margin-bottom:8px;';
+  wrapper.appendChild(title);
 
   const table = document.createElement('table');
-  table.style.cssText = 'border-collapse:collapse;';
+  table.style.cssText = 'border-collapse:collapse;font-size:12px;';
 
-  // 헤더 행: 항목 헤더(col 0) + 선택 날짜 열
+  // ── 헤더 행 ──
   const thCells = Array.from(thead.querySelectorAll('th'));
+  const thead2 = document.createElement('thead');
   const headRow = document.createElement('tr');
 
-  // 항목 헤더 (col 0)
+  // 항목 헤더
   const thLabel = document.createElement('th');
   thLabel.textContent = '항목';
-  thLabel.style.cssText = 'background:#2d5a2d;color:#fff;padding:6px 12px;border:1px solid #c8dfc8;font-size:12px;white-space:nowrap;text-align:left;min-width:160px;';
+  thLabel.style.cssText = 'background:#2d5a2d;color:#fff;padding:7px 14px;border:1px solid #4a8a4a;font-size:12px;text-align:left;min-width:155px;';
   headRow.appendChild(thLabel);
 
-  // 선택된 날짜/주평균 헤더
+  // 선택 날짜 헤더
   for (let ci = c1; ci <= c2; ci++) {
-    const origTh = thCells[ci];
-    if (!origTh) continue;
+    const orig = thCells[ci];
+    if (!orig) continue;
     const th = document.createElement('th');
-    th.innerHTML = origTh.innerHTML.replace(/<button[^>]*>.*?<\/button>/g, '');
-    const isWeekly = origTh.classList.contains('weekly-header');
-    th.style.cssText = `background:${isWeekly ? '#1e3d1e' : '#2d5a2d'};color:#fff;padding:6px 10px;border:1px solid #c8dfc8;font-size:12px;white-space:nowrap;text-align:center;`;
+    // 버튼 태그 제거 후 텍스트만
+    th.textContent = orig.innerText.replace(/[📋\n]/g, '').trim();
+    const isWeekly = orig.classList.contains('weekly-header');
+    th.style.cssText = `background:${isWeekly ? '#1e3d1e' : '#2d5a2d'};color:#fff;padding:7px 10px;border:1px solid #4a8a4a;font-size:12px;text-align:center;min-width:60px;`;
     headRow.appendChild(th);
   }
-  const thead2 = document.createElement('thead');
   thead2.appendChild(headRow);
   table.appendChild(thead2);
 
-  // 데이터 행: 항목명(col 0) + 선택 열
+  // ── 데이터 행 ──
   const tbody2 = document.createElement('tbody');
   for (let ri = r1; ri <= r2; ri++) {
     const tr = rows[ri];
     if (!tr) continue;
+
+    // 구분선 행(section-divider)은 스타일 그대로
+    if (tr.classList.contains('section-divider')) {
+      const newTr = document.createElement('tr');
+      const td = document.createElement('td');
+      td.textContent = tr.cells[0] ? tr.cells[0].textContent.trim() : '';
+      td.colSpan = (c2 - c1 + 2);
+      td.style.cssText = 'background:#e8f4e8;color:#2d5a2d;font-weight:700;padding:5px 14px;border:1px solid #c8dfc8;font-size:11px;';
+      newTr.appendChild(td);
+      tbody2.appendChild(newTr);
+      continue;
+    }
+
     const newTr = document.createElement('tr');
     const cells = Array.from(tr.children);
 
-    // 항목명 셀 (col 0 라벨)
+    // 항목명 셀
     const labelTd = cells[0];
     const tdLabel = document.createElement('td');
     tdLabel.textContent = labelTd ? labelTd.textContent.replace('📋', '').trim() : '';
-    tdLabel.style.cssText = 'padding:6px 12px;border:1px solid #e8ede8;text-align:left;white-space:nowrap;background:#f4faf4;color:#2d5a2d;font-weight:600;min-width:160px;';
+    tdLabel.style.cssText = 'padding:6px 14px;border:1px solid #e0ece0;text-align:left;white-space:nowrap;background:#f4faf4;color:#2d5a2d;font-weight:600;';
     newTr.appendChild(tdLabel);
 
-    // 선택된 값 셀들
+    // 값 셀들
     for (let ci = c1; ci <= c2; ci++) {
       const origTd = cells[ci];
-      if (!origTd) continue;
       const td = document.createElement('td');
-      td.textContent = origTd.dataset.val !== undefined ? (origTd.dataset.val || '') : origTd.textContent.trim();
-      const isWeekly = origTd.classList.contains('weekly');
-      const bg = isWeekly ? '#fff8e8' : (ri % 2 === 1 ? '#fafdfa' : '#fff');
-      td.style.cssText = `padding:6px 10px;border:1px solid #e8ede8;text-align:center;white-space:nowrap;background:${bg};color:${isWeekly ? '#8a5a00' : '#1a1a1a'};font-weight:${isWeekly ? '700' : 'normal'};`;
+      if (origTd) {
+        const val = origTd.dataset.val !== undefined ? origTd.dataset.val : origTd.textContent.trim();
+        td.textContent = val || '';
+        const isWeekly = origTd.classList.contains('weekly');
+        const rowBg = ri % 2 === 1 ? '#f7fbf7' : '#ffffff';
+        const bg = isWeekly ? '#fff8e8' : rowBg;
+        td.style.cssText = `padding:6px 10px;border:1px solid #e0ece0;text-align:center;white-space:nowrap;background:${bg};color:${isWeekly ? '#8a5a00' : '#1a1a1a'};font-weight:${isWeekly ? '700' : 'normal'};`;
+      } else {
+        td.style.cssText = 'padding:6px 10px;border:1px solid #e0ece0;background:#fff;';
+      }
       newTr.appendChild(td);
     }
     tbody2.appendChild(newTr);
@@ -1859,29 +1897,44 @@ async function copySelectionAsImage() {
   wrapper.appendChild(table);
   document.body.appendChild(wrapper);
 
+  showToast('이미지 생성 중...');
+
+  // 렌더링이 완료될 때까지 잠깐 대기
+  await new Promise(resolve => setTimeout(resolve, 100));
+
   try {
-    showToast('이미지 생성 중...', false);
-    const canvas = await html2canvas(wrapper, { backgroundColor: '#ffffff', scale: 2 });
+    const canvas = await html2canvas(wrapper, {
+      backgroundColor: '#ffffff',
+      scale: 2,
+      useCORS: true,
+      allowTaint: false,
+      logging: false
+    });
     document.body.removeChild(wrapper);
 
-    canvas.toBlob(async (blob) => {
-      try {
-        await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
-        showToast('이미지가 클립보드에 복사됐어요! 카톡에 바로 붙여넣기 하세요 📸');
-      } catch (err) {
-        // 클립보드 API 실패 시 다운로드로 대체
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = '환경관리표_' + new Date().toISOString().slice(0,10) + '.png';
-        a.click();
-        URL.revokeObjectURL(url);
-        showToast('이미지 다운로드 완료 (클립보드 복사 불가 브라우저)');
-      }
-    }, 'image/png');
+    // blob 생성을 Promise로 감싸기
+    const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
+    if (!blob) { showToast('이미지 변환 실패', true); return; }
+
+    try {
+      await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
+      showToast('이미지 복사 완료! 카톡에 붙여넣기 하세요 📸');
+    } catch (clipErr) {
+      // 클립보드 권한 없으면 PNG 다운로드
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = '환경관리_' + new Date().toISOString().slice(0,10) + '.png';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      showToast('PNG 파일로 저장됐어요 (클립보드 권한 필요)');
+    }
   } catch (err) {
     if (wrapper.parentNode) document.body.removeChild(wrapper);
-    showToast('이미지 생성 실패: ' + err.message, true);
+    showToast('오류: ' + err.message, true);
+    console.error('html2canvas error:', err);
   }
 }
 
