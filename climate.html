@@ -1,11 +1,10 @@
 <!DOCTYPE html>
-<!-- saved from url=(0046)file:///C:/Users/User/Downloads/climate_6.html -->
+<!-- saved from url=(0046)file:///C:/Users/User/Downloads/climate_8.html -->
 <html lang="ko"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>스마트팜 환경·수분 관리</title>
-<script src="./스마트팜 환경·수분 관리_files/xlsx.full.min.js.다운로드"></script>
-<script src="./스마트팜 환경·수분 관리_files/html2canvas.min.js.다운로드"></script>
+<script src="file:///C:/Users/User/Downloads/xlsx.full.min.js"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif;background:#f0f4f0;color:#1a1a1a;font-size:14px}
@@ -235,10 +234,10 @@ td.label:hover .row-copy-btn{opacity:1}
       </div>
     </div>
 
-    <div id="envStatusBox"><div class="status error">✗ 조회 실패: Failed to fetch</div></div>
+    <div id="envStatusBox"></div>
 
     <div id="envSummaryStats" class="summary-grid" style="display: grid;">
-      <div class="metric highlight"><div class="metric-label">선택 온실</div><div class="metric-val">신흥</div><div class="metric-sub">2025-11-21 ~ 2026-05-22</div></div>
+      <div class="metric highlight"><div class="metric-label">선택 온실</div><div class="metric-val">신흥</div><div class="metric-sub">2025-12-21 ~ 2026-06-21</div></div>
       <div class="metric"><div class="metric-label">📦 DB 저장된 일수</div><div class="metric-val">1</div><div class="metric-sub">기존 데이터</div></div>
     <div class="metric"><div class="metric-label">📅 표시 주차</div><div class="metric-val">1</div><div class="metric-sub">일요일 기준</div></div></div>
 
@@ -257,8 +256,9 @@ td.label:hover .row-copy-btn{opacity:1}
         <label><input type="radio" name="clickMode" value="row">행</label>
         <label><input type="radio" name="clickMode" value="col">열</label>
       </div>
-      <button class="btn btn-sm" id="copySelectionBtn" style="display:none">📋 선택 영역 복사</button>
-      <button class="btn btn-sm" id="copySelectionImgBtn" style="display:none">🖼️ 이미지로 복사</button>
+      <div class="info-text">셀 클릭 → 자동 복사</div>
+      <button class="btn btn-sm" id="copySelectionBtn" style="display:none">📋 선택 복사</button>
+      <button class="btn btn-sm" id="copySelectionImgBtn" style="display:none">🖼️ 이미지 복사</button>
       <div class="info-text">드래그로 영역 선택 후 Ctrl+C</div>
     </div>
 
@@ -1679,7 +1679,8 @@ document.getElementById('saveWaterBtn').addEventListener('click', async () => {
 });
 
 // ========================================
-// 드래그 범위 선택 복사
+// ========================================
+// 드래그 범위 선택 + 이미지 복사
 // ========================================
 let dragState = { active: false, startRow: -1, startCol: -1, endRow: -1, endCol: -1 };
 
@@ -1703,11 +1704,8 @@ function updateDragSelection() {
   rows.forEach((tr, ri) => {
     Array.from(tr.children).forEach((td, ci) => {
       if (td.classList.contains('value')) {
-        if (ri >= r1 && ri <= r2 && ci >= c1 && ci <= c2) {
-          td.classList.add('drag-selected');
-        } else {
-          td.classList.remove('drag-selected');
-        }
+        if (ri >= r1 && ri <= r2 && ci >= c1 && ci <= c2) td.classList.add('drag-selected');
+        else td.classList.remove('drag-selected');
       }
     });
   });
@@ -1715,13 +1713,10 @@ function updateDragSelection() {
   const btn = document.getElementById('copySelectionBtn');
   const imgBtn = document.getElementById('copySelectionImgBtn');
   if (count > 0) {
-    btn.style.display = '';
-    btn.textContent = `📋 선택 복사 (${count}셀)`;
-    imgBtn.style.display = '';
-    imgBtn.textContent = `🖼️ 이미지 복사 (${count}셀)`;
+    btn.style.display = ''; btn.textContent = `📋 선택 복사 (${count}셀)`;
+    imgBtn.style.display = ''; imgBtn.textContent = `🖼️ 이미지 복사 (${count}셀)`;
   } else {
-    btn.style.display = 'none';
-    imgBtn.style.display = 'none';
+    btn.style.display = 'none'; imgBtn.style.display = 'none';
   }
 }
 
@@ -1743,8 +1738,7 @@ async function copyDragSelection() {
   const c2 = Math.max(dragState.startCol, dragState.endCol);
   const lines = [];
   for (let ri = r1; ri <= r2; ri++) {
-    const tr = rows[ri];
-    if (!tr) continue;
+    const tr = rows[ri]; if (!tr) continue;
     const cells = Array.from(tr.children);
     const rowVals = [];
     for (let ci = c1; ci <= c2; ci++) {
@@ -1756,204 +1750,130 @@ async function copyDragSelection() {
   await copyText(lines.join('\n'), `선택 영역 복사됨 (${r2-r1+1}행 × ${c2-c1+1}열)`);
 }
 
-document.getElementById('envTable').addEventListener('mousedown', (e) => {
-  const td = e.target.closest('td.value');
-  if (!td) return;
-  if (e.button !== 0) return;
-  clearDragSelection();
-  const { rowIdx, colIdx } = getEnvCellIndex(td);
-  dragState = { active: true, startRow: rowIdx, startCol: colIdx, endRow: rowIdx, endCol: colIdx };
-  updateDragSelection();
-  e.preventDefault();
-});
-
-document.getElementById('envTable').addEventListener('mouseover', (e) => {
-  if (!dragState.active) return;
-  const td = e.target.closest('td.value');
-  if (!td) return;
-  const { rowIdx, colIdx } = getEnvCellIndex(td);
-  dragState.endRow = rowIdx;
-  dragState.endCol = colIdx;
-  updateDragSelection();
-});
-
-document.addEventListener('mouseup', () => {
-  if (dragState.active) dragState.active = false;
-});
-
-document.getElementById('copySelectionBtn').addEventListener('click', async () => {
-  await copyDragSelection();
-});
-
 async function copySelectionAsImage() {
   const tbody = document.querySelector('#envTable tbody');
   const thead = document.querySelector('#envTable thead');
   if (!tbody || !thead) { showToast('테이블을 찾을 수 없습니다', true); return; }
-
   const rows = Array.from(tbody.querySelectorAll('tr'));
   const r1 = Math.min(dragState.startRow, dragState.endRow);
   const r2 = Math.max(dragState.startRow, dragState.endRow);
   const c1 = Math.max(1, Math.min(dragState.startCol, dragState.endCol));
   const c2 = Math.max(dragState.startCol, dragState.endCol);
-
   if (r1 < 0 || c1 > c2) { showToast('선택 영역이 없습니다', true); return; }
 
-  // html2canvas는 position:absolute + 화면 밖 배치가 더 안정적
-  const wrapper = document.createElement('div');
-  wrapper.style.cssText = [
-    'position:absolute',
-    'left:-9999px',
-    'top:' + (window.scrollY + 10) + 'px',
-    'background:#ffffff',
-    'padding:12px',
-    'font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans KR",sans-serif',
-    'font-size:13px',
-    'line-height:1.4',
-    'color:#1a1a1a',
-    'z-index:-1'
-  ].join(';');
-
-  // 표 제목
-  const title = document.createElement('div');
-  title.textContent = '🌿 스마트팜 환경관리 (' + new Date().toLocaleDateString('ko-KR') + ')';
-  title.style.cssText = 'font-size:13px;font-weight:700;color:#2d5a2d;margin-bottom:8px;';
-  wrapper.appendChild(title);
-
-  const table = document.createElement('table');
-  table.style.cssText = 'border-collapse:collapse;font-size:12px;';
-
-  // ── 헤더 행 ──
   const thCells = Array.from(thead.querySelectorAll('th'));
-  const thead2 = document.createElement('thead');
-  const headRow = document.createElement('tr');
-
-  // 항목 헤더
-  const thLabel = document.createElement('th');
-  thLabel.textContent = '항목';
-  thLabel.style.cssText = 'background:#2d5a2d;color:#fff;padding:7px 14px;border:1px solid #4a8a4a;font-size:12px;text-align:left;min-width:155px;';
-  headRow.appendChild(thLabel);
-
-  // 선택 날짜 헤더
+  const headers = [{ text: '항목', weekly: false }];
   for (let ci = c1; ci <= c2; ci++) {
-    const orig = thCells[ci];
-    if (!orig) continue;
-    const th = document.createElement('th');
-    // 버튼 태그 제거 후 텍스트만
-    th.textContent = orig.innerText.replace(/[📋\n]/g, '').trim();
-    const isWeekly = orig.classList.contains('weekly-header');
-    th.style.cssText = `background:${isWeekly ? '#1e3d1e' : '#2d5a2d'};color:#fff;padding:7px 10px;border:1px solid #4a8a4a;font-size:12px;text-align:center;min-width:60px;`;
-    headRow.appendChild(th);
+    const th = thCells[ci];
+    headers.push({ text: th ? th.innerText.replace(/[📋\n]/g, '').trim() : '', weekly: th ? th.classList.contains('weekly-header') : false });
   }
-  thead2.appendChild(headRow);
-  table.appendChild(thead2);
-
-  // ── 데이터 행 ──
-  const tbody2 = document.createElement('tbody');
+  const dataRows = [];
   for (let ri = r1; ri <= r2; ri++) {
-    const tr = rows[ri];
-    if (!tr) continue;
-
-    // 구분선 행(section-divider)은 스타일 그대로
+    const tr = rows[ri]; if (!tr) continue;
     if (tr.classList.contains('section-divider')) {
-      const newTr = document.createElement('tr');
-      const td = document.createElement('td');
-      td.textContent = tr.cells[0] ? tr.cells[0].textContent.trim() : '';
-      td.colSpan = (c2 - c1 + 2);
-      td.style.cssText = 'background:#e8f4e8;color:#2d5a2d;font-weight:700;padding:5px 14px;border:1px solid #c8dfc8;font-size:11px;';
-      newTr.appendChild(td);
-      tbody2.appendChild(newTr);
-      continue;
+      dataRows.push({ divider: true, text: tr.cells[0] ? tr.cells[0].textContent.trim() : '' }); continue;
     }
-
-    const newTr = document.createElement('tr');
     const cells = Array.from(tr.children);
-
-    // 항목명 셀
-    const labelTd = cells[0];
-    const tdLabel = document.createElement('td');
-    tdLabel.textContent = labelTd ? labelTd.textContent.replace('📋', '').trim() : '';
-    tdLabel.style.cssText = 'padding:6px 14px;border:1px solid #e0ece0;text-align:left;white-space:nowrap;background:#f4faf4;color:#2d5a2d;font-weight:600;';
-    newTr.appendChild(tdLabel);
-
-    // 값 셀들
+    const label = cells[0] ? cells[0].textContent.replace('📋', '').trim() : '';
+    const vals = [];
     for (let ci = c1; ci <= c2; ci++) {
-      const origTd = cells[ci];
-      const td = document.createElement('td');
-      if (origTd) {
-        const val = origTd.dataset.val !== undefined ? origTd.dataset.val : origTd.textContent.trim();
-        td.textContent = val || '';
-        const isWeekly = origTd.classList.contains('weekly');
-        const rowBg = ri % 2 === 1 ? '#f7fbf7' : '#ffffff';
-        const bg = isWeekly ? '#fff8e8' : rowBg;
-        td.style.cssText = `padding:6px 10px;border:1px solid #e0ece0;text-align:center;white-space:nowrap;background:${bg};color:${isWeekly ? '#8a5a00' : '#1a1a1a'};font-weight:${isWeekly ? '700' : 'normal'};`;
-      } else {
-        td.style.cssText = 'padding:6px 10px;border:1px solid #e0ece0;background:#fff;';
-      }
-      newTr.appendChild(td);
+      const td = cells[ci];
+      vals.push({ text: td ? (td.dataset.val !== undefined ? td.dataset.val : td.textContent.trim()) : '', weekly: td ? td.classList.contains('weekly') : false, even: ri % 2 === 0 });
     }
-    tbody2.appendChild(newTr);
+    dataRows.push({ divider: false, label, vals });
   }
-  table.appendChild(tbody2);
-  wrapper.appendChild(table);
-  document.body.appendChild(wrapper);
 
-  showToast('이미지 생성 중...');
+  const S = 2, PX = 10*S, ROW_H = 32*S, HDR_H = 36*S, DIV_H = 24*S, LBL_W = 160*S, VAL_W = 68*S;
+  const canvasW = LBL_W + VAL_W * (headers.length - 1) + 2;
+  const canvasH = 30*S + HDR_H + dataRows.reduce((s, r) => s + (r.divider ? DIV_H : ROW_H), 0) + 2;
+  const canvas = document.createElement('canvas');
+  canvas.width = canvasW; canvas.height = canvasH;
+  const ctx = canvas.getContext('2d');
+  ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, canvasW, canvasH);
+  ctx.font = `bold ${13*S}px sans-serif`; ctx.fillStyle = '#2d5a2d';
+  ctx.fillText('🌿 스마트팜 환경관리 · ' + new Date().toLocaleDateString('ko-KR'), PX, 20*S);
 
-  // 렌더링이 완료될 때까지 잠깐 대기
-  await new Promise(resolve => setTimeout(resolve, 100));
+  let y = 28*S, x = 0;
+  for (let ci = 0; ci < headers.length; ci++) {
+    const w = ci === 0 ? LBL_W : VAL_W;
+    ctx.fillStyle = headers[ci].weekly ? '#1e3d1e' : '#2d5a2d';
+    ctx.fillRect(x, y, w, HDR_H);
+    ctx.strokeStyle = '#4a8a4a'; ctx.lineWidth = 1; ctx.strokeRect(x+.5, y+.5, w-1, HDR_H-1);
+    ctx.fillStyle = '#fff'; ctx.font = `${11*S}px sans-serif`;
+    ctx.textAlign = ci === 0 ? 'left' : 'center';
+    ctx.fillText(headers[ci].text, ci === 0 ? x+PX : x+w/2, y+HDR_H/2+5*S);
+    x += w;
+  }
+  y += HDR_H;
 
-  try {
-    const canvas = await html2canvas(wrapper, {
-      backgroundColor: '#ffffff',
-      scale: 2,
-      useCORS: true,
-      allowTaint: false,
-      logging: false
-    });
-    document.body.removeChild(wrapper);
-
-    // blob 생성을 Promise로 감싸기
-    const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
-    if (!blob) { showToast('이미지 변환 실패', true); return; }
-
-    try {
-      await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
-      showToast('이미지 복사 완료! 카톡에 붙여넣기 하세요 📸');
-    } catch (clipErr) {
-      // 클립보드 권한 없으면 PNG 다운로드
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = '환경관리_' + new Date().toISOString().slice(0,10) + '.png';
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-      showToast('PNG 파일로 저장됐어요 (클립보드 권한 필요)');
+  for (let ri = 0; ri < dataRows.length; ri++) {
+    const row = dataRows[ri];
+    if (row.divider) {
+      ctx.fillStyle = '#e8f4e8'; ctx.fillRect(0, y, canvasW, DIV_H);
+      ctx.strokeStyle = '#c8dfc8'; ctx.lineWidth = 1; ctx.strokeRect(.5, y+.5, canvasW-1, DIV_H-1);
+      ctx.fillStyle = '#2d5a2d'; ctx.font = `bold ${11*S}px sans-serif`; ctx.textAlign = 'left';
+      ctx.fillText(row.text, PX, y+DIV_H/2+4*S); y += DIV_H; continue;
     }
+    ctx.fillStyle = '#f4faf4'; ctx.fillRect(0, y, LBL_W, ROW_H);
+    ctx.strokeStyle = '#e0ece0'; ctx.lineWidth = 1; ctx.strokeRect(.5, y+.5, LBL_W-1, ROW_H-1);
+    ctx.fillStyle = '#2d5a2d'; ctx.font = `600 ${12*S}px sans-serif`; ctx.textAlign = 'left';
+    ctx.fillText(row.label, PX, y+ROW_H/2+5*S);
+    x = LBL_W;
+    for (let ci = 0; ci < row.vals.length; ci++) {
+      const v = row.vals[ci];
+      ctx.fillStyle = v.weekly ? '#fff8e8' : (v.even ? '#fff' : '#f7fbf7');
+      ctx.fillRect(x, y, VAL_W, ROW_H);
+      ctx.strokeStyle = '#e0ece0'; ctx.lineWidth = 1; ctx.strokeRect(x+.5, y+.5, VAL_W-1, ROW_H-1);
+      if (v.text) {
+        ctx.fillStyle = v.weekly ? '#8a5a00' : '#1a1a1a';
+        ctx.font = v.weekly ? `bold ${12*S}px sans-serif` : `${12*S}px sans-serif`;
+        ctx.textAlign = 'center';
+        ctx.fillText(v.text, x+VAL_W/2, y+ROW_H/2+5*S);
+      }
+      x += VAL_W;
+    }
+    y += ROW_H;
+  }
+
+  const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
+  if (!blob) { showToast('이미지 변환 실패', true); return; }
+  try {
+    await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
+    showToast('이미지 복사 완료! 카톡에 붙여넣기 하세요 📸');
   } catch (err) {
-    if (wrapper.parentNode) document.body.removeChild(wrapper);
-    showToast('오류: ' + err.message, true);
-    console.error('html2canvas error:', err);
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = '환경관리_' + new Date().toISOString().slice(0,10) + '.png';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    showToast('PNG 파일로 저장됐어요');
   }
 }
 
-document.getElementById('copySelectionImgBtn').addEventListener('click', async () => {
-  await copySelectionAsImage();
+document.getElementById('envTable').addEventListener('mousedown', (e) => {
+  const td = e.target.closest('td.value');
+  if (!td || e.button !== 0) return;
+  clearDragSelection();
+  const { rowIdx, colIdx } = getEnvCellIndex(td);
+  dragState = { active: true, startRow: rowIdx, startCol: colIdx, endRow: rowIdx, endCol: colIdx };
+  updateDragSelection(); e.preventDefault();
 });
-
+document.getElementById('envTable').addEventListener('mouseover', (e) => {
+  if (!dragState.active) return;
+  const td = e.target.closest('td.value'); if (!td) return;
+  const { rowIdx, colIdx } = getEnvCellIndex(td);
+  dragState.endRow = rowIdx; dragState.endCol = colIdx;
+  updateDragSelection();
+});
+document.addEventListener('mouseup', () => { if (dragState.active) dragState.active = false; });
+document.getElementById('copySelectionBtn').addEventListener('click', async () => { await copyDragSelection(); });
+document.getElementById('copySelectionImgBtn').addEventListener('click', async () => { await copySelectionAsImage(); });
 document.addEventListener('keydown', async (e) => {
   if ((e.ctrlKey || e.metaKey) && e.key === 'c') {
     const selected = document.querySelectorAll('#envTable td.drag-selected');
-    if (selected.length > 0) {
-      e.preventDefault();
-      await copyDragSelection();
-    }
+    if (selected.length > 0) { e.preventDefault(); await copyDragSelection(); }
   }
-  if (e.key === 'Escape') {
-    clearDragSelection();
-    dragState = { active: false, startRow: -1, startCol: -1, endRow: -1, endCol: -1 };
-  }
+  if (e.key === 'Escape') { clearDragSelection(); dragState = { active: false, startRow: -1, startCol: -1, endRow: -1, endCol: -1 }; }
 });
 
 // ========================================
