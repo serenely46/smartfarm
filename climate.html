@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<!-- saved from url=(0046)file:///C:/Users/User/Downloads/climate_8.html -->
+<!-- saved from url=(0047)file:///C:/Users/User/Downloads/climate_10.html -->
 <html lang="ko"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>스마트팜 환경·수분 관리</title>
-<script src="file:///C:/Users/User/Downloads/xlsx.full.min.js"></script>
+<script src="./스마트팜 환경·수분 관리_files/xlsx.full.min.js.다운로드" onerror="this.onerror=null;this.src=&#39;https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js&#39;;"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif;background:#f0f4f0;color:#1a1a1a;font-size:14px}
@@ -237,7 +237,7 @@ td.label:hover .row-copy-btn{opacity:1}
     <div id="envStatusBox"></div>
 
     <div id="envSummaryStats" class="summary-grid" style="display: grid;">
-      <div class="metric highlight"><div class="metric-label">선택 온실</div><div class="metric-val">신흥</div><div class="metric-sub">2025-12-21 ~ 2026-06-21</div></div>
+      <div class="metric highlight"><div class="metric-label">선택 온실</div><div class="metric-val">신흥</div><div class="metric-sub">2025-12-27 ~ 2026-06-27</div></div>
       <div class="metric"><div class="metric-label">📦 DB 저장된 일수</div><div class="metric-val">1</div><div class="metric-sub">기존 데이터</div></div>
     <div class="metric"><div class="metric-label">📅 표시 주차</div><div class="metric-val">1</div><div class="metric-sub">일요일 기준</div></div></div>
 
@@ -748,6 +748,13 @@ document.getElementById('magmaFile').addEventListener('change', async (e) => {
   const file = e.target.files[0];
   if (!file) return;
   document.getElementById('magmaFileName').textContent = file.name;
+
+  // XLSX 라이브러리 로드 확인
+  if (typeof XLSX === 'undefined') {
+    setStatus('envStatusBox', '✗ XLSX 라이브러리를 불러오지 못했습니다. 인터넷 연결을 확인하거나 페이지를 새로고침(F5)해 주세요.', 'error');
+    return;
+  }
+
   setStatus('envStatusBox', '⏳ 매그마 파일 분석 중...', 'info');
 
   try {
@@ -1413,19 +1420,20 @@ document.getElementById('waterTab').addEventListener('input', (e) => {
 // 입력 → calc 셀 갱신 (디바운스 + 정확한 셀 찾기)
 let calcUpdateTimer = null;
 function updateCalcCells(dk) {
-  // 같은 날짜의 calc 셀들만 즉시 다시 그림 (빠른 피드백)
+  // 해당 날짜의 모든 입력 셀 중 하나를 찾아 열 인덱스를 구함
+  // querySelector('[data-date]') 는 항상 첫번째만 반환하므로 날짜로 정확히 찾아야 함
   const row = waterData[dk] || {};
+  // 날짜가 정확히 일치하는 입력 셀 찾기
+  const refInput = document.querySelector(`#waterTable input[data-date="${CSS.escape(dk)}"]`);
+  if (!refInput) return;
+  const refTd = refInput.closest('td');
+  if (!refTd) return;
+  const colIdx = Array.from(refTd.parentElement.children).indexOf(refTd);
+
   for (const f of waterFields) {
     if (f.type !== 'calc') continue;
     const tr = document.querySelector(`#waterTable tr[data-field="${CSS.escape(f.dbCol)}"]`);
     if (!tr) continue;
-    // td.value.calc 중에서 같은 dateKey의 입력칸이 같은 컬럼에 있을 것
-    // 더 안정적: 같은 column index를 input의 data-date로 찾기
-    const refInput = document.querySelector(`#waterTable input[data-date="${dk}"]`);
-    if (!refInput) continue;
-    const refTd = refInput.closest('td');
-    if (!refTd) continue;
-    const colIdx = Array.from(refTd.parentElement.children).indexOf(refTd);
     const td = tr.children[colIdx];
     if (td) td.textContent = fmt(f.calc(row), 2);
   }
