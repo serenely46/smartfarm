@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0113)file:///C:/Users/User/Downloads/%EC%8A%A4%EB%A7%88%ED%8A%B8%ED%8C%9C_%EA%B7%BC%EB%AC%B4_%EA%B4%80%EB%A6%AC_2.html -->
+<!-- saved from url=(0113)file:///C:/Users/User/Downloads/%EC%8A%A4%EB%A7%88%ED%8A%B8%ED%8C%9C_%EA%B7%BC%EB%AC%B4_%EA%B4%80%EB%A6%AC_3.html -->
 <html lang="ko"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -285,9 +285,9 @@ input.money-input{text-align:right;letter-spacing:0.5px}
         <div class="card-title">오늘 근무 요약</div>
         <div class="summary-grid">
           <div class="metric"><div class="metric-label">총 시간</div><div class="metric-val" id="sum-total">10.0</div><div class="metric-sub">시간</div></div>
-          <div class="metric"><div class="metric-label">실 근무</div><div class="metric-val" id="sum-work">8.3</div><div class="metric-sub">시간</div></div>
-          <div class="metric"><div class="metric-label">총 휴게</div><div class="metric-val" id="sum-rest">105</div><div class="metric-sub">분</div></div>
-          <div class="metric"><div class="metric-label">일급 (예상)</div><div class="metric-val" id="sum-pay">85,140</div><div class="metric-sub">원</div></div>
+          <div class="metric"><div class="metric-label">실 근무</div><div class="metric-val" id="sum-work">8.7</div><div class="metric-sub">시간</div></div>
+          <div class="metric"><div class="metric-label">총 휴게</div><div class="metric-val" id="sum-rest">80</div><div class="metric-sub">분</div></div>
+          <div class="metric"><div class="metric-label">일급 (예상)</div><div class="metric-val" id="sum-pay">89,440</div><div class="metric-sub">원</div></div>
         </div>
       </div>
     </div>
@@ -1064,21 +1064,31 @@ function calcPayForPeriod(emp,startDs,endDs){
   });
   return total;
 }
-// 특정 기간의 공제 합계 (해당 기간이 걸친 모든 월의 공제 적용)
+// 특정 기간의 공제 합계 (해당 기간이 걸친 각 월의 공제를, 그 월 중 실제로 포함된 일수 비율만큼 안분 적용)
+// * 수정: 한 달을 나눠서 여러 번 정산할 경우 "매월 반복" 공제가 매 회차마다 전액 중복 차감되던 버그 수정.
+//   이제는 정산 구간이 그 달의 며칠을 포함하는지에 비례해서 공제를 나눠 적용하므로,
+//   같은 달을 여러 회차로 나눠 정산해도 합계가 항상 그 달의 공제 총액과 일치합니다.
 function calcDeductForPeriod(emp,startDs,endDs){
   if(!emp||!startDs||!endDs)return 0;
   const startYm=startDs.substring(0,7);
   const endYm=endDs.substring(0,7);
-  const months=new Set();
-  // startYm ~ endYm 모든 월 수집
   let[y,m]=startYm.split('-').map(Number);
   const[ey,em]=endYm.split('-').map(Number);
+  let total=0;
   while(y<ey||(y===ey&&m<=em)){
-    months.add(y+'-'+pad(m));
+    const ym=y+'-'+pad(m);
+    const monthStart=ym+'-01';
+    const monthEnd=lastDayOfMonth(ym);
+    const ovS=startDs>monthStart?startDs:monthStart;
+    const ovE=endDs<monthEnd?endDs:monthEnd;
+    const totalDaysInMonth=Math.round((new Date(monthEnd+'T00:00:00')-new Date(monthStart+'T00:00:00'))/864e5)+1;
+    const ovDays=Math.round((new Date(ovE+'T00:00:00')-new Date(ovS+'T00:00:00'))/864e5)+1;
+    const monthDeduct=getDeductTotal(emp,ym);
+    if(monthDeduct&&totalDaysInMonth>0){
+      total+=Math.round(monthDeduct*(ovDays/totalDaysInMonth));
+    }
     m++;if(m>12){m=1;y++;}
   }
-  let total=0;
-  months.forEach(ym=>{total+=getDeductTotal(emp,ym);});
   return total;
 }
 // 직원의 가장 빠른 근무 기록 날짜 (정산 시작 기준점)
@@ -1510,6 +1520,7 @@ async function confirmDeleteEmp(){const emp=getEmp();if(!emp)return;if(confirm(e
   renderApp();
 })();
 </script>
+
 
 
 </body></html>
